@@ -80,7 +80,8 @@ header('location:titan_wishlist.php');
   ?>
 
   				<tr class="titanwishlist_tr">
-  					<td class="titanwishlist_td"><img src="admin/productimages/<?php echo htmlentities($row['pname']);?>/<?php echo htmlentities($row['pimage']);?>" alt="<?php echo htmlentities($row['pname']);?>" width="60" height="100"></td>
+  					<td class="titanwishlist_td">
+              <img src="admin/productimages/<?php echo htmlentities($row['pname']);?>/<?php echo htmlentities($row['pimage']);?>" alt="<?php echo htmlentities($row['pname']);?>" width="60" height="100"></td>
   					<td class="titanwishlist_td">
   						<div class="titanwishlist_productname"><a class="titanwishlist_productname" href="titan_product_details.php?p=<?php echo htmlentities($pd=$row['pname']);?>"><?php echo htmlentities($row['pname']);?></a></div>
   <?php $rt=mysqli_query($con,"SELECT * FROM productreviews WHERE productId='$pd'");

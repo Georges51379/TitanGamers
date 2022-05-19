@@ -24,16 +24,29 @@ if(isset($_GET['action']) && $_GET['action']=="add"){
 		echo "<script>alert('Product has been added to your cart')</script>";
 		echo "<script type='text/javascript'> document.location ='titan_cart.php'; </script>";
 }
-if(isset($_GET['pid']) && $_GET['action']=="wishlist"){
+// COde for Wishlist
+if(isset($_GET['p']) && $_GET['action']=="wishlist" ){
 	if(strlen($_SESSION['email'])==0)
-    {
+  {
 header('location:login-user.php');
-}
+	}
 else
 {
-mysqli_query($con,"insert into wishlist(userEmail,productId) values('".$_SESSION['email']."','".$_GET['pid']."')");
-echo "<script>alert('Product added to your wishlist');</script>";
+
+	$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	$hashedString = '';
+	for ($i = 0 ; $i <= 10; $i++){
+			$index = rand(0, strlen($characters) - 1);
+			$hashedString .= $characters[$index];
+	}
+	$_SESSION['wishToken'] = $hashedString;
+
+mysqli_query($con,"INSERT INTO wishlist(wishlistToken, userEmail,productName, status)
+										VALUES('".$_SESSION['wishToken']."', '".$_SESSION['email']."','".$_GET['p']."', 'Active')");
+
+echo "<script>alert('Product added into your wishlist');</script>";
 header('location:titan_wishlist.php');
+
 }
 }
 
@@ -121,7 +134,7 @@ header('location:titan_wishlist.php');
 									<i class="fa fa-shopping-cart"></i>
 								</a>
 
-							<a class="btn" href="titan_wishlist.php?pid=<?php echo htmlentities($row['id'])?>&&action=wishlist" title="Wishlist">
+							<a class="btn" href="products.php?p=<?php echo htmlentities($row['productName'])?>&&action=wishlist" title="Wishlist">
 							<i class="fa fa-heart"></i>
 							</a>
 						</div>
@@ -140,7 +153,7 @@ header('location:titan_wishlist.php');
 				<h3 class="section_title">most viewed</h3>
 
 				<?php
-				$ret=mysqli_query($con,"select * from products where productStatus=1 order by productViewers DESC limit 3");
+				$ret=mysqli_query($con,"SELECT * FROM products WHERE productStatus='Active' ORDER BY productViews DESC LIMIT 3");
 				while ($row=mysqli_fetch_array($ret))
 				{
 				?>
@@ -186,7 +199,7 @@ header('location:titan_wishlist.php');
 									<i class="fa fa-shopping-cart"></i>
 								</a>
 
-							<a class="btn" href="category.php?pid=<?php echo htmlentities($row['id'])?>&&action=wishlist" title="Wishlist">
+							<a class="btn" href="products.php?p=<?php echo htmlentities($row['productName'])?>&&action=wishlist" title="Wishlist">
 							<i class="fa fa-heart"></i>
 							</a>
 						</div>
@@ -205,7 +218,7 @@ header('location:titan_wishlist.php');
 				<h3 class="section_title">featured</h3>
 
 				<?php
-				$ret=mysqli_query($con,"select * from products where productFeatured=1 and productStatus=1 group by rand() limit 3");
+				$ret=mysqli_query($con,"SELECT * FROM products WHERE productFeatured=1 AND productStatus='Active' GROUP BY RAND() LIMIT 3");
 				while ($row=mysqli_fetch_array($ret))
 				{
 				?>
@@ -251,7 +264,7 @@ header('location:titan_wishlist.php');
 									<i class="fa fa-shopping-cart"></i>
 								</a>
 
-							<a class="btn" href="category.php?pid=<?php echo htmlentities($row['id'])?>&&action=wishlist" title="Wishlist">
+							<a class="btn" href="products.php?p=<?php echo htmlentities($row['productName'])?>&&action=wishlist" title="Wishlist">
 							<i class="fa fa-heart"></i>
 							</a>
 						</div>
@@ -276,7 +289,7 @@ header('location:titan_wishlist.php');
 				<h3 class="section_title">laptops</h3>
 
 				<?php
-				$ret=mysqli_query($con,"select * from products where categoryName='laptops' and productStatus=1 group by productPrice DESC limit 3");
+				$ret=mysqli_query($con,"SELECT * FROM products WHERE categoryName='laptops' AND productStatus='Active' GROUP BY productPrice DESC LIMIT 3");
 				while ($row=mysqli_fetch_array($ret))
 				{
 				?>
@@ -322,7 +335,7 @@ header('location:titan_wishlist.php');
 									<i class="fa fa-shopping-cart"></i>
 								</a>
 
-							<a class="btn" href="category.php?pid=<?php echo htmlentities($row['id'])?>&&action=wishlist" title="Wishlist">
+						<a class="btn" href="products.php?p=<?php echo htmlentities($row['productName'])?>&&action=wishlist" title="Wishlist">
 							<i class="fa fa-heart"></i>
 							</a>
 						</div>
@@ -342,7 +355,7 @@ header('location:titan_wishlist.php');
 				<h3 class="section_title">pCs</h3>
 
 				<?php
-				$ret=mysqli_query($con,"select * from products where categoryName='desktops' and productStatus=1 group by productPrice DESC limit 3");
+				$ret=mysqli_query($con,"SELECT * FROM products WHERE categoryName='desktops' AND productStatus='Active' GROUP BY productPrice DESC LIMIT 3");
 				while ($row=mysqli_fetch_array($ret))
 				{
 				?>
@@ -389,7 +402,7 @@ header('location:titan_wishlist.php');
 									<i class="fa fa-shopping-cart"></i>
 								</a>
 
-							<a class="btn" href="category.php?pid=<?php echo htmlentities($row['id'])?>&&action=wishlist" title="Wishlist">
+							<a class="btn" href="products.php?p=<?php echo htmlentities($row['productName'])?>&&action=wishlist" title="Wishlist">
 							<i class="fa fa-heart"></i>
 							</a>
 						</div>
@@ -409,7 +422,7 @@ header('location:titan_wishlist.php');
 				<h3 class="section_title">accessories</h3>
 
 				<?php
-				$ret=mysqli_query($con,"select * from products where categoryName='accessories' and productStatus=1 group by productPrice DESC limit 3");
+				$ret=mysqli_query($con,"SELECT * FROM products WHERE categoryName='accessories' AND productStatus='Active' GROUP BY productPrice DESC LIMIT 3");
 				while ($row=mysqli_fetch_array($ret))
 				{
 				?>
@@ -457,7 +470,7 @@ header('location:titan_wishlist.php');
 									<i class="fa fa-shopping-cart"></i>
 								</a>
 
-							<a class="btn" href="category.php?pid=<?php echo htmlentities($row['id'])?>&&action=wishlist" title="Wishlist">
+						<a class="btn" href="products.php?p=<?php echo htmlentities($row['productName'])?>&&action=wishlist" title="Wishlist">
 							<i class="fa fa-heart"></i>
 							</a>
 						</div>
@@ -530,7 +543,7 @@ while($row=mysqli_fetch_array($sql)){
 							<i class="fa fa-shopping-cart"></i>
 						</a>
 
-					<a class="btn" href="category.php?pid=<?php echo htmlentities($row['id'])?>&&action=wishlist" title="Wishlist">
+					<a class="btn" href="products.php?p=<?php echo htmlentities($row['productName'])?>&&action=wishlist" title="Wishlist">
 					<i class="fa fa-heart"></i>
 					</a>
 				</div>
@@ -600,7 +613,7 @@ while($row=mysqli_fetch_array($sql)){
 							<i class="fa fa-shopping-cart"></i>
 						</a>
 
-					<a class="btn" href="category.php?pid=<?php echo htmlentities($row['id'])?>&&action=wishlist" title="Wishlist">
+					<a class="btn" href="products.php?p=<?php echo htmlentities($row['productName'])?>&&action=wishlist" title="Wishlist">
 					<i class="fa fa-heart"></i>
 					</a>
 				</div>
@@ -670,7 +683,7 @@ while($row=mysqli_fetch_array($sql)){
 							<i class="fa fa-shopping-cart"></i>
 						</a>
 
-					<a class="btn" href="category.php?pid=<?php echo htmlentities($row['id'])?>&&action=wishlist" title="Wishlist">
+				<a class="btn" href="products.php?p=<?php echo htmlentities($row['productName'])?>&&action=wishlist" title="Wishlist">
 					<i class="fa fa-heart"></i>
 					</a>
 				</div>
@@ -740,7 +753,7 @@ while($row=mysqli_fetch_array($sql)){
 							<i class="fa fa-shopping-cart"></i>
 						</a>
 
-					<a class="btn" href="category.php?pid=<?php echo htmlentities($row['id'])?>&&action=wishlist" title="Wishlist">
+					<a class="btn" href="products.php?p=<?php echo htmlentities($row['productName'])?>&&action=wishlist" title="Wishlist">
 					<i class="fa fa-heart"></i>
 					</a>
 				</div>
@@ -810,7 +823,7 @@ while($row=mysqli_fetch_array($sql)){
 							<i class="fa fa-shopping-cart"></i>
 						</a>
 
-					<a class="btn" href="category.php?pid=<?php echo htmlentities($row['id'])?>&&action=wishlist" title="Wishlist">
+				<a class="btn" href="products.php?p=<?php echo htmlentities($row['productName'])?>&&action=wishlist" title="Wishlist">
 					<i class="fa fa-heart"></i>
 					</a>
 				</div>
@@ -881,7 +894,7 @@ while($row=mysqli_fetch_array($sql)){
 							<i class="fa fa-shopping-cart"></i>
 						</a>
 
-					<a class="btn" href="category.php?pid=<?php echo htmlentities($row['id'])?>&&action=wishlist" title="Wishlist">
+					<a class="btn" href="products.php?p=<?php echo htmlentities($row['productName'])?>&&action=wishlist" title="Wishlist">
 					<i class="fa fa-heart"></i>
 					</a>
 				</div>

@@ -138,7 +138,7 @@ while ($row=mysqli_fetch_array($ret))
 
 				<div class="product_views">
 					<span class="views">
-						<?php echo htmlentities($row['productViewers']); ?><i class="fa fa-eye"></i>
+						<?php echo htmlentities($row['productViews']); ?><i class="fa fa-eye"></i>
 					</span>
 				</div>
 			</div><!---END ROW-->
