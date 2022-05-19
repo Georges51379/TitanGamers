@@ -1,0 +1,76 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.topnav{
+  background-color: maroon;
+}
+.topnav .left_topnav{
+  color: gold;
+  background-color: maroon;
+  text-transform: uppercase;
+  font-weight: bolder;
+  font-family: sans-serif;
+  font-size: 35px;
+}
+.right_topnav{
+  color: maroon;
+  background-color: gold;
+  text-transform: uppercase;
+  font-weight: bolder;
+  font-family: sans-serif;
+  font-size: 35px;
+}
+.center_topnav{
+  color: gray;
+  margin-left: 25%;
+  font-weight: bolder;
+  font-family: sans-serif;
+  font-size: 35px;
+  text-transform: uppercase;
+}
+
+.login_label{
+  color: gold;
+  text-transform: capitalize;
+  text-decoration: overline;
+  padding: 10px;
+  font-size: 20px;
+}
+.red_astrix{
+  color: red;
+}
+.login_input{
+  margin-top: 10%;
+  margin-bottom: 10%;
+  width: 100%;
+  height: 50%;
+}
+.form_btn{
+  background-color: maroon;
+  color: gold;
+  font-size: 18px;
+}
+.form_btn:hover{
+  color: maroon;
+  background-color: gold;
+  cursor: grab;
+}
+.login_form{
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%)
+}
+.bg_img{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.login_wrapper{
+  position: relative;
+  text-align: center;
+  color: red;
+}

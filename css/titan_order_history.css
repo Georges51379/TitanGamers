@@ -1,0 +1,42 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.titanorderhistory_table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #116466;
+  color:  white;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+.titanorderhistory_td, .titanorderhistory_th {
+  padding: 8px;
+  text-align: left;
+  text-transform: capitalize;
+}
+.titanorderhistory_productname{
+  color: black;
+  text-decoration: overline;
+}
+.titanorderhistory_productname:hover{
+  color: gold;
+}
+.titanorderhistory_tr:nth-of-type(odd) {
+  background: #2C3531;
+}
+.titanorderhistory_th {
+  background: black;
+  font-weight: bolder;
+  font-family: sans-serif;
+}
+.titanorderhistory_btn{
+  color: #D1E8E2;
+  text-decoration: none;
+  text-transform: capitalize;
+}
+.titanorderhistory_btn:hover{
+  color: red;
+  text-transform: uppercase;
+}

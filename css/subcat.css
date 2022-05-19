@@ -1,0 +1,143 @@
+*{
+  margin: 0;
+  padding: 0;
+
+}
+
+:root {
+  /*===== Colores =====*/
+  --first-color: #F2A20C;
+  --white-color: #E9EAEC;
+  --dark-color: #272D40;
+  --dark-color-lighten: #F2F5FF;
+  /*===== Fuente y tipografia =====*/
+  --body-font: 'Poppins', sans-serif;
+  --h1-font-size: 1.5rem;
+  --h2-font-size: 1.25rem;
+  --normal-font-size: 1rem;
+  --small-font-size: .875rem;
+}
+
+/*****START CARD DESIGN*******/
+.products_wrapper{
+  display: inline-flex;
+  width: 33%;
+}
+.container {
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--dark-color-lighten);
+}
+
+.card {
+  width: 320px;
+  height: 400px;
+  background-color: var(--dark-color);
+  border-radius: 1rem;
+  padding: 4rem 2rem 0;
+  color: var(--white-color);
+  overflow-y: hidden;
+  margin-bottom: 10%;
+  margin-top: 10%;
+
+}
+
+.card_img {
+  position: absolute;
+  max-width: 50%;
+  max-height: 50%;
+  width: 260px;
+  filter: drop-shadow(5px 10px 15px rgba(8,9,13,.4));
+}
+
+.card_data {
+  transform: translateY(13.2rem);
+  text-align: center;
+}
+
+.card_title {
+  font-size: var(--h1-font-size);
+  color: var(--first-color);
+  margin-bottom: .5rem;
+  margin-top: 20%;
+}
+
+.card_price {
+  display: inline-block;
+  font-size: var(--h2-font-size);
+  font-weight: 500;
+  margin-bottom: 1.25rem;
+}
+.card_price_disc{
+  display: inline-block;
+  font-size: var(--h2-font-size);
+  font-weight: 500;
+  margin-bottom: 1.25rem;
+  color: red;
+  text-decoration: line-through;
+}
+
+.card_description {
+  font-size: var(--small-font-size);
+  text-align: initial;
+  margin-bottom: 1.25rem;
+  opacity: 0;
+}
+
+.card_button {
+  display: inline-flex;
+  width: max-content;
+  padding: 1.125rem 2rem;
+  background-color: var(--first-color);
+  color: var(--white-color);
+  border-radius: .5rem;
+  font-weight: 600;
+  transition: .2s;
+  opacity: 0;
+  text-decoration: none;
+}
+.outofstock{
+  background-color: red;
+}
+.card_button:hover {
+  box-shadow: 0 18px 40px -12px rgba(242,162,12,.35);
+}
+
+.card_img,
+.card_data,
+.card_title,
+.card_price,
+.card_description {
+  transition: .5s;
+}
+
+/* Hover card effect */
+.card:hover .card_img {
+  transform: translate(-1.5rem, -9.5rem) rotate(-20deg);
+}
+
+.card:hover .card_data {
+  margin-top: 40%;
+  transform: translateY(4.8rem);
+}
+
+.card:hover .card_title {
+  transform: translateX(-2.3rem);
+  margin-bottom: 0;
+}
+
+.card:hover .card_price {
+  transform: translateX(-6.8rem);
+}
+
+.card:hover .card_description,
+.card:hover .card_button {
+  margin-top: 16%;
+  transition-delay: .2s;
+  opacity: 1;
+}
+
+
+
+/****END CARD DESIGN********/

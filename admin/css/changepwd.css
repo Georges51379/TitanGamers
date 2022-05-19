@@ -1,0 +1,40 @@
+.changepwd_title{
+  margin-top: 3%;
+  margin-left: 2%;
+  text-transform: capitalize;
+  font-style:oblique;
+  font-weight: bolder;
+  font-family: sans-serif;
+  text-shadow: 3px 3px 5px gold;
+}
+.changepwd_form{
+  margin-left: 2%;
+  background-color: #D1E8E2;
+  width: 25%;
+}
+.changepwd_label{
+  text-transform: capitalize;
+  font-weight: lighter;
+  font-family: sans-serif;
+  font-style: italic;
+}
+.red_astrix{
+  color: red;
+}
+.changepwd_input{
+  width: 80%;
+  margin-top: 3%;
+  margin-bottom: 3%;
+}
+.changepwd_form_btn{
+  color: gold;
+  background-color: maroon;
+  font-size: 22px;
+  cursor: pointer;
+}
+.changepwd_form_btn:hover{
+  color: maroon;
+  background-color: gold;
+  text-transform: uppercase;
+  cursor: grabbing;
+}

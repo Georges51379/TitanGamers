@@ -1,0 +1,138 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/*************START SHOPPING CART AND REQUEST PRODUCT***********************/
+.requestproduct_wrapper{
+  text-align: center;
+}
+.request_text{
+  width: 100%;
+  text-align: center;
+  margin-bottom: 2%;
+  text-transform: capitalize;
+  line-height: 7vh;
+  color: #116466;
+  font-family: sans-serif;
+  font-weight: bolder;
+  background-color: #2C3531;
+  animation: borderAnimation 10s infinite;
+}
+.review_title{
+  text-align: center;
+  font-family: sans-serif;
+  font-weight: bolder;
+  text-transform: capitalize;
+  margin: 1% 0 3% 0;
+  text-decoration: underline;
+  font-size: 22px;
+}
+.label_name{
+  text-transform: capitalize;
+  font-family: sans-serif;
+  font-weight: bolder;
+}
+.astk{
+  color: red;
+  font-weight: bolder;
+}
+.request_btn{
+  color: red;
+  text-decoration: none;
+  padding: 1.5%;
+  animation: productName 10s infinite;
+  text-transform: uppercase;
+  margin-bottom: 3%;
+  border: 0px solid white;
+  background-color: white;
+}
+.text_summary{
+  text-transform: capitalize;
+}
+.request_btn:hover{
+  transform: scale(1.5);
+  cursor: pointer;
+}
+
+
+/**START NOTIFICATION BELL*/
+ .bell_icon{
+   position: fixed;
+   bottom: 30px;
+   left: 10px;
+   font-size: 26px;
+   width: 50px;
+   height: 50px;
+   background-color: #116466;
+   color: #FFCB9A;
+   cursor: pointer;
+   outline: none;
+   border: 3px solid #333;
+   border-radius: 50%;
+   transition-duration: 0.2s;
+   transition-timing-function: ease-in-out;
+   animation: breathBell 10s infinite;
+   transition-property: background-color, color;
+ }
+ .bellnot{
+   position: fixed;
+   bottom: 30px;
+   left: 10px;
+   font-size: 26px;
+   width: 50px;
+   height: 50px;
+   background-color: #116466;
+   color: #FFCB9A;
+   cursor: pointer;
+   outline: none;
+   border: 3px solid #333;
+   border-radius: 50%;
+   transition-duration: 0.2s;
+   transition-timing-function: ease-in-out;
+   transition-property: background-color, color;
+ }
+/*END NOTIFICATION BELL**/
+
+
+@keyframes borderAnimation{
+  0%{
+  border: 4px solid green;
+  }
+  20%{
+      border: 4px solid yellow;
+  }
+  40%{
+    border: 4px solid purple;
+  }
+  60%{
+    border: 4px solid orange;
+  }
+  80%{
+      border: 4px solid blue;
+  }
+  100%{
+      border: 4px solid red;
+  }
+}
+
+@keyframes breathBell{
+  0%{
+   transform: scale(1.3);
+  }
+  20%{
+    transform: scale(1.1);
+  }
+  40%{
+    transform: scale(1.3);
+  }
+  60%{
+    transform: scale(1.1);
+  }
+  80%{
+    transform: scale(1.3);
+  }
+  100%{
+    transform: scale(1.1);
+  }
+}

@@ -1,0 +1,64 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.billship_wrapper{
+  padding-top: 2%;
+  text-align: center;
+  background-color: #f5f5f5;
+}
+.billship_wrapper .billship_subtitle{
+  text-transform: capitalize;
+  text-shadow: 4px 4px 5px black;
+  font-size: 25px;
+  font-weight: bolder;
+  font-family: sans-serif;
+  padding-bottom: 1%;
+}
+.billship_section_title{
+  font-style: oblique;
+  font-family: sans-serif;
+  font-weight: lighter;
+  padding-bottom: 1%;
+  text-transform: capitalize;
+}
+.billship_div{
+  background-color: #dcdcdc;
+  padding: 2%;
+}
+.billship_label{
+  color: black;
+  font-family: sans-serif;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+.name_capitalize{
+  text-transform: capitalize;
+  text-shadow: 4px 4px 5px maroon;
+}
+.red_astrix{
+  color:red;
+}
+.billship_input{
+  margin: 1%;
+  width: 35%;
+}
+.billship_textarea{
+  margin: 1%;
+  width: 35%;
+  height: 25%;
+}
+.billship_btn{
+  color: gold;
+  background-color: maroon;
+  cursor: pointer;
+  font-size: 22px;
+  box-shadow: 4px 4px 5px solid blue;
+}
+.billship_btn:hover{
+  color: maroon;
+  background-color: gold;
+  cursor: grabbing;
+  text-transform: uppercase;
+}

@@ -1,0 +1,111 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.trackorders_div{
+  background-color: #2C3531;
+  padding: 2%;
+  margin-top: 7%;
+  margin-bottom: 2%;
+  width: 50%;
+}
+.trackorders_title{
+  text-transform: capitalize;
+  color: #D1E8E2;
+  font-size: 25px;
+  font-weight: bolder;
+  font-family: sans-serif;
+  padding-bottom: 1%;
+}
+.trackorders_info{
+    font-style: oblique;
+    font-family: sans-serif;
+    font-weight: lighter;
+    padding-bottom: 1%;
+    color: white;
+    text-transform: capitalize;
+}
+.astrix{
+  color: red;
+}
+.trackorders_label{
+  color: black;
+  font-family: sans-serif;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+.trackorders_input{
+  margin: 1%;
+  width: 35%;
+  cursor: pointer;
+  color: #116466;
+}
+.trackorders_input:focus{
+  background-color: #2C3531;
+}
+.disabledinput{
+  cursor: no-drop;
+}
+.trackorders_btn{
+  color: white;
+  margin-top: 2%;
+  background-color: #2C3531;
+  cursor: pointer;
+  font-size: 22px;
+  box-shadow: 4px 4px 5px solid white;
+}
+.trackorders_btn:hover{
+  color: #2C3531;
+  background-color: white;
+  cursor: grabbing;
+  text-transform: uppercase;
+}
+.trackorder_help{
+  background-color: #116466;
+  margin-top: 3%;
+  width: 50%;
+  padding: 1.5%;
+}
+.help_title{
+  font-weight: bolder;
+  font-family: sans-serif;
+  text-transform: capitalize;
+  color: white;
+  margin-bottom: 2%;
+}
+.help_txt{
+  font-style: oblique;
+  color: black;
+  text-transform: capitalize;
+}
+.help_list{
+  list-style: none;
+  margin-bottom: 5%;
+}
+.help_note{
+  font-family: sans-serif;
+  text-transform: capitalize;
+  animation: colorChanger 30s infinite;
+}
+
+@keyframes colorChanger{
+  0%{
+    color: white;
+  }
+  20%{
+    color:black;
+  }
+  40%{
+      color:#D1E8E2;
+  }
+  60%{
+    color:snow;
+  }
+  80%{
+    color: black;
+  }
+  100%{
+    color: #D1E8E2;
+  }
+}

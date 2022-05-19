@@ -1,0 +1,43 @@
+*{
+  margin:0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.payment_method_wrapper{
+  margin-top: 15%;
+  background-color: #2C3531;
+  width: 55%;
+}
+.payment_method_bigtitle{
+  text-transform: capitalize;
+  font-weight: bolder;
+  font-family: sans-serif;
+  color: #D1E8E2;
+  margin-bottom: 2%;
+}
+.payment_method_smalltitle{
+  margin-bottom: 2%;
+  text-transform: capitalize;
+  font-family: sans-serif;
+  font-weight: bolder;
+  font-style: oblique;
+}
+.payment_method_info{
+  text-transform: capitalize;
+  font-family: sans-serif;
+  font-style: italic;
+  font-weight: bold;
+  margin-bottom: 2%;
+}
+.done_btn{
+  margin-left: 2%;
+  margin-bottom: 1.5%;
+  background-color: #2C3531;
+  text-transform: uppercase;
+  color: white;
+  padding: 0.5%;
+}
+.done_btn:hover{
+  color: #116466;
+  cursor: pointer;
+}
