@@ -5,16 +5,17 @@ include('db/connection.php');
 $catName=$_GET['catName'];
 
 if(isset($_GET['action']) && $_GET['action']=="add"){
-	$p = $_GET['p']; //PRODUCT NAME
+	$pt = $_GET['pt']; //PRODUCT NAME
 
-	if(isset($_SESSION['cart'][$p])){
-		$_SESSION['cart'][$p]['quantity']++;
+	if(isset($_SESSION['cart'][$pt])){
+		$_SESSION['cart'][$pt]['quantity']++;
 	}else{
-		$sql_p="SELECT * FROM products WHERE productName= '$p' ";
+		$sql_p="SELECT * FROM products WHERE productToken= '$pt' ";
 		$query_p=mysqli_query($con,$sql_p);
 		if(mysqli_num_rows($query_p)!=0){
 			$row_p=mysqli_fetch_array($query_p);
-			$_SESSION['cart'][$row_p['productName']]=array("quantity" => 1, "price" => $row_p['productPrice']);
+			$_SESSION['cart'][$row_p['productName']];
+			$_SESSION['quantity'][$row_p['productPrice']];
 			echo "<script>alert('Product has been added to your cart')</script>";
 			echo "<script type='text/javascript'> document.location ='titan_cart.php'; </script>";
 }
@@ -25,24 +26,18 @@ if(isset($_GET['action']) && $_GET['action']=="add"){
 }
 
 // COde for Wishlist
-if(isset($_GET['p']) && $_GET['action']=="wishlist" ){
+if(isset($_GET['pt']) && $_GET['action']=="wishlist" ){
 	if(strlen($_SESSION['email'])==0)
   {
 header('location:login-user.php');
 	}
 else
 {
-
-	$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	$hashedString = '';
-	for ($i = 0 ; $i <= 10; $i++){
-			$index = rand(0, strlen($characters) - 1);
-			$hashedString .= $characters[$index];
-	}
+	$hashedString = bin2hex(random_bytes(16));
 	$_SESSION['wishToken'] = $hashedString;
 
-mysqli_query($con,"INSERT INTO wishlist(wishlistToken, userEmail,productName, status)
-										VALUES('".$_SESSION['wishToken']."', '".$_SESSION['email']."','".$_GET['p']."', 'Active')");
+mysqli_query($con,"INSERT INTO wishlist(wishToken, userEmail,productToken, status)
+										VALUES('".$_SESSION['wishToken']."', '".$_SESSION['email']."','".$_GET['pt']."', 'Active')");
 
 echo "<script>alert('Product added into your wishlist');</script>";
 header('location:titan_wishlist.php');
@@ -130,11 +125,11 @@ header('location:titan_wishlist.php');
 						<div class="product_action">
 						<?php if($row['productAvailability']=='In Stock'){?>
 
-								<a href="titan_cart.php?page=product&action=add&p=<?php echo $row['productName']; ?>" class="btn">
+								<a href="titan_cart.php?page=product&action=add&pt=<?php echo $row['productToken']; ?>" class="btn">
 									<i class="fa fa-shopping-cart"></i>
 								</a>
 
-							<a class="btn" href="products.php?p=<?php echo htmlentities($row['productName'])?>&&action=wishlist" title="Wishlist">
+							<a class="btn" href="products.php?pt=<?php echo htmlentities($row['productToken'])?>&&action=wishlist" title="Wishlist">
 							<i class="fa fa-heart"></i>
 							</a>
 						</div>

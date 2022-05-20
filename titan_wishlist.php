@@ -7,22 +7,23 @@ if(strlen($_SESSION['email'])==0)
 header('location:login-user.php');
 }
 else{
-// Code forProduct deletion from  wishlist
-$pname = $_GET['del'];
+// Code forProduct DELETE from  wishlist
+$ptdel = $_GET['del'];
 
 if(isset($_GET['del']))
 {
-$query=mysqli_query($con,"UPDATE wishlist SET status = 'Inactive' WHERE productName='$pname'");
+$query=mysqli_query($con,"UPDATE wishlist SET status = 'Inactive' WHERE productToken='$ptdel'");
 }
 
-if(isset($_GET['action']) && $_GET['action']=="add"){
-	$p = $_GET['p']; //PRODUCT NAME
+if(isset($_GET['action']) && $_GET['action']=="add"){ //ADD TO CART FROM WISHLIST
+	$pt = $_GET['pt']; //PRODUCT NAME
 
-	$query=mysqli_query($con,"UPDATE wishlist SET status = 'Inactive' WHERE productName='$p'");
-	if(isset($_SESSION['cart'][$p])){
-		$_SESSION['cart'][$p]['quantity']++;
+	$query=mysqli_query($con,"UPDATE wishlist SET status = 'Inactive' WHERE productToken='$pt'");
+
+	if(isset($_SESSION['cart'][$pt])){
+		$_SESSION['cart'][$pt]['quantity']++;
 	}else{
-		$sql_p="SELECT * FROM products WHERE productName= '$p' ";
+		$sql_p="SELECT * FROM products WHERE productToken= '$pt' ";
 		$query_p=mysqli_query($con,$sql_p);
 		if(mysqli_num_rows($query_p)!=0){
 			$row_p=mysqli_fetch_array($query_p);
@@ -68,9 +69,9 @@ header('location:titan_wishlist.php');
   			</thead>
   			<tbody class="titanwishlist_tbody">
   <?php
-  $ret=mysqli_query($con,"SELECT products.productName AS pname,products.productImage1 AS pimage,
-  products.productPrice AS pprice,products.productPriceBeforeDiscount AS pbdiscount, wishlist.productName AS wishProdName,
-  wishlist.wishlistToken AS wishToken FROM wishlist JOIN products ON products.productName = wishlist.productName WHERE status = 'Active' AND
+  $ret=mysqli_query($con,"SELECT products.productName AS pname,products.productImage1 AS pimage,products.productToken AS productToken,
+  products.productPrice AS pprice,products.productPriceBeforeDiscount AS pbdiscount, wishlist.productToken AS wishProdToken,
+  wishlist.wishToken AS wishToken FROM wishlist JOIN products ON products.productToken = wishlist.productToken WHERE status = 'Active' AND
    wishlist.userEmail='".$_SESSION['email']."'");
   $num=mysqli_num_rows($ret);
   	if($num>0)
@@ -104,10 +105,10 @@ header('location:titan_wishlist.php');
   						</div>
   					</td>
   					<td class="titanwishlist_td">
-  						<a href="titan_wishlist.php?page=product&action=add&p=<?php echo $row['pname']; ?>" class="titanwishlist_btn">Add to cart</a>
+  						<a href="titan_wishlist.php?page=product&action=add&pt=<?php echo $row['productToken']; ?>" class="titanwishlist_btn">Add to cart</a>
   					</td>
   					<td class="titanwishlist_td">
-  						<a href="titan_wishlist.php?del=<?php echo htmlentities($row['pname']);?>" onClick="return confirm('Are you sure you want to delete?')" class="titanwishlist_btn"><i class="fa fa-times"></i></a>
+  						<a href="titan_wishlist.php?del=<?php echo htmlentities($row['productToken']);?>" onClick="return confirm('Are you sure you want to delete?')" class="titanwishlist_btn"><i class="fa fa-times"></i></a>
   					</td>
   				</tr>
   				<?php } } else{ ?>

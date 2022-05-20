@@ -131,7 +131,7 @@ echo "<script>alert('Shipping Address has been updated');</script>";
 		  			<tbody class="titancart_tbody">
 		   <?php
 		   $pdtid=array();
-		      $sql = "SELECT * FROM products WHERE productName = '$pname'";
+		      $sql = "SELECT * FROM products WHERE productToken = '$pname'";
 
 		  			$query = mysqli_query($con,$sql);
 		  			$totalprice=0;
@@ -147,7 +147,8 @@ echo "<script>alert('Shipping Address has been updated');</script>";
 		  	?>
 
 		  				<tr>
-		  					<td class="titancart_td"><input type="checkbox" name="remove_code[]" value="<?php echo htmlentities($row['productName']);?>" /></td>
+		  					<td class="titancart_td"><input type="checkbox" name="remove_code[]" value="<?php echo htmlentities($row['productToken']);?>" /></td>
+								
 		  					<td class="titancart_td">
 		  						<a class="product_link" href="titan_product_details.php?p=<?php echo htmlentities($pd=$row['productName']);?>">
 		  						    <img src="admin/productimages/<?php echo $row['productName'];?>/<?php echo $row['productImage1'];?>" alt="" width="114" height="146">
@@ -186,7 +187,7 @@ echo "<script>alert('Shipping Address has been updated');</script>";
 		  				<td class="titancart_td"><span class="titancart_shippingcharge"><?php echo "$"." ".$row['shippingCharge']; ?></span>
 							</td>
 
-		  					<td class="titancart_td"><span class="titancart_totalprice">$<?php echo ($_SESSION['cart'][$row['id']]['quantity']*$row['productPrice']+$row['shippingCharge']); ?></span></td>
+		  					<td class="titancart_td"><span class="titancart_totalprice">$<?php echo ($_SESSION['cart'][$row['productName']]['quantity']*$row['productPrice']+$row['shippingCharge']); ?></span></td>
 		  				</tr>
 
 		  				<?php } }
