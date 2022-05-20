@@ -2,6 +2,7 @@
 session_start();
 error_reporting(0);
 include('db/connection.php');
+
 if(isset($_POST['submit'])){
 		if(!empty($_SESSION['cart'])){
 		foreach($_POST['quantity'] as $key => $val){
@@ -130,26 +131,23 @@ echo "<script>alert('Shipping Address has been updated');</script>";
 		  			<tbody class="titancart_tbody">
 		   <?php
 		   $pdtid=array();
-		      $sql = "SELECT * FROM products WHERE id IN(";
-		  			foreach($_SESSION['cart'] as $id => $value){
-		  			$sql .=$id. ",";
-		  			}
-		  			$sql=substr($sql,0,-1) . ") ORDER BY id ASC";
+		      $sql = "SELECT * FROM products WHERE productName = '$pname'";
+
 		  			$query = mysqli_query($con,$sql);
 		  			$totalprice=0;
 		  			$totalqunty=0;
 		  			if(!empty($query)){
 		  			while($row = mysqli_fetch_array($query)){
-		  				$quantity=$_SESSION['cart'][$row['id']]['quantity'];
-		  				$subtotal= $_SESSION['cart'][$row['id']]['quantity']*$row['productPrice']+$row['shippingCharge'];
+		  				$quantity=$_SESSION['cart'][$row['productName']]['quantity'];
+		  				$subtotal= $_SESSION['cart'][$row['productName']]['quantity']*$row['productPrice']+$row['shippingCharge'];
 		  				$totalprice += $subtotal;
 		  				$_SESSION['qnty']=$totalqunty+=$quantity;
 
-		  				array_push($pdtid,$row['id']);
+		  				array_push($pdtid,$row['productName']);
 		  	?>
 
 		  				<tr>
-		  					<td class="titancart_td"><input type="checkbox" name="remove_code[]" value="<?php echo htmlentities($row['id']);?>" /></td>
+		  					<td class="titancart_td"><input type="checkbox" name="remove_code[]" value="<?php echo htmlentities($row['productName']);?>" /></td>
 		  					<td class="titancart_td">
 		  						<a class="product_link" href="titan_product_details.php?p=<?php echo htmlentities($pd=$row['productName']);?>">
 		  						    <img src="admin/productimages/<?php echo $row['productName'];?>/<?php echo $row['productImage1'];?>" alt="" width="114" height="146">

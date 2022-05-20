@@ -5,25 +5,25 @@ include('db/connection.php');
 $catName=$_GET['catName'];
 
 if(isset($_GET['action']) && $_GET['action']=="add"){
-	$id=intval($_GET['id']);
+	$p = $_GET['p']; //PRODUCT NAME
 
-
-	if(isset($_SESSION['cart'][$id])){
-		$_SESSION['cart'][$id]['quantity']++;
+	if(isset($_SESSION['cart'][$p])){
+		$_SESSION['cart'][$p]['quantity']++;
 	}else{
-		$sql_p="SELECT * FROM products WHERE id={$id}";
+		$sql_p="SELECT * FROM products WHERE productName= '$p' ";
 		$query_p=mysqli_query($con,$sql_p);
 		if(mysqli_num_rows($query_p)!=0){
 			$row_p=mysqli_fetch_array($query_p);
-			$_SESSION['cart'][$row_p['id']]=array("quantity" => 1, "price" => $row_p['productPrice']);
-
-		}else{
+			$_SESSION['cart'][$row_p['productName']]=array("quantity" => 1, "price" => $row_p['productPrice']);
+			echo "<script>alert('Product has been added to your cart')</script>";
+			echo "<script type='text/javascript'> document.location ='titan_cart.php'; </script>";
+}
+		else{
 			$message="Product ID is invalid";
 		}
 	}
-		echo "<script>alert('Product has been added to your cart')</script>";
-		echo "<script type='text/javascript'> document.location ='titan_cart.php'; </script>";
 }
+
 // COde for Wishlist
 if(isset($_GET['p']) && $_GET['action']=="wishlist" ){
 	if(strlen($_SESSION['email'])==0)
@@ -121,7 +121,7 @@ header('location:titan_wishlist.php');
 
 							<div class="product_views">
 								<span class="views">
-									<?php echo htmlentities($row['productViewers']); ?>&nbsp;<i class="fa fa-eye"></i>
+									<?php echo htmlentities($row['productViews']); ?>&nbsp;<i class="fa fa-eye"></i>
 								</span>
 							</div>
 
@@ -130,7 +130,7 @@ header('location:titan_wishlist.php');
 						<div class="product_action">
 						<?php if($row['productAvailability']=='In Stock'){?>
 
-								<a href="titan_cart.php?page=product&action=add&id=<?php echo $row['id']; ?>" class="btn">
+								<a href="titan_cart.php?page=product&action=add&p=<?php echo $row['productName']; ?>" class="btn">
 									<i class="fa fa-shopping-cart"></i>
 								</a>
 

@@ -42,7 +42,7 @@
     <?php if(strlen($_SESSION['email']))
         {   ?>
     <li class="products_li"><a href="products.php" class="products_links">
-      <?php $queryName = mysqli_query($con, "SELECT name FROM `user$` WHERE email = '".$_SESSION['email']."'");
+      <?php $queryName = mysqli_query($con, "SELECT name FROM `users` WHERE email = '".$_SESSION['email']."'");
         $rows = mysqli_fetch_array($queryName);
        ?>
     </i>Welcome, titan&nbsp<?php echo htmlentities($rows['name']);?></a></li>
