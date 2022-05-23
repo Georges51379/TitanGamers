@@ -3,7 +3,7 @@ session_start();
 error_reporting(0);
 include('db/connection.php');
 
-$cpt = $_get['cpt'];
+$cpt = $_GET['cpt'];
 
 if(isset($_POST['submit'])){
 		if(!empty($_SESSION['cart'])){
@@ -116,9 +116,8 @@ echo "<script>alert('Shipping Address has been updated');</script>";
 		  			<tbody class="titancart_tbody">
 		   <?php
 		   //$pdtid=array();
-		      $cartQuery = mysqli_query($con, "SELECT * FROM products WHERE productToken='$cpt' ");
+		      $cartQuery = mysqli_query($con, "SELECT * FROM products WHERE productToken='".$_GET['cpt']."' ");
 					while($row = mysqli_fetch_array($cartQuery)){
-
 		  	?>
 
 		  				<tr>
@@ -131,8 +130,6 @@ echo "<script>alert('Shipping Address has been updated');</script>";
 		  					</td>
 		  					<td class="titancart_td">
 		  						<h4><a class="titancart_productname" href="titan_product_details.php?p=<?php echo htmlentities($row['productName']);?>" ><?php echo $row['productName'];
-
-		  $_SESSION['sid']=$pd;
 		  						 ?></a>
 								 </h4>
 		  						<div class="titancart_row">
@@ -140,7 +137,7 @@ echo "<script>alert('Shipping Address has been updated');</script>";
 		  								<div class="titancart_rating"></div>
 		  							</div>
 		  							<div class="titancart_reviews">
-		  <?php $rt=mysqli_query($con,"select * from productreviews where productId='$pd'");
+		  <?php $rt=mysqli_query($con,"select * from productreviews where productId=1");
 		  $num=mysqli_num_rows($rt);
 		  {
 		  ?>
@@ -154,7 +151,7 @@ echo "<script>alert('Shipping Address has been updated');</script>";
 		  					</td>
 		  					<td class="titancart_td">
 		  						<div class="titancart_quantityinput">
-		                <input type="number" step="1" min="1" max="2" oninput="validity.valid||(value='');" value="<?php echo $_SESSION['cart'][$row['productToken']]['quantity']; ?>" name="quantity[<?php echo $row['id']; ?>]">
+		                <input type="number" step="1" min="1" max="2" oninput="validity.valid||(value='');" value="<?php echo $_SESSION['cart'][$row['productToken']]['quantity']; ?>" name="quantity[<?php echo $row['productName']; ?>]">
 		  			       </div>
 		  		            </td>
 		  					<td class="titancart_td"><span class="titancart_prodprice"><?php echo "$"." ".$row['productPrice']; ?></span>
@@ -166,7 +163,6 @@ echo "<script>alert('Shipping Address has been updated');</script>";
 		  				</tr>
 
 		  				<?php }
-		  $_SESSION['pid']=$pdtid;
 		  				?>
 
 		  			</tbody><!-- /tbody -->

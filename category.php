@@ -13,7 +13,7 @@ if(isset($_GET['action']) && $_GET['action']=="add"){
 	if(isset($_SESSION['cart'][$pname])){
 		$_SESSION['cart']['$pname']['quantity']++;
 	}else{
-		$prodQuery = mysqli_query($con, "SELECT * FROM products WHERE productToken = '$pname'");
+		$prodQuery = mysqli_query($con, "SELECT * FROM products WHERE productToken = '".$_GET['cpt']."'");
 		if(mysqli_num_rows($prodQuery)!=0){
 			$row_p=mysqli_fetch_array($prodQuery);
 			$_SESSION['cart'][$row_p['productName']]=array("quantity" => 1, "price" => $row_p['productPrice']);
@@ -32,17 +32,10 @@ header('location:login-user.php');
 }
 else
 {
+$wishToken = bin2hex(random_bytes(20));;
 
-	$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	$hashedString = '';
-	for ($i = 0 ; $i <= 10; $i++){
-			$index = rand(0, strlen($characters) - 1);
-			$hashedString .= $characters[$index];
-	}
-	$_SESSION['wishToken'] = $hashedString;
-
-mysqli_query($con,"INSERT INTO wishlist(wishlistToken, userEmail,productName, status)
-										VALUES('".$_SESSION['wishToken']."', '".$_SESSION['email']."','".$_GET['p']."', 'Active')");
+mysqli_query($con,"INSERT INTO wishlist(wishToken, userEmail,productToken, status)
+										VALUES('$wishToken', '".$_SESSION['email']."','".$_GET['wpt']."', 'Active')");
 
 echo "<script>alert('Product added into your wishlist');</script>";
 header('location:titan_wishlist.php');
@@ -150,7 +143,7 @@ while ($row=mysqli_fetch_array($ret))
 						<i class="fa fa-shopping-cart"></i>
 					</a>
 
-				<a class="btn" href="category.php?wpt=<?php echo htmlentities($row['productToken'])?>&&action=wishlist" title="Wishlist">
+				<a class="btn" href="category.php?wpt=<?php echo htmlentities($row['productToken']); ?>&&action=wishlist" title="Wishlist">
 				<i class="fa fa-heart"></i>
 				</a>
 			</div>
