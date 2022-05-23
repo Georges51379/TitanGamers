@@ -27,7 +27,7 @@ if(isset($_POST['submit']))
 	$productImage2=$_FILES['productImage2']['name'];
 	$productImage3=$_FILES['productImage3']['name'];
 
-$hashedString = bin2hex(random_bytes(25));
+$hashedString = bin2hex(random_bytes(20));
 $_SESSION['productToken'] = $hashedString;
 
 //insert variable to DB

@@ -5,7 +5,8 @@ include('db/connection.php');
 $catName=$_GET['catName'];
 
 if(isset($_GET['action']) && $_GET['action']=="add"){
-	$pt = $_GET['pt']; //PRODUCT NAME
+		$_SESSION['PRODUCTTOKEN'] = $_GET['pt']; //PRODUCT NAME
+		$pt = $_SESSION['PRODUCTTOKEN'];
 
 	if(isset($_SESSION['cart'][$pt])){
 		$_SESSION['cart'][$pt]['quantity']++;
@@ -125,7 +126,7 @@ header('location:titan_wishlist.php');
 						<div class="product_action">
 						<?php if($row['productAvailability']=='In Stock'){?>
 
-								<a href="titan_cart.php?page=product&action=add&pt=<?php echo $row['productToken']; ?>" class="btn">
+								<a href="titan_cart.php?page=product&action=add&cpt=<?php echo $row['productToken']; ?>" class="btn">
 									<i class="fa fa-shopping-cart"></i>
 								</a>
 

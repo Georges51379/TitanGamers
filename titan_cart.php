@@ -3,28 +3,21 @@ session_start();
 error_reporting(0);
 include('db/connection.php');
 
+$cpt = $_get['cpt'];
+
 if(isset($_POST['submit'])){
 		if(!empty($_SESSION['cart'])){
-		foreach($_POST['quantity'] as $key => $val){
-			if($val==0){
-				unset($_SESSION['cart'][$key]);
+				unset($_SESSION['cart']);
 			}else{
-				$_SESSION['cart'][$key]['quantity']=$val;
-
-			}
+				$_SESSION['cart']['quantity']=$val;
 		}
 			echo "<script>alert('Your Cart has been Updated');</script>";
-		}
 	}
 // Code for Remove a Product from Cart
 if(isset($_POST['remove_code']))
 	{
-
 if(!empty($_SESSION['cart'])){
-		foreach($_POST['remove_code'] as $key){
-
-				unset($_SESSION['cart'][$key]);
-		}
+				unset($_SESSION['cart']);
 			echo "<script>alert('Your Cart has been Updated');</script>";
 	}
 }
@@ -34,31 +27,23 @@ if(!empty($_SESSION['cart'])){
 if(isset($_POST['ordersubmit']))
 {
 
-if(strlen($_SESSION['email'])===0)
+if(strlen($_SESSION['email'])==0)
     {
 header('location:login-user.php');
 }
 else{
-
 	$quantity=$_POST['quantity'];
-	$pdd=$_SESSION['pid'];
-	$value=array_combine($pdd,$quantity);
 
-	$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	$hashedString = '';
+$orderToken = bin2hex(random_bytes(25));
 
-for ($i = 0 ; $i <= 10; $i++){
-		$index = rand(0, strlen($characters) - 1);
-		$hashedString .= $characters[$index];
-}
-$orderToken = $hashedString;
-
-		foreach($value as $qty=> $val34){
+$PRODNAMEqUERY = mysqli_query($con,"SELECT productName FROM products WHERE
+                            productToken = '$cpt' ");
+  $rw = mysqli_fetch_array($PRODNAMEqUERY);
+  $pname = $rw['productName'];
 
 mysqli_query($con,"INSERT INTO  orders (orderToken, userEmail,productName,quantity)
-							VALUES('$orderToken','".$_SESSION['email']."','$qty','$val34')");
+							VALUES('$orderToken','".$_SESSION['email']."','$pname','$quantity')");
 header('location:titan_payment_method.php');
-}
 }
 }
 
@@ -130,32 +115,22 @@ echo "<script>alert('Shipping Address has been updated');</script>";
 		  			</tfoot>
 		  			<tbody class="titancart_tbody">
 		   <?php
-		   $pdtid=array();
-		      $sql = "SELECT * FROM products WHERE productToken = '$pname'";
+		   //$pdtid=array();
+		      $cartQuery = mysqli_query($con, "SELECT * FROM products WHERE productToken='$cpt' ");
+					while($row = mysqli_fetch_array($cartQuery)){
 
-		  			$query = mysqli_query($con,$sql);
-		  			$totalprice=0;
-		  			$totalqunty=0;
-		  			if(!empty($query)){
-		  			while($row = mysqli_fetch_array($query)){
-		  				$quantity=$_SESSION['cart'][$row['productName']]['quantity'];
-		  				$subtotal= $_SESSION['cart'][$row['productName']]['quantity']*$row['productPrice']+$row['shippingCharge'];
-		  				$totalprice += $subtotal;
-		  				$_SESSION['qnty']=$totalqunty+=$quantity;
-
-		  				array_push($pdtid,$row['productName']);
 		  	?>
 
 		  				<tr>
 		  					<td class="titancart_td"><input type="checkbox" name="remove_code[]" value="<?php echo htmlentities($row['productToken']);?>" /></td>
-								
+
 		  					<td class="titancart_td">
-		  						<a class="product_link" href="titan_product_details.php?p=<?php echo htmlentities($pd=$row['productName']);?>">
+		  						<a class="product_link" href="titan_product_details.php?p=<?php echo htmlentities($row['productName']);?>">
 		  						    <img src="admin/productimages/<?php echo $row['productName'];?>/<?php echo $row['productImage1'];?>" alt="" width="114" height="146">
 		  						</a>
 		  					</td>
 		  					<td class="titancart_td">
-		  						<h4><a class="titancart_productname" href="titan_product_details.php?p=<?php echo htmlentities($pd=$row['productName']);?>" ><?php echo $row['productName'];
+		  						<h4><a class="titancart_productname" href="titan_product_details.php?p=<?php echo htmlentities($row['productName']);?>" ><?php echo $row['productName'];
 
 		  $_SESSION['sid']=$pd;
 		  						 ?></a>
@@ -179,7 +154,7 @@ echo "<script>alert('Shipping Address has been updated');</script>";
 		  					</td>
 		  					<td class="titancart_td">
 		  						<div class="titancart_quantityinput">
-		                <input type="number" step="1" min="1" max="2" oninput="validity.valid||(value='');" value="<?php echo $_SESSION['cart'][$row['id']]['quantity']; ?>" name="quantity[<?php echo $row['id']; ?>]">
+		                <input type="number" step="1" min="1" max="2" oninput="validity.valid||(value='');" value="<?php echo $_SESSION['cart'][$row['productToken']]['quantity']; ?>" name="quantity[<?php echo $row['id']; ?>]">
 		  			       </div>
 		  		            </td>
 		  					<td class="titancart_td"><span class="titancart_prodprice"><?php echo "$"." ".$row['productPrice']; ?></span>
@@ -190,7 +165,7 @@ echo "<script>alert('Shipping Address has been updated');</script>";
 		  					<td class="titancart_td"><span class="titancart_totalprice">$<?php echo ($_SESSION['cart'][$row['productName']]['quantity']*$row['productPrice']+$row['shippingCharge']); ?></span></td>
 		  				</tr>
 
-		  				<?php } }
+		  				<?php }
 		  $_SESSION['pid']=$pdtid;
 		  				?>
 

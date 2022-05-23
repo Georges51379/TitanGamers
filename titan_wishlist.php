@@ -16,14 +16,15 @@ $query=mysqli_query($con,"UPDATE wishlist SET status = 'Inactive' WHERE productT
 }
 
 if(isset($_GET['action']) && $_GET['action']=="add"){ //ADD TO CART FROM WISHLIST
-	$pt = $_GET['pt']; //PRODUCT NAME
 
-	$query=mysqli_query($con,"UPDATE wishlist SET status = 'Inactive' WHERE productToken='$pt'");
+	$wpt = $_GET['wpt'];
 
-	if(isset($_SESSION['cart'][$pt])){
-		$_SESSION['cart'][$pt]['quantity']++;
+	$query=mysqli_query($con,"UPDATE wishlist SET status = 'Inactive' WHERE productToken='".$_GET['wpt']."'");
+
+	if(isset($_SESSION['cart'][$wpt])){
+		$_SESSION['cart'][$wpt]['quantity']++;
 	}else{
-		$sql_p="SELECT * FROM products WHERE productToken= '$pt' ";
+		$sql_p="SELECT * FROM products WHERE productToken= ''".$_GET['wpt']."' ";
 		$query_p=mysqli_query($con,$sql_p);
 		if(mysqli_num_rows($query_p)!=0){
 			$row_p=mysqli_fetch_array($query_p);

@@ -8,12 +8,12 @@ $catName=$_GET['c'];
 if(isset($_GET['action']) && $_GET['action']=="add"){
 
 	//GETTING ID OF THE PRODUCT SHOULD BE FIXED TO NAME
-	$pname= $_GET['pname'];
+	$pname= $_GET['cpt'];
 
 	if(isset($_SESSION['cart'][$pname])){
 		$_SESSION['cart']['$pname']['quantity']++;
 	}else{
-		$prodQuery = mysqli_query($con, "SELECT * FROM products WHERE productName = '$pname'");
+		$prodQuery = mysqli_query($con, "SELECT * FROM products WHERE productToken = '$pname'");
 		if(mysqli_num_rows($prodQuery)!=0){
 			$row_p=mysqli_fetch_array($prodQuery);
 			$_SESSION['cart'][$row_p['productName']]=array("quantity" => 1, "price" => $row_p['productPrice']);
@@ -25,7 +25,7 @@ if(isset($_GET['action']) && $_GET['action']=="add"){
 	}
 }
 // COde for Wishlist
-if(isset($_GET['p']) && $_GET['action']=="wishlist" ){
+if(isset($_GET['wpt']) && $_GET['action']=="wishlist" ){
 	if(strlen($_SESSION['email'])==0)
     {
 header('location:login-user.php');
@@ -146,11 +146,11 @@ while ($row=mysqli_fetch_array($ret))
 			<div class="product_action">
 			<?php if($row['productAvailability']=='In Stock'){?>
 
-					<a href="category.php?page=product&action=add&pname=<?php echo $row['productName']; ?>" class="btn">
+					<a href="category.php?page=product&action=add&cpt=<?php echo $row['productToken']; ?>" class="btn">
 						<i class="fa fa-shopping-cart"></i>
 					</a>
 
-				<a class="btn" href="category.php?p=<?php echo htmlentities($row['productName'])?>&&action=wishlist" title="Wishlist">
+				<a class="btn" href="category.php?wpt=<?php echo htmlentities($row['productToken'])?>&&action=wishlist" title="Wishlist">
 				<i class="fa fa-heart"></i>
 				</a>
 			</div>

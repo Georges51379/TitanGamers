@@ -139,6 +139,7 @@
 					<a href="titan_userlogs.php">users log</a>
 					<a href="titan_banners.php">banners</a>
 					<a href="titan_coupons.php">coupons</a>
+					<a href="titan_currency.php">currency</a>
 					<a href="settings.php">settings</a>
 					<a href="javascript:void(0);" class="icon" onclick="hamburgerMenu()">
 						<i class="fa fa-bars"></i>
