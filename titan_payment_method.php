@@ -2,9 +2,9 @@
 session_start();
 error_reporting(0);
 include('db/connection.php');
-if(strlen($_SESSION['login'])==0)
+if(strlen($_SESSION['email'])==0)
     {
-header('location:titan_login.php');
+header('location:login-user.php');
 }
 else{
 	if (isset($_POST['submit'])) {

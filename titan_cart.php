@@ -3,30 +3,28 @@ session_start();
 error_reporting(0);
 include('db/connection.php');
 
-$cpt = $_GET['cpt'];
-
 if(isset($_POST['submit'])){
-		if(!empty($_SESSION['cart'])){
-				unset($_SESSION['cart']);
+		if(!empty($_SESSION['cart'][$_SESSION['cproducttoken']])){
+				unset($_SESSION['cart'][$_SESSION['cproducttoken']]);
 			}else{
-				$_SESSION['cart']['quantity']=$val;
+				$_SESSION['cart'][$_SESSION['cproducttoken']]=$val;
 		}
 			echo "<script>alert('Your Cart has been Updated');</script>";
-	}
+}
+
+
+
 // Code for Remove a Product from Cart
-if(isset($_POST['remove_code']))
-	{
-if(!empty($_SESSION['cart'])){
-				unset($_SESSION['cart']);
+if(isset($_POST['remove_code'])){
+if(!empty($_SESSION['cart'][$_SESSION['cproducttoken']])){
+				unset($_SESSION['cart'][$_SESSION['cproducttoken']]);
 			echo "<script>alert('Your Cart has been Updated');</script>";
 	}
 }
+
 // code for insert product in order table
-
-
 if(isset($_POST['ordersubmit']))
 {
-
 if(strlen($_SESSION['email'])==0)
     {
 header('location:login-user.php');
@@ -34,10 +32,10 @@ header('location:login-user.php');
 else{
 	$quantity=$_POST['quantity'];
 
-$orderToken = bin2hex(random_bytes(25));
+$orderToken = bin2hex(random_bytes(20));
 
 $PRODNAMEqUERY = mysqli_query($con,"SELECT productName FROM products WHERE
-                            productToken = '$cpt' ");
+                            productToken = '".$_SESSION['cproducttoken']."'");
   $rw = mysqli_fetch_array($PRODNAMEqUERY);
   $pname = $rw['productName'];
 
@@ -115,13 +113,12 @@ echo "<script>alert('Shipping Address has been updated');</script>";
 		  			</tfoot>
 		  			<tbody class="titancart_tbody">
 		   <?php
-		   //$pdtid=array();
-		      $cartQuery = mysqli_query($con, "SELECT * FROM products WHERE productToken='".$_GET['cpt']."' ");
+		      $cartQuery = mysqli_query($con, "SELECT * FROM products WHERE productToken= '".$_SESSION['cproducttoken']."' OR productToken = '".$_SESSION['wproducttoken']."' ");
 					while($row = mysqli_fetch_array($cartQuery)){
 		  	?>
 
 		  				<tr>
-		  					<td class="titancart_td"><input type="checkbox" name="remove_code[]" value="<?php echo htmlentities($row['productToken']);?>" /></td>
+		  					<td class="titancart_td"><a name="remove_code" href="titan_cart.php?delcartpt=<?php echo htmlentities($row['productToken']); ?>">Delete</a></td>
 
 		  					<td class="titancart_td">
 		  						<a class="product_link" href="titan_product_details.php?p=<?php echo htmlentities($row['productName']);?>">
@@ -137,7 +134,7 @@ echo "<script>alert('Shipping Address has been updated');</script>";
 		  								<div class="titancart_rating"></div>
 		  							</div>
 		  							<div class="titancart_reviews">
-		  <?php $rt=mysqli_query($con,"select * from productreviews where productId=1");
+		  <?php $rt=mysqli_query($con,"SELECT * FROM productreviews WHERE productId=1");
 		  $num=mysqli_num_rows($rt);
 		  {
 		  ?>
@@ -151,7 +148,7 @@ echo "<script>alert('Shipping Address has been updated');</script>";
 		  					</td>
 		  					<td class="titancart_td">
 		  						<div class="titancart_quantityinput">
-		                <input type="number" step="1" min="1" max="2" oninput="validity.valid||(value='');" value="<?php echo $_SESSION['cart'][$row['productToken']]['quantity']; ?>" name="quantity[<?php echo $row['productName']; ?>]">
+		                <input type="number" step="1" min="1" max="2" oninput="validity.valid||(value='');" value="<?php echo $_SESSION['cart'][$row['productName']]['quantity']; ?>" name="quantity[<?php echo $row['quantity']; ?>]">
 		  			       </div>
 		  		            </td>
 		  					<td class="titancart_td"><span class="titancart_prodprice"><?php echo "$"." ".$row['productPrice']; ?></span>
@@ -219,7 +216,7 @@ echo "<script>alert('Shipping Address has been updated');</script>";
 		  			<tr class="titancart_tr">
 		  				<th class="titancart_th">
 		  					<div class="titancart_totalpricewrapper">
-		  						Total<span class="titancart_totalprice">&nbsp$<?php echo $_SESSION['tp']="$totalprice"; ?></span>
+		  						Total<span class="titancart_totalprice">&nbsp$<?php echo ($_SESSION['cart'][$row['productName']]['quantity']*$row['productPrice']+$row['shippingCharge']); ?></span>
 		  					</div>
 		  				</th>
 		  			</tr>

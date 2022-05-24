@@ -4,39 +4,41 @@ error_reporting(0);
 include('db/connection.php');
 $catName=$_GET['catName'];
 
-if(isset($_GET['action']) && $_GET['action']=="add"){
+if(isset($_GET['cpt']) && $_GET['action']=="add" ){
 
-	//GETTING ID OF THE PRODUCT SHOULD BE FIXED TO NAME
-	$pname= $_GET['cpt'];
+	$_SESSION['cproducttoken'] = $_GET['cpt'];
 
-	if(isset($_SESSION['cart'][$pname])){
-		$_SESSION['cart']['$pname']['quantity']++;
-	}else{
-		$prodQuery = mysqli_query($con, "SELECT * FROM products WHERE productToken = '$pname'");
-		if(mysqli_num_rows($prodQuery)!=0){
-			$row_p=mysqli_fetch_array($prodQuery);
-			$_SESSION['cart'][$row_p['productName']]=array("quantity" => 1, "price" => $row_p['productPrice']);
-				echo "<script>alert('Product has been added to your cart')</script>";
-		echo "<script type='text/javascript'> document.location ='titan_cart.php'; </script>";
+		if(isset($_SESSION['cart'][$_SESSION['cproducttoken']])){
+			$_SESSION['cart'][$_SESSION['cproducttoken']]['quantity']++;
 		}else{
-			$message="Product ID is invalid";
+			$prodQuery = mysqli_query($con, "SELECT * FROM products WHERE productToken = '".$_SESSION['cproducttoken']."'");
+			if(mysqli_num_rows($prodQuery)!=0){
+				$row_p=mysqli_fetch_array($prodQuery);
+				$_SESSION['cart'][$row_p['productName']]=array("quantity" => 1, "price" => $row_p['productPrice']);
+					echo "<script>alert('Product has been added to your cart')</script>";
+			echo "<script type='text/javascript'> document.location ='titan_cart.php'; </script>";
+			}else{
+				$message="Product ID is invalid";
+			}
 		}
-	}
 }
 
 // COde for Wishlist
 if(isset($_GET['wpt']) && $_GET['action']=="wishlist" ){
+
+	$_SESSION['wproducttoken'] = $_GET['wpt'];
+	
 	if(strlen($_SESSION['email'])==0)
   {
 header('location:login-user.php');
 	}
 else
 {
-	$hashedString = bin2hex(random_bytes(16));
+	$hashedString = bin2hex(random_bytes(20));
 	$_SESSION['wishToken'] = $hashedString;
 
 mysqli_query($con,"INSERT INTO wishlist(wishToken, userEmail,productToken, status)
-										VALUES('".$_SESSION['wishToken']."', '".$_SESSION['email']."','".$_GET['wpt']."', 'Active')");
+										VALUES('".$_SESSION['wishToken']."', '".$_SESSION['email']."','".$_SESSION['wproducttoken']."', 'Active')");
 
 echo "<script>alert('Product added into your wishlist');</script>";
 header('location:titan_wishlist.php');
@@ -124,12 +126,12 @@ header('location:titan_wishlist.php');
 						<div class="product_action">
 						<?php if($row['productAvailability']=='In Stock'){?>
 
-								<a href="products.php?page=product&action=add&cpt=<?php echo $row['productToken']; ?>" class="btn">
+							<a class="btn" href="products.php?cpt=<?php echo htmlentities($row['productToken']);?>&&action=add" title="Cart">
 									<i class="fa fa-shopping-cart"></i>
-								</a>
+							</a>
 
 							<a class="btn" href="products.php?wpt=<?php echo htmlentities($row['productToken']);?>&&action=wishlist" title="Wishlist">
-							<i class="fa fa-heart"></i>
+								<i class="fa fa-heart"></i>
 							</a>
 						</div>
 

@@ -17,20 +17,17 @@ $query=mysqli_query($con,"UPDATE wishlist SET status = 'Inactive' WHERE productT
 
 if(isset($_GET['action']) && $_GET['action']=="add"){ //ADD TO CART FROM WISHLIST
 
-	$cpt = $_GET['cpt'];
-  $wpt = $_GET['wpt'];
+	$query=mysqli_query($con,"UPDATE wishlist SET status = 'Inactive' WHERE productToken='".$_SESSION['cproducttoken']."' OR productToken = '".$_SESSION['wproducttoken']."' ");
 
-	$query=mysqli_query($con,"UPDATE wishlist SET status = 'Inactive' WHERE productToken='".$_GET['cpt']."' OR productToken = '".$_GET['wpt']."' ");
-
-	if(isset($_SESSION['cart'][$cpt])){
-		$_SESSION['cart'][$cpt]['quantity']++;
+	if(isset($_SESSION['cart'][$_SESSION['cproducttoken']])){
+		$_SESSION['cart'][$_SESSION['cproducttoken']]['quantity']++;
 	}else{
-		$sql_p="SELECT * FROM products WHERE productToken= '".$_GET['cpt']."' OR productToken = '".$_GET['wpt']."' ";
+		$sql_p="SELECT * FROM products WHERE productToken= '".$_SESSION['cproducttoken']."' OR productToken = '".$_SESSION['wproducttoken']."' ";
 		$query_p=mysqli_query($con,$sql_p);
 		if(mysqli_num_rows($query_p)!=0){
 			$row_p=mysqli_fetch_array($query_p);
 			$_SESSION['cart'][$row_p['productName']]=array("quantity" => 1, "price" => $row_p['productPrice']);
-header('location:titan_wishlist.php');
+      header('location:titan_wishlist.php');
 }
 		else{
 			$message="Product ID is invalid";
@@ -60,7 +57,6 @@ header('location:titan_wishlist.php');
 		<?php include 'includes/products_search.inc.php'; ?>
 <!--PRODUCTS MAINNAVBAR.INC.PHP--->
 		<?php include 'includes/products_mainnavbar.inc.php'; ?>
-
 
     <div class="titanwishlist_wrapper">
   		<table class="titanwishlist_table">
@@ -107,7 +103,7 @@ header('location:titan_wishlist.php');
   						</div>
   					</td>
   					<td class="titanwishlist_td">
-  						<a href="titan_wishlist.php?page=product&action=add&cpt=<?php echo $row['productToken']; ?>" class="titanwishlist_btn">Add to cart</a>
+  						<a href="titan_wishlist.php?action=add&cpt=<?php echo htmlentities($row['productToken']); ?>" class="titanwishlist_btn">Add to cart</a>
   					</td>
   					<td class="titanwishlist_td">
   						<a href="titan_wishlist.php?del=<?php echo htmlentities($row['productToken']);?>" onClick="return confirm('Are you sure you want to delete?')" class="titanwishlist_btn"><i class="fa fa-times"></i></a>
