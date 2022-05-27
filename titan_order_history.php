@@ -8,7 +8,7 @@ header('location:login-user.php');
 }
 else{
 ?>
-<head>
+<head>  <!--to be fixed after checkout-->
 <!--TITLE SECTION-->
     <title>Titan Gamers | Order History</title>
 <!--ICON SECTION-->

@@ -9,8 +9,11 @@ header('location:login-user.php');
 else{
 	if (isset($_POST['submit'])) {
 
-		mysqli_query($con,"update orders set 	paymentMethod='".$_POST['paymethod']."' where userId='".$_SESSION['id']."' and paymentMethod is null ");
-		unset($_SESSION['cart']);
+    $paymentMethod = $_POST['paymethod'];
+
+		mysqli_query($con,"UPDATE orders SET paymentMethod='COD', totalPrice= '".$_SESSION['finalTotal']."' WHERE userEmail='".$_SESSION['email']."' AND orderToken = '".$_SESSION['orderToken']."' ");
+		//unset($_SESSION['cart']);
+    mysqli_query($con,"UPDATE cart SET status = 'Inactive' WHERE cartToken = '".$_SESSION['carToken']."' ");
 		header('location:titan_order_history.php');
 
 	}
@@ -28,6 +31,24 @@ else{
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!--PAYMENT.CSS SECTION-->
       <link href="css/payment.css" rel="stylesheet">
+
+
+      <script>
+      function checkCoupon(){
+        jQuery.ajax({
+          url: "check/checkCouponAvailability.php",
+          data: "name="+$("#name").val(),
+          type: "POST",
+           success:function(data){
+             $("#couponAvailability").html(data);
+             $("#finalPrice").html(data1);
+           },
+           error:function(){}
+        });
+      }
+      </script>
+
+
 </head>
 
 <body>
@@ -53,7 +74,14 @@ else{
 
       <div class="div_for_form">
 	    <form name="payment" class="form" method="post">
-	    <input type="radio" class="radio_cod" name="paymethod" value="COD" checked="checked">Cash On Delivery (COD)
+        <input type="text" class="txtinput" name="name" onblur="checkCoupon()" id="name" placeholder="Default code: TG13" required>
+        <span id="couponAvailability"></span>
+<br><br><br>
+
+  <span class="totalprice" style="color: red; text-decoration: line-through"><?php echo $_SESSION['totalPrice']; ?></span>
+  <span id="finalPrice"></span>
+
+      <input type="radio" class="radio_cod" name="paymethod" value="COD" checked="checked">Cash On Delivery (COD)
 	     <input type="submit" value="done" name="submit" class="done_btn">
 	    </form>
 		</div>

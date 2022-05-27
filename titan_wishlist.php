@@ -103,7 +103,7 @@ if(isset($_GET['action']) && $_GET['action']=="add"){ //ADD TO CART FROM WISHLIS
   						</div>
   					</td>
   					<td class="titanwishlist_td">
-  						<a href="titan_wishlist.php?action=add&cpt=<?php echo htmlentities($row['productToken']); ?>" class="titanwishlist_btn">Add to cart</a>
+  						<a href="titan_wishlist.php?action=cart&cpt=<?php echo htmlentities($row['productToken']); ?>" class="titanwishlist_btn">Add to cart</a>
   					</td>
   					<td class="titanwishlist_td">
   						<a href="titan_wishlist.php?del=<?php echo htmlentities($row['productToken']);?>" onClick="return confirm('Are you sure you want to delete?')" class="titanwishlist_btn"><i class="fa fa-times"></i></a>
