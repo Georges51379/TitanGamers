@@ -66,7 +66,10 @@ else{
 
         <tbody class="titanorderhistory_tbody">
 
-  <?php $query=mysqli_query($con,"select products.productImage1 as pimg1,products.productName as pname,products.id as proid,orders.productId as opid,orders.quantity as qty,products.productPrice as pprice,products.shippingCharge as shippingcharge,orders.paymentMethod as paym,orders.orderDate as odate,orders.id as orderid from orders join products on orders.productId=products.id where orders.userId='".$_SESSION['id']."' and orders.paymentMethod is not null");
+  <?php $query=mysqli_query($con,"SELECT products.productImage1 AS pimg1,products.productName AS pname,products.productToken AS productToken,orders.productName AS prodName,
+                              orders.quantity AS qty,products.productPrice AS pprice,products.shippingCharge AS shippingcharge,orders.paymentMethod AS paym, orders.totalPrice AS finalTotal,
+                              orders.orderDate AS odate,orders.orderToken AS orderToken FROM orders JOIN products ON orders.productName=products.productName
+                              WHERE orders.userEmail='".$_SESSION['email']."' AND orders.paymentMethod IS NOT NULL");
   $cnt=1;
   while($row=mysqli_fetch_array($query))
   {
@@ -75,11 +78,11 @@ else{
   					<td class="titanorderhistory_td"><?php echo $cnt;?></td>
   					<td class="titanorderhistory_td">
   						<a class="product_link" href="titan_product_details.php?pid=<?php echo $row['opid'];?>">
-  						    <img src="admin/productimages/<?php echo $row['proid'];?>/<?php echo $row['pimg1'];?>" alt="" width="84" height="146">
+  						    <img src="admin/productimages/<?php echo $row['pname'];?>/<?php echo $row['pimg1'];?>" alt="" width="84" height="146">
   						</a>
   					</td>
   					<td class="titanorderhistory_td">
-  						<h4><a  class='titanorderhistory_productname' href="titan_product_details.php?pid=<?php echo $row['opid'];?>">
+  						<h4><a  class='titanorderhistory_productname' href="titan_product_details.php?pid=<?php echo $row['pname'];?>">
   						<?php echo $row['pname'];?></a></h4>
   					</td>
   					<td class="titanorderhistory_td">
@@ -87,12 +90,12 @@ else{
   		       </td>
   					<td class="titanorderhistory_td">$<?php echo $price=$row['pprice']; ?>  </td>
   					<td class="titanorderhistory_td">$<?php echo $shippcharge=$row['shippingcharge']; ?>  </td>
-  					<td class="titanorderhistory_td">$<?php echo (($qty*$price)+$shippcharge);?></td>
+  					<td class="titanorderhistory_td">$<?php echo $row['finalTotal']; ?>  </td>
   					<td class="titanorderhistory_td"><?php echo $row['paym']; ?>  </td>
   					<td class="titanorderhistory_td"><?php echo $row['odate']; ?>  </td>
 
   					<td class="titanorderhistory_td popup_trackwindow">
-   <a href="javascript:void(0);" class="titanorderhistory_btn" onClick="popUpWindow('titan_track_order.php?oid=<?php echo htmlentities($row['orderid']);?>');" title="Track order">
+   <a href="javascript:void(0);" class="titanorderhistory_btn" onClick="popUpWindow('titan_track_order.php?ot=<?php echo htmlentities($row['orderToken']);?>');" title="Track order">
   					Track</td>
   				</tr>
   <?php $cnt=$cnt+1;} ?>

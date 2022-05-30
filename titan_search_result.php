@@ -69,54 +69,61 @@ while ($row=mysqli_fetch_array($ret))
 	<div class="products_wrapper">
 		<div class="product">
 			<div class="product_img">
-    		<a href="titan_product_details.php?pid=<?php echo htmlentities($row['id']);?>">
-					<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['id']);?>/<?php echo htmlentities($row['productImage1']);?>" alt=""></a>
-  		</div><!--product image-->
+				<a href="titan_product_details.php?prodName=<?php echo ($row['productName']);?>">
+					<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
+				</a>
+			</div>
 
-<div class="product_information">
-	<div class="row">
-		<div class="prod_details">
-		  <h3 class="product_name">
-				<a class="productname_link" href="titan_product_details.php?pid=<?php echo htmlentities($row['id']);?>"><?php echo htmlentities($row['productName']);?></a>
-			</h3>
-  <div class="product_price">
-		<span class="price">
+			<div class="product_information">
+				<div class="row">
+					<div class="prod_details">
+						<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?prodName=<?php echo htmlentities($row['productName']);?>">
+							<?php echo htmlentities($row['productName']);?></a>
+						</h3>
 
-		<span class="original_price">
-      $ <?php echo htmlentities($row['productPrice']);?>
-		</span>
-    	<span class="price_before_discount">$<?php echo htmlentities($row['productPriceBeforeDiscount']);?></span>
+						<div class="product_price">
+							<span class="price">
 
-		</span><!--END PRICE-->
-  </div><!--product_price -->
-</div><!--END DIV PROD_DETAILS-->
+							<span class="original_price">
+									$<?php echo htmlentities($row['productPrice']);?>
+							</span>
+							<span class="price_before_discount">$<?php echo htmlentities($row['productPriceBeforeDiscount']);?>
 
-<div class="product_views">
-	<span class="views">
-		<?php echo htmlentities($row['productViewers']); ?><i class="fa fa-eye"></i>
-	</span>
-</div>
-</div><!--END ROW-->
+							</span>
 
+						</span>
+						</div>
+					</div><!--END DIV PROD_DETAILS-->
 
-<div class="product_action">
-<?php if($row['productAvailability']=='In Stock'){?>
-		<a href="category.php?page=product&action=add&id=<?php echo $row['id']; ?>" class="btn">
-			<i class="fa fa-shopping-cart"></i>
-		</a>
-	<a class="btn" href="category.php?pid=<?php echo htmlentities($row['id'])?>&&action=wishlist" title="Wishlist">
-	<i class="icon fa fa-heart"></i>
-	</a>
-</div>
+				<div class="product_views">
+					<span class="views">
+						<?php echo htmlentities($row['productViews']); ?>&nbsp;<i class="fa fa-eye"></i>
+					</span>
+				</div>
 
-<?php } else {?>
-		<div class="btn">Out of Stock</div>
-	<?php } ?>
-	</div><!--PRODUCT INFORMATION--->
-</div><!--END product-->
-</div><!--END products_wrapper-->
-<?php } ?>
-<?php } ?>
+			</div><!---END ROW-->
+
+			<div class="product_action">
+			<?php if($row['productAvailability']=='In Stock'){?>
+
+				<a onclick="checkCart()" class="btn" href="products.php?cpt=<?php echo htmlentities($row['productToken']);?>&&action=cart" title="Cart">
+					<span id="cartAvailability"></span>
+						<i class="fa fa-shopping-cart"></i>
+				</a>
+
+				<a class="btn" href="products.php?wpt=<?php echo htmlentities($row['productToken']);?>&&action=wishlist" title="Wishlist">
+					<i class="fa fa-heart"></i>
+				</a>
+			</div>
+
+		<?php } else {?>
+					<div class="btn">Out of Stock</div>
+				<?php } ?>
+			</div><!--PRODUCT INFORMATION--->
+		</div><!--END PRODUCT-->
+	</div><!--END PRODUCTS WRAPPER-->
+<?php } } ?>
+
 </section><!--END products_section -->
 
 <!--ARROW_TO_TOP.INC.PHP SECTION-->
