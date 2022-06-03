@@ -173,11 +173,7 @@ $num=mysqli_num_rows($rt);
 		<td class="titancart_td"><span class="titancart_totalprice">$<?php echo $_SESSION['totalPrice'] = $resultCart + $shippingfees;  ?></span></td>
 	</tr>
 
-					<?php } } else{ ?>
-					<tr class="titancart_tr">
-						<td class="titancart_td">Your CART is Empty</td>
-					</tr>
-					<?php } ?>
+
 				</tbody>
 			</table>
 
@@ -245,6 +241,12 @@ $num=mysqli_num_rows($rt);
 								</div>
 							</td>
 						</tr>
+
+					<?php } } else{ ?>
+					<tr class="titancart_tr">
+						<td class="titancart_td">Your CART is Empty</td>
+					</tr>
+					<?php } ?>
 				</tbody><!-- /tbody -->
 			</table>
 		</div>
@@ -253,9 +255,6 @@ $num=mysqli_num_rows($rt);
 
 
 
-
-		</form>
-		</div>
 
 
 <!--ARROW_TO_TOP.INC.PHP SECTION-->

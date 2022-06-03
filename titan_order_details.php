@@ -50,6 +50,7 @@ include('db/connection.php');
       					<th class="titanpendingorders_th">Product Name</th>
       					<th class="titanpendingorders_th">Quantity</th>
       					<th class="titanpendingorders_th">Price Per unit</th>
+                <th class="titanpendingorders_th">shipping total</th>
       					<th class="titanpendingorders_th">total</th>
       					<th class="titanpendingorders_th">Payment Method</th>
       					<th class="titanpendingorders_th">Order Date</th>
@@ -59,13 +60,18 @@ include('db/connection.php');
 
       			<tbody class="table_tbody">
       <?php
-      $orderid=$_POST['orderid'];
-      $email=$_POST['email'];
-      $ret = mysqli_query($con,"select t.email,t.id from (select usr.email,odrs.id from users as usr join orders as odrs on usr.id=odrs.userId) as t where  t.email='$email' and (t.id='$orderid')");
+      $orderToken=$_POST['orderToken'];
+
+      $ret = mysqli_query($con,"SELECT orders.orderToken, orders.userEmail, orders.productName, orders.quantity, orders.totalPrice, orders.orderStatus,
+                          orders.paymentMethod FROM orders JOIN users ON orders.userEmail = users.email
+                    WHERE orders.orderToken= '$orderToken' AND orders.userEmail='".$_SESSION['email']."'");
       $num=mysqli_num_rows($ret);
       if($num>0)
       {
-      $query=mysqli_query($con,"select products.productImage1 as pimg1,products.productName as pname,products.id as id,orders.productId as opid,orders.quantity as qty,products.productPrice as pprice,orders.paymentMethod as paym,orders.orderDate as odate,orders.id as orderid from orders join products on orders.productId=products.id where orders.id='$orderid' and orders.paymentMethod is not null");
+      $query=mysqli_query($con,"SELECT products.productImage1 AS pimg1,products.productName AS pname,products.productToken AS productToken,orders.productName AS prodName,
+                          orders.quantity AS qty,products.productPrice AS pprice,products.shippingCharge AS shippingcharge,orders.paymentMethod AS paym, orders.totalPrice AS finalTotal,
+                          orders.orderDate AS odate,orders.orderToken AS orderToken FROM orders JOIN products ON orders.productName=products.productName
+                          WHERE orders.paymentMethod IS NOT NULL AND orders.userEmail='".$_SESSION['email']."'");
       $cnt=1;
       while($row=mysqli_fetch_array($query))
       {
@@ -74,24 +80,24 @@ include('db/connection.php');
       					<td class="titanpendingorders_tdtitanpendingorders_td"><?php echo $cnt;?></td>
       					<td class="titanpendingorders_tdtitanpendingorders_td">
       						<a class="entry-thumbnail">
-      						   <img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['id']);?>/<?php echo htmlentities($row['pimg1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['id']);?>/<?php echo htmlentities($row['pimg1']);?>" >
+      						   <img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['pname']);?>/<?php echo htmlentities($row['pimg1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['pname']);?>/<?php echo htmlentities($row['pimg1']);?>" >
       						</a>
       					</td>
       					<td class="titanpendingorders_tdtitanpendingorders_td">
-      						<h4 class='product_description'><a class="titanpendingorders_productname" href="titan_product_details.php?pid=<?php echo $row['opid'];?>">
+      						<h4 class='product_description'><a class="titanpendingorders_productname" href="titan_product_details.php?p=<?php echo $row['pname'];?>">
       						<?php echo $row['pname'];?></a></h4>
 
       					</td>
       					<td class="table_td">
-      						<?php echo $qty=$row['qty']; ?>
       		            </td>
-      					<td class="titanpendingorders_td"><?php echo $price=$row['pprice']; ?>  </td>
-      					<td class="titanpendingorders_td"><?php echo $qty*$price;?></td>
-      					<td class="titanpendingorders_td"><?php echo $row['paym']; ?>  </td>
-      					<td class="titanpendingorders_td"><?php echo $row['odate']; ?>  </td>
+                      <td class="titanorderhistory_td">$<?php echo $price=$row['pprice']; ?></td>
+            					<td class="titanorderhistory_td">$<?php echo $shippcharge=$row['shippingcharge']; ?></td>
+            					<td class="titanorderhistory_td">$<?php echo $row['finalTotal']; ?></td>
+            					<td class="titanorderhistory_td"><?php echo $row['paym']; ?></td>
+            					<td class="titanorderhistory_td"><?php echo $row['odate']; ?></td>
 
       					<td class="titanpendingorders_td">
-       <a class="titanpendingorders_btn" href="javascript:void(0);" onClick="popUpWindow('titan_track_order.php?oid=<?php echo htmlentities($row['orderid']);?>');" title="Track order">
+                          <a class="titanpendingorders_btn" href="javascript:void(0);" onClick="popUpWindow('titan_track_order.php?ot=<?php echo htmlentities($row['orderToken']);?>');" title="Track order">
       					Track</td>
       				</tr>
       <?php $cnt=$cnt+1;} } else { ?>

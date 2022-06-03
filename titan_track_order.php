@@ -1,7 +1,7 @@
 <?php
 session_start();
 include_once 'db/connection.php';
-$oid=intval($_GET['oid']);
+$ot= $_GET['ot'];
  ?>
 <script language="javascript" type="text/javascript">
 function f2()
@@ -17,14 +17,13 @@ window.print();
 
 <head>
 <!--TITLE SECTION-->
-    <title>Titan Gamers | Cart</title>
+    <title>Titan Gamers | Track Orders</title>
 <!--ICON SECTION-->
     <link href="img/icons/logo.png" rel="shortcut icon">
 <!--FONT AWESOME CDN SECTION-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <!--jQUERY CDN SECTION-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
 
 
 <style>
@@ -50,10 +49,10 @@ window.print();
       </tr>
       <tr height="30">
         <td  class="fontkink1"><b>order Id:</b></td>
-        <td  class="fontkink"><?php echo $oid;?></td>
+        <td  class="fontkink"><?php echo $ot;?></td>
       </tr>
       <?php
-  $ret = mysqli_query($con,"SELECT * FROM ordertrackhistory WHERE orderId='$oid'");
+  $ret = mysqli_query($con,"SELECT * FROM ordertrackhistory WHERE orderToken='$ot'");
   $num=mysqli_num_rows($ret);
   if($num>0)
   {
@@ -88,7 +87,7 @@ window.print();
      </tr>
      <?php  }
   $st='Delivered';
-     $rt = mysqli_query($con,"SELECT * FROM orders WHERE id='$oid'");
+     $rt = mysqli_query($con,"SELECT * FROM orders WHERE orderToken='$ot'");
        while($num=mysqli_fetch_array($rt))
        {
        $currrentSt=$num['orderStatus'];

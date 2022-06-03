@@ -43,7 +43,7 @@ $rw= mysqli_fetch_array($query);
       <form class="trackorders_form" role="form" method="post" action="titan_order_details.php">
     		<div class="trackorders_div_form">
     		    <label class="trackorders_label" for="exampleOrderId1">Order ID<span class="astrix">*</span></label><br>
-    		    <input type="text" class="trackorders_input" name="orderid" id="exampleOrderId1" >
+    		    <input type="text" class="trackorders_input" name="orderToken" id="exampleOrderId1" >
     		</div>
     	  	<div class="trackorders_div_form">
     		    <label class="trackorders_label" for="exampleBillingEmail1">email</label><br>

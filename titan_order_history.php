@@ -69,7 +69,7 @@ else{
   <?php $query=mysqli_query($con,"SELECT products.productImage1 AS pimg1,products.productName AS pname,products.productToken AS productToken,orders.productName AS prodName,
                               orders.quantity AS qty,products.productPrice AS pprice,products.shippingCharge AS shippingcharge,orders.paymentMethod AS paym, orders.totalPrice AS finalTotal,
                               orders.orderDate AS odate,orders.orderToken AS orderToken FROM orders JOIN products ON orders.productName=products.productName
-                              WHERE orders.userEmail='".$_SESSION['email']."' AND orders.paymentMethod IS NOT NULL");
+                              WHERE orders.paymentMethod IS NOT NULL AND orders.userEmail='".$_SESSION['email']."'");
   $cnt=1;
   while($row=mysqli_fetch_array($query))
   {
@@ -77,12 +77,12 @@ else{
   				<tr class="titanorderhistory_tr">
   					<td class="titanorderhistory_td"><?php echo $cnt;?></td>
   					<td class="titanorderhistory_td">
-  						<a class="product_link" href="titan_product_details.php?pid=<?php echo $row['opid'];?>">
+  						<a class="product_link" href="titan_product_details.php?p=<?php echo $row['pname'];?>">
   						    <img src="admin/productimages/<?php echo $row['pname'];?>/<?php echo $row['pimg1'];?>" alt="" width="84" height="146">
   						</a>
   					</td>
   					<td class="titanorderhistory_td">
-  						<h4><a  class='titanorderhistory_productname' href="titan_product_details.php?pid=<?php echo $row['pname'];?>">
+  						<h4><a  class='titanorderhistory_productname' href="titan_product_details.php?p=<?php echo $row['pname'];?>">
   						<?php echo $row['pname'];?></a></h4>
   					</td>
   					<td class="titanorderhistory_td">

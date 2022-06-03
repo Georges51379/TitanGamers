@@ -11,7 +11,7 @@ else{
 
     $paymentMethod = $_POST['paymethod'];
 
-		mysqli_query($con,"UPDATE orders SET paymentMethod='COD', totalPrice= '".$_SESSION['finalTotal']."' WHERE userEmail='".$_SESSION['email']."' AND orderToken = '".$_SESSION['orderToken']."' ");
+		mysqli_query($con,"UPDATE orders SET paymentMethod='COD',orderStatus = 'Requested', totalPrice= '".$_SESSION['finalTotal']."' WHERE userEmail='".$_SESSION['email']."' AND orderToken = '".$_SESSION['orderToken']."' ");
 		//unset($_SESSION['cart']);
     mysqli_query($con,"UPDATE cart SET status = 'Inactive' WHERE cartToken = '".$_SESSION['carToken']."' ");
 		header('location:titan_order_history.php');
