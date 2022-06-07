@@ -102,7 +102,7 @@ header('location:titan_wishlist.php');
 				<div class="products_wrapper">
 					<div class="product">
 						<div class="product_img">
-							<a href="titan_product_details.php?prodName=<?php echo ($row['productName']);?>">
+							<a href="titan_product_details.php?p=<?php echo htmlentities($row['productName']); ?>">
 								<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
 							</a>
 						</div>
@@ -110,7 +110,7 @@ header('location:titan_wishlist.php');
 						<div class="product_information">
 							<div class="row">
 								<div class="prod_details">
-									<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?prodName=<?php echo htmlentities($row['productName']);?>">
+									<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?p=<?php echo htmlentities($row['productName']); ?>">
 										<?php echo htmlentities($row['productName']);?></a>
 									</h3>
 
@@ -170,7 +170,7 @@ header('location:titan_wishlist.php');
 				<div class="products_wrapper">
 					<div class="product">
 						<div class="product_img">
-							<a href="titan_product_details.php?prodName=<?php echo ($row['productName']);?>">
+							<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 								<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
 							</a>
 						</div>
@@ -178,7 +178,7 @@ header('location:titan_wishlist.php');
 						<div class="product_information">
 							<div class="row">
 								<div class="prod_details">
-									<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?prodName=<?php echo htmlentities($row['productName']);?>">
+									<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?p=<?php echo htmlentities($row['productName']);?>">
 										<?php echo htmlentities($row['productName']);?></a>
 									</h3>
 
@@ -237,7 +237,7 @@ header('location:titan_wishlist.php');
 				<div class="products_wrapper">
 					<div class="product">
 						<div class="product_img">
-							<a href="titan_product_details.php?prodName=<?php echo ($row['productName']);?>">
+							<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 								<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
 							</a>
 						</div>
@@ -245,7 +245,7 @@ header('location:titan_wishlist.php');
 						<div class="product_information">
 							<div class="row">
 								<div class="prod_details">
-									<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?prodName=<?php echo htmlentities($row['productName']);?>">
+									<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?p=<?php echo htmlentities($row['productName']);?>">
 										<?php echo htmlentities($row['productName']);?></a>
 									</h3>
 
@@ -310,7 +310,7 @@ header('location:titan_wishlist.php');
 				<div class="products_wrapper">
 					<div class="product">
 						<div class="product_img">
-							<a href="titan_product_details.php?prodName=<?php echo ($row['productName']);?>">
+							<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 								<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
 							</a>
 						</div>
@@ -318,7 +318,7 @@ header('location:titan_wishlist.php');
 						<div class="product_information">
 							<div class="row">
 								<div class="prod_details">
-									<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?prodName=<?php echo htmlentities($row['productName']);?>">
+									<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?p=<?php echo htmlentities($row['productName']);?>">
 										<?php echo htmlentities($row['productName']);?></a>
 									</h3>
 
@@ -379,7 +379,7 @@ header('location:titan_wishlist.php');
 				<div class="products_wrapper">
 					<div class="product">
 						<div class="product_img">
-							<a href="titan_product_details.php?prodName=<?php echo ($row['productName']);?>">
+							<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 								<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
 							</a>
 						</div>
@@ -387,7 +387,7 @@ header('location:titan_wishlist.php');
 						<div class="product_information">
 							<div class="row">
 								<div class="prod_details">
-									<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?prodName=<?php echo htmlentities($row['productName']);?>">
+									<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?p=<?php echo htmlentities($row['productName']);?>">
 										<?php echo htmlentities($row['productName']);?></a>
 									</h3>
 
@@ -447,7 +447,7 @@ header('location:titan_wishlist.php');
 				<div class="products_wrapper">
 					<div class="product">
 						<div class="product_img">
-							<a href="titan_product_details.php?prodName=<?php echo ($row['productName']);?>">
+							<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 								<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
 							</a>
 						</div>
@@ -455,7 +455,7 @@ header('location:titan_wishlist.php');
 						<div class="product_information">
 							<div class="row">
 								<div class="prod_details">
-									<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?prodName=<?php echo htmlentities($row['productName']);?>">
+									<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?p=<?php echo htmlentities($row['productName']);?>">
 										<?php echo htmlentities($row['productName']);?></a>
 									</h3>
 
@@ -521,7 +521,7 @@ while($row=mysqli_fetch_array($sql)){
 	<div class="products_wrapper">
 		<div class="product">
 			<div class="product_img">
-				<a href="titan_product_details.php?prodName=<?php echo ($row['productName']);?>">
+				<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 					<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
 				</a>
 			</div>
@@ -529,7 +529,7 @@ while($row=mysqli_fetch_array($sql)){
 			<div class="product_information">
 				<div class="row">
 					<div class="prod_details">
-						<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?prodName=<?php echo htmlentities($row['productName']);?>">
+						<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?p=<?php echo htmlentities($row['productName']);?>">
 							<?php echo htmlentities($row['productName']);?></a>
 						</h3>
 
@@ -592,7 +592,7 @@ while($row=mysqli_fetch_array($sql)){
 	<div class="products_wrapper">
 		<div class="product">
 			<div class="product_img">
-				<a href="titan_product_details.php?prodName=<?php echo ($row['productName']);?>">
+				<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 					<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
 				</a>
 			</div>
@@ -600,7 +600,7 @@ while($row=mysqli_fetch_array($sql)){
 			<div class="product_information">
 				<div class="row">
 					<div class="prod_details">
-						<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?prodName=<?php echo htmlentities($row['productName']);?>">
+						<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?p=<?php echo htmlentities($row['productName']);?>">
 							<?php echo htmlentities($row['productName']);?></a>
 						</h3>
 
@@ -663,7 +663,7 @@ while($row=mysqli_fetch_array($sql)){
 	<div class="products_wrapper">
 		<div class="product">
 			<div class="product_img">
-				<a href="titan_product_details.php?prodName=<?php echo ($row['productName']);?>">
+				<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 					<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
 				</a>
 			</div>
@@ -671,7 +671,7 @@ while($row=mysqli_fetch_array($sql)){
 			<div class="product_information">
 				<div class="row">
 					<div class="prod_details">
-						<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?prodName=<?php echo htmlentities($row['productName']);?>">
+						<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?p=<?php echo htmlentities($row['productName']);?>">
 							<?php echo htmlentities($row['productName']);?></a>
 						</h3>
 
@@ -734,7 +734,7 @@ while($row=mysqli_fetch_array($sql)){
 	<div class="products_wrapper">
 		<div class="product">
 			<div class="product_img">
-				<a href="titan_product_details.php?prodName=<?php echo ($row['productName']);?>">
+				<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 					<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
 				</a>
 			</div>
@@ -742,7 +742,7 @@ while($row=mysqli_fetch_array($sql)){
 			<div class="product_information">
 				<div class="row">
 					<div class="prod_details">
-						<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?prodName=<?php echo htmlentities($row['productName']);?>">
+						<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?p=<?php echo htmlentities($row['productName']);?>">
 							<?php echo htmlentities($row['productName']);?></a>
 						</h3>
 
@@ -805,7 +805,7 @@ while($row=mysqli_fetch_array($sql)){
 	<div class="products_wrapper">
 		<div class="product">
 			<div class="product_img">
-				<a href="titan_product_details.php?prodName=<?php echo ($row['productName']);?>">
+				<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 					<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
 				</a>
 			</div>
@@ -813,7 +813,7 @@ while($row=mysqli_fetch_array($sql)){
 			<div class="product_information">
 				<div class="row">
 					<div class="prod_details">
-						<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?prodName=<?php echo htmlentities($row['productName']);?>">
+						<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?p=<?php echo htmlentities($row['productName']);?>">
 							<?php echo htmlentities($row['productName']);?></a>
 						</h3>
 
@@ -876,7 +876,7 @@ while($row=mysqli_fetch_array($sql)){
 	<div class="products_wrapper">
 		<div class="product">
 			<div class="product_img">
-				<a href="titan_product_details.php?prodName=<?php echo ($row['productName']);?>">
+				<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 					<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
 				</a>
 			</div>
@@ -884,7 +884,7 @@ while($row=mysqli_fetch_array($sql)){
 			<div class="product_information">
 				<div class="row">
 					<div class="prod_details">
-						<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?prodName=<?php echo htmlentities($row['productName']);?>">
+						<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?p=<?php echo htmlentities($row['productName']);?>">
 							<?php echo htmlentities($row['productName']);?></a>
 						</h3>
 

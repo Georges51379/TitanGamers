@@ -3,36 +3,48 @@ session_start();
 error_reporting(0);
 include('db/connection.php');
 
-if(isset($_GET['action']) && $_GET['action']=="add"){
-	$id=intval($_GET['id']);
-	if(isset($_SESSION['cart'][$id])){
-		$_SESSION['cart'][$id]['quantity']++;
-	}else{
-		$sql_p="SELECT * FROM products WHERE id={$id}";
-		$query_p=mysqli_query($con,$sql_p);
-		if(mysqli_num_rows($query_p)!=0){
-			$row_p=mysqli_fetch_array($query_p);
-			$_SESSION['cart'][$row_p['id']]=array("quantity" => 1, "price" => $row_p['productPrice']);
-					echo "<script>alert('Product has been added to your cart')</script>";
-		echo "<script type='text/javascript'> document.location ='titan_cart.php'; </script>";
-		}else{
-			$message="Product ID is invalid";
-		}
-	}
+$pname = $_GET['p'];
+
+//CODE FOR ADD TO CART
+if(isset($_GET['cpt']) && $_GET['action']=="cart" ){
+
+	$_SESSION['cproducttoken'] = $_GET['cpt'];
+
+	$getInfoToCart = mysqli_query($con, "SELECT * FROM products WHERE productToken = '".$_SESSION['cproducttoken']."'");
+	$rws = mysqli_fetch_array($getInfoToCart);
+
+	$productPrice = $rws['productPrice'];
+	$shippingCharge = $rws['shippingCharge'];
+
+	$_SESSION['carToken'] = bin2hex(random_bytes(20));
+
+	mysqli_query($con, "INSERT INTO cart(cartToken, userEmail, productToken, status, quantity, price, shippingCharge)
+										VALUES('".$_SESSION['carToken']."', '".$_SESSION['email']."','".$_SESSION['cproducttoken']."', 'Active', 1, '$productPrice', '$shippingCharge')");
+
+	echo "<script>alert('Product added into your CART');</script>";
+	header('location:titan_cart.php');
 }
-$pid=intval($_GET['pid']);
-if(isset($_GET['pid']) && $_GET['action']=="wishlist" ){
+// COde for Wishlist
+if(isset($_GET['wpt']) && $_GET['action']=="wishlist" ){
+
+		$_SESSION['wproducttoken'] = $_GET['wpt'];
+
 	if(strlen($_SESSION['email'])==0)
     {
-header('location: login-user.php');
+header('location:login-user.php');
 }
 else
 {
-mysqli_query($con,"insert into wishlist(userEmail,productId) values('".$_SESSION['email']."','$pid')");
-echo "<script>alert('Product has been addded to your wishlist');</script>";
+$wishToken = bin2hex(random_bytes(20));;
+
+mysqli_query($con,"INSERT INTO wishlist(wishToken, userEmail,productToken, status)
+										VALUES('$wishToken', '".$_SESSION['email']."','".$_SESSION['wproducttoken']."', 'Active')");
+
+echo "<script>alert('Product added into your wishlist');</script>";
 header('location:titan_wishlist.php');
 }
 }
+
 if(strlen($_SESSION['email'])==0 && isset($_POST['submit_review'])){
 	header('location: login-user.php');
 }
@@ -43,10 +55,9 @@ else{
 	$name=$_POST['name'];
 	$summary=$_POST['summary'];
 	$review=$_POST['review'];
-	mysqli_query($con,"insert into productreviews(productId,quality,price,value,name,summary,review) values('$pid','$qty','$price','$value','$name','$summary','$review')");
+	mysqli_query($con,"INSERT INTO productreviews(productName,quality,price,value,name,summary,review) values('$pname','$qty','$price','$value','$name','$summary','$review')");
 }
 ?>
-
 <script>
 
 function ReviewForm(){
@@ -79,9 +90,6 @@ function ReviewForm(){
 <!--PRODUCTS.CSS SECTION-->
 		<link href="css/productsdetails.css" rel="stylesheet">
 
-		<script src='js/jquery-1.8.3.min.js'></script>
-<script src='js/jquery.elevatezoom.js'></script>
-
 </head>
 
 <body>
@@ -92,38 +100,37 @@ function ReviewForm(){
 <!--PRODUCTS MAINNAVBAR.INC.PHP--->
   <?php include 'includes/products_mainnavbar.inc.php'; ?>
 
-<!--MY SQL QUERY TO SELECT CATEGORIES AND PRODUCTS BY ALTER JOINING THE TABLES OF CAT AND PROD--->
 	<?php
-	$ret=mysqli_query($con,"select category.categoryName as catname,subCategory.subcategory as subcatname,
-	products.productName as pname from products join category on category.id=products.category
-	 join subcategory on subcategory.id=products.subCategory where products.id='$pid'");
 
-	while ($rw=mysqli_fetch_array($ret)) {
-	?>
+	$filterQuery = mysqli_query($con,"SELECT categoryName, subcategoryName FROM products
+									WHERE productName = '".$_GET['p']."'");
+		$rw = mysqli_fetch_array($filterQuery);
+
+		$cat = $rw['categoryName'];
+		$sub = $rw['subcategoryName'];
+	 ?>
 
 	<?php
-	$ret=mysqli_query($con,"select * from products where id='$pid'");
-	while($row=mysqli_fetch_array($ret))
+	$query=mysqli_query($con,"SELECT * FROM products WHERE productName='$pname'");
+	while($row=mysqli_fetch_array($query))
 	{
 	?>
-
 <div class="product_wrapper">
 			<div class="top_product_section">
-
 				<div class="product_imgs">
 				<div class="prodimg" id="slide1">
 					<a data-title="<?php echo htmlentities($row['productName']);?>">
-						 <img class="img1" src="admin/productimages/<?php echo htmlentities($row['id']);?>/<?php echo htmlentities($row['productImage1']);?>"/>
+						 <img class="img1" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>"/>
 					</a>
 				</div>
 
 				 <div class="prodimg " id="slide2">
 				 	<a data-title="<?php echo htmlentities($row['productName']);?>">
-						 <img class="img2" src="admin/productimages/<?php echo htmlentities($row['id']);?>/<?php echo htmlentities($row['productImage2']);?>"/>
+						 <img class="img2" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage2']);?>"/>
 					</a>
 
 					 <a data-title="<?php echo htmlentities($row['productName']);?>">
-					 	<img class="img3" src="admin/productimages/<?php echo htmlentities($row['id']);?>/<?php echo htmlentities($row['productImage3']);?>"/>
+					 	<img class="img3" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage3']);?>"/>
 					 </a>
 				</div>
 			</div><!--product_imgs-->
@@ -132,7 +139,7 @@ function ReviewForm(){
 		<div class="rightsidepro_info">
 				<h1 class="name"><?php echo htmlentities($row['productName']);?></h1>
 
-		<?php $rt=mysqli_query($con,"select * from productreviews where productId='$pid'");
+		<?php $rt=mysqli_query($con,"SELECT * from productreviews WHERE productName='".$_GET['p']."'");
 		$num=mysqli_num_rows($rt);
 		{
 		?>
@@ -154,14 +161,13 @@ function ReviewForm(){
 					</div>
 			</div><!--PRODUCT AVAILABILITY-->
 
-
 			<br>
 			<div class="product_brand">
 					<div class="label">
 							<span class="label">Product Brand :</span>
 					</div>
 					<div class="valuefromdb">
-							<span class="value"><?php echo htmlentities($row['productCompany']);?></span>
+							<span class="value"><a target="_blank" class="companyURL-link" href="<?php echo htmlentities($row['productCompanyURL']); ?>"><?php echo htmlentities($row['productCompany']);?></a></span>
 				  </div>
 			</div><!--PRODUCT BRAND-->
 
@@ -258,10 +264,9 @@ function ReviewForm(){
 	<div id="review" class="product_reviews">
 		<h4 class="review_title">customer reviews</h4>
 
-	<?php $qry=mysqli_query($con,"select * from productreviews where productId='$pid'");
-	 $qrys=mysqli_query($con,"select * from productreviews where productId='$pid'");
+	<?php $qry=mysqli_query($con,"SELECT * FROM productreviews WHERE productName='".$_GET['p']."'");
 
-	$rvws=mysqli_fetch_array($qrys);
+		$rvws=mysqli_fetch_array($qry);
 
 	if($rvws==0){
 		echo"<center style='color:red'>";
@@ -340,7 +345,7 @@ function ReviewForm(){
 			</div><!--REVIEWW TABLE-->
 <!--END OF THE REVIEW_TABLE DESCRIPTION--->
   <?php
-	$query=mysqli_query($con,"select * from users where email='".$_SESSION['email']."'");
+	$query=mysqli_query($con,"SELECT * FROM users WHERE email='".$_SESSION['email']."'");
 	$st=mysqli_fetch_array($query);
 
 	?>
@@ -386,7 +391,7 @@ function ReviewForm(){
 		<h3 class="related_title">related products</h3>
 
 <?php
-$query=mysqli_query($con,"SELECT * FROM `products` WHERE subcategory='$subcid' AND category='$cid'");
+$query=mysqli_query($con,"SELECT * FROM products WHERE subcategoryName='$sub' AND categoryName='$cat' AND productName != '".$_GET['p']."'");
 while($r=mysqli_fetch_array($query))
 {
 
@@ -394,15 +399,15 @@ while($r=mysqli_fetch_array($query))
 			<div class="products_wrapper">
 				<div class="product">
 					<div class="product_img">
-						<a href="titan_product_details.php?pid=<?php echo htmlentities($row['id']);?>">
-							<img class="imgprod" src="admin/productimages/<?php echo htmlentities($r['id']);?>/<?php echo htmlentities($r['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($r['id']);?>/<?php echo htmlentities($r['productImage1']);?>" >
+						<a href="titan_product_details.php?p=<?php echo htmlentities($r['productName']);?>">
+							<img class="imgprod" src="admin/productimages/<?php echo htmlentities($r['productName']);?>/<?php echo htmlentities($r['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($r['productName']);?>/<?php echo htmlentities($r['productImage1']);?>" >
 						</a>
 					</div>
 
 					<div class="product_information">
 						<div class="row">
 							<div class="prod_details">
-								<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?pid=<?php echo htmlentities($r['id']);?>">
+								<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?p=<?php echo htmlentities($r['productName']);?>">
 									<?php echo htmlentities($r['productName']);?></a>
 								</h3>
 
@@ -422,7 +427,7 @@ while($r=mysqli_fetch_array($query))
 
 						<div class="product_views">
 							<span class="views">
-								<?php echo htmlentities($r['productViewers']); ?><i class="fa fa-eye"></i>
+								<?php echo htmlentities($r['productViews']); ?><i class="fa fa-eye"></i>
 							</span>
 						</div>
 					</div><!---END ROW-->
@@ -447,7 +452,6 @@ while($r=mysqli_fetch_array($query))
 				</div><!--END PRODUCT-->
 			</div><!--END PRODUCTS WRAPPER-->
 
-		<?php } ?>
 		<?php } ?>
 	</section><br><br>
 
