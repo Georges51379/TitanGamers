@@ -6,6 +6,16 @@ include('db/connection.php');
 $catName=$_GET['c'];
 $subcat = $_GET['subCatName'];
 
+//code for CUSTOM DESKTOPS
+$q = mysqli_query($con, "SELECT subcategoryName FROM subcategory WHERE subcategoryToken = '".$_GET['subCatName']."'");
+$rws = mysqli_fetch_array($q);
+
+$subcatn = $rws['subcategoryName'];
+
+if($subcatn === 'custom desktops')
+{
+	header('location:titan_customDesktops.php');
+}
 //CODE FOR ADD TO CART
 if(isset($_GET['cpt']) && $_GET['action']=="cart" ){
 
@@ -75,17 +85,19 @@ header('location:titan_wishlist.php');
 
 <section class="products_section">
 		  <?php
-			$sql = mysqli_query($con, "SELECT subcategoryName FROM subcategory WHERE subcategoryStatus = 'Active' AND subcategoryToken= '".$_GET['subCatName']."'");
-			$row = mysqli_fetch_array($sql);
 
-			$subcategoryname = $row['subcategoryName'];
+			$subcatQuery = mysqli_query($con,"SELECT subcategoryName FROM subcategory WHERE subcategoryToken = '".$_GET['subCatName']."'");
+			$rw = mysqli_fetch_array($subcatQuery);
 
-$ret=mysqli_query($con,"SELECT * FROM products WHERE productStatus = 'Active' AND subcategoryName='$subcategoryname'");
+			$subcatname = $rw['subcategoryName'];
+
+$ret=mysqli_query($con,"SELECT * FROM products WHERE productStatus = 'Active' AND subcategoryName='$subcatname'");
 $num=mysqli_num_rows($ret);
 if($num>0)
 {
 while ($row=mysqli_fetch_array($ret))
-{?>
+{
+	?>
 
 	<div class="products_wrapper">
 
