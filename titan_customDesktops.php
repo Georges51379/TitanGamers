@@ -97,15 +97,16 @@
         top: 50%;
         width: 10%;
         display: block;">
-        Components
-        sd
-        sf
-        sd
+        <h2>Components</h2>
+  <?php
+  $componentQuery = mysqli_query($con,"SELECT subcomponentName FROM subcomponents WHERE subcomponentStatus='active'");
+  while($rw=mysqli_fetch_array($componentQuery)){
+    ?>
+        <ul class="list">
+          <li class="list-options"><?php echo htmlentities($rw['componentName']); ?></li>
+        </ul>
+<?php } ?>
 
-        we
-        sd
-        ew
-         ?>
       </div>
 
 
