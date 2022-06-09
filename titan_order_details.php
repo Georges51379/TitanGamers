@@ -2,6 +2,7 @@
 session_start();
 error_reporting(0);
 include('db/connection.php');
+      $orderToken=$_POST['orderToken'];
 ?>
 
 <head>
@@ -60,11 +61,10 @@ include('db/connection.php');
 
       			<tbody class="table_tbody">
       <?php
-      $orderToken=$_POST['orderToken'];
 
       $ret = mysqli_query($con,"SELECT orders.orderToken, orders.userEmail, orders.productName, orders.quantity, orders.totalPrice, orders.orderStatus,
                           orders.paymentMethod FROM orders JOIN users ON orders.userEmail = users.email
-                    WHERE orders.orderToken= '$orderToken' AND orders.userEmail='".$_SESSION['email']."'");
+                    WHERE orders.orderToken= '".$_POST['orderToken']."' AND orders.userEmail='".$_SESSION['email']."'");
       $num=mysqli_num_rows($ret);
       if($num>0)
       {
