@@ -6,21 +6,7 @@ if(strlen($_SESSION['email'])==0)
 header('location:index.php');
 }
 else{
-if(isset($_POST['submit']))
-{
-  $componentToken=$_POST['componentToken'];
-	$componentName=$_POST['componentName'];
-	$subcomponentName=$_POST['subcomponentName'];
-	$subcomponentGen=$_POST['subcomponentGen'];
-	$subcomponentStatus=$_POST['subcomponentStatus'];
 
-  $hashedString = bin2hex(random_bytes(20));
-  $_SESSION['subcomponentToken'] = $hashedString;
-
-$sql=mysqli_query($con,"INSERT INTO subcomponents(componentToken, componentName, subcomponentToken,subcomponentName, subcomponentGen,subcomponentStatus)
-values('$componentToken', '$componentName', '".$_SESSION['subcomponentToken']."','$subcomponentName', '$subcomponentGen', '$subcomponentStatus')");
-$_SESSION['msg']="SUBCOMPONENT Created !!";
-}
 if(isset($_GET['del']))
 		  {
 		          mysqli_query($con,"UPDATE subcomponents SET subcomponentStatus = 'Inactive' WHERE subcomponentToken = '".$_GET['subcomponentToken']."'");
@@ -33,7 +19,7 @@ if(isset($_POST['truncateSubcomponentsTable'])){
 ?>
 <html lang="en">
 <head>
-	<title>Admin | Sub Category</title>
+	<title>Admin | Sub Components</title>
 	<link type="text/css" href="images/icons/logo.png" rel="shortcut icon">
 	<link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet">
 	<!--FONT AWESOME CDN SECTION-->
@@ -55,6 +41,18 @@ if(isset($_POST['truncateSubcomponentsTable'])){
 						error:function(){}
 					});
 				}
+
+				function checkcomponentToken(){
+					$.ajax({
+						url: "check/checkcomponentToken.php",
+						data: "componentName="+$("#componentName").val(),
+						method: "POST",
+						success: function(data){
+							$("#componentToken").html(data);
+						},
+						error:function(){}
+					});
+				}
 				</script>
 </head>
 <body>
@@ -63,10 +61,10 @@ if(isset($_POST['truncateSubcomponentsTable'])){
 
 	<center>
 		<div class="container">
-
-	<div class="titlewrapper">
-		<h3 class="title">subComponents</h3>
-	</div>
+			<div class="titlewrapper">
+				<h3 class="title">Sub Components</h3>
+				<h4 class="subtitle"><a href="titan_insertsubcomponents.php" class="subtitle-link">insert sub Component</a></h4>
+			</div>
 
 <!--**********************START ADD DELETE CATEGORY MSG********************************************************************-->
 
@@ -91,50 +89,7 @@ if(isset($_POST['truncateSubcomponentsTable'])){
 	<button type="submit" name="truncateSubcomponentsTable" class="adminform_btn">Empty Table</button>
 </form>
 
-			<form class="admin_form" name="subcomponent" method="post" >
 
-
-                  <div class="adminform_div">
-                    <label class="adminform_label" for="basicinput">component Token</label><br>
-                    <input type="text" placeholder="Enter Component Token"  name="componentToken" class="adminform_input" required><br>
-                  </div>
-
-										<div class="adminform_div">
-											<label class="adminform_label" for="basicinput">component name</label><br>
-											<select name="componentName" class="adminform_select" required>
-												<option value="">Select component Name</option>
-										<?php $query=mysqli_query($con,"SELECT * FROM components");
-										while($row=mysqli_fetch_array($query))
-										{?>
-											<option value="<?php echo $row['componentName'];?>"><?php echo $row['componentName'];?></option>
-										<?php } ?>
-											</select>
-
-										</div>
-										<div class="adminform_div">
-											<label class="adminform_label" for="basicinput">subcomponent Name</label><br>
-											<input type="text"  placeholder="Enter subcomponent Name"  name="subcomponentName" class="adminform_input" required><br>
-										</div>
-
-										<div class="adminform_div">
-												<label class="adminform_label" for="basicinput">subcomponent Gen</label><br>
-                        <input type="text" id="subcomponentGen" onblur="checksubcomponentGEN()" placeholder="Enter subcomponent Generation"  name="subcomponentGen" class="adminform_input" required><br>
-                        <span id="subcomponentAvailability"></span>
-										</div>
-
-										<div class="adminform_div">
-											<label class="adminform_label" for="basicinput">subcomponent Status</label><br>
-											<select name="subcomponentStatus" class="adminform_select">
-												<option value="--Select An Option--">--Select An Option--</option>
-												<option value="Active">Active</option>
-												<option value="Inactive">Inactive</option>
-											</select>
-										</div>
-
-											<div class="adminform_div">
-												<button type="submit" name="submit" id="btn" class="adminform_btn">Create</button>
-											</div>
-									</form>
 							</div>
 						</div>
 					</div>
@@ -152,7 +107,9 @@ if(isset($_POST['truncateSubcomponentsTable'])){
 											<th id="custom_td">component Name</th>
 											<th id="custom_td">subcomponent Name</th>
 											<th id="custom_td">Generation</th>
+											<th id="custom_td">image</th>
 											<th id="custom_td">STATUS</th>
+											<th id="custom_td">price</th>
 											<th id="custom_td">Create date</th>
 											<th id="custom_td">Last Updated</th>
 											<th id="custom_td">Action</th>
@@ -161,7 +118,7 @@ if(isset($_POST['truncateSubcomponentsTable'])){
 									<tbody>
 
 <?php $query=mysqli_query($con,"SELECT components.componentName,subcomponents.subcomponentName,subcomponents.subcomponentToken,
-subcomponents.subcomponentGen, subcomponents.subcomponentStatus, subcomponents.createDate,
+subcomponents.subcomponentGen, subcomponents.image, subcomponents.subcomponentStatus, subcomponents.price, subcomponents.createDate,
 subcomponents.updateDate FROM subcomponents JOIN components ON components.componentName=subcomponents.componentName");
 $cnt=1;
 while($row=mysqli_fetch_array($query))
@@ -172,7 +129,9 @@ while($row=mysqli_fetch_array($query))
 											<td id="cap_username"><?php echo htmlentities($row['componentName']);?></td>
 											<td><?php echo htmlentities($row['subcomponentName']);?></td>
 											<td><?php echo htmlentities($row['subcomponentGen']);?></td>
+											<td><?php echo htmlentities($row['image']);?></td>
 											<td><?php echo htmlentities($row['subcomponentStatus']);?></td>
+											<td><?php echo htmlentities($row['price']);?></td>
 											<td> <?php echo htmlentities($row['createDate']);?></td>
 											<td><?php echo htmlentities($row['updateDate']);?></td>
 											<td>

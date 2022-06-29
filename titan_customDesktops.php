@@ -99,13 +99,31 @@
         display: block;">
         <h2>Components</h2>
   <?php
-  $componentQuery = mysqli_query($con,"SELECT subcomponentName FROM subcomponents WHERE subcomponentStatus='active'");
+  $componentQuery = mysqli_query($con,"SELECT * FROM components WHERE componentStatus='active'");
   while($rw=mysqli_fetch_array($componentQuery)){
     ?>
         <ul class="list">
-          <li class="list-options"><?php echo htmlentities($rw['componentName']); ?></li>
+          <li class="list-options">
+            <select>
+
+            <optgroup label="<?php
+            $component = $rw['componentName'];
+            echo $component; ?>">
+
+            <option value="<?php echo $component; ?>"><?php echo $component; ?></option>
+
+            <?php $subcomponentQuery= mysqli_query($con,"SELECT * FROM subcomponents WHERE subcomponentStatus='active' AND componentName = '$component' ");
+            while($rws= mysqli_fetch_array($subcomponentQuery)){
+            ?>
+                <option value="<?php echo htmlentities($rws['subcomponentGen']); ?>"><?php echo htmlentities($rws['subcomponentGen']); ?></option>
+              <?php } ?>
+            </optgroup>
+
+            </select>
+            <?php } ?>
+          </li>
         </ul>
-<?php } ?>
+
 
       </div>
 
