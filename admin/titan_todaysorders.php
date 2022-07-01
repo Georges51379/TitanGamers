@@ -1,7 +1,7 @@
 <?php
 session_start();
 include('db/connection.php');
-if(strlen($_SESSION['email'])==0)
+if(strlen($_SESSION['ad_email'])==0)
 	{
 header('location:index.php');
 }
@@ -27,7 +27,7 @@ $currentTime = date( 'd-m-Y h:i:s A', time () );
 var popUpWin=0;
 function popUpWindow(URLStr, left, top, width, height)
 {
-	
+
  if(popUpWin)
 {
 if(!popUpWin.closed) popUpWin.close();

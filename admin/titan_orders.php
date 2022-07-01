@@ -1,11 +1,16 @@
 <?php
 session_start();
 include('db/connection.php');
-if(strlen($_SESSION['email'])==0)
+if(strlen($_SESSION['ad_email'])==0)
 	{
 header('location:index.php');
 }
 else{
+	if(isset($_GET['del'])){
+		mysqli_query($con,"UPDATE orders SET status='inactive' WHERE orderToken='".$_GET['ot']."'");
+		header('location:titan_orders.php');
+		echo'<script>alert("order Has been succesfully deleted");</script>';
+	}
 ?>
 <html>
   <head>
@@ -63,7 +68,7 @@ else{
 						</thead>
 						<tbody>
 				<?php
-				$ordersQuery = mysqli_query($con,"SELECT * FROM orders");
+				$ordersQuery = mysqli_query($con,"SELECT * FROM orders WHERE status='active'");
 				$cnt=1;
 					while($row = mysqli_fetch_array($ordersQuery)){
 				 ?>
@@ -77,7 +82,7 @@ else{
 						<td><?php echo htmlentities($row['paymentMethod']);?></td>
 						<td><?php echo htmlentities($row['orderDate']);?></td>
 						<td>
-						<a href="titan_orders.php?orderID=<?php echo $row['id']?>&del=delete" onClick="return confirm('Are you sure you want to delete?')"><i class="fa fa-times"></i></a></td>
+						<a href="titan_orders.php?ot=<?php echo $row['orderToken']?>&del=delete" onClick="return confirm('Are you sure you want to delete?')"><i class="fa fa-times"></i></a></td>
 					</tr>
 					<?php $cnt=$cnt+1; } ?>
 			</table>

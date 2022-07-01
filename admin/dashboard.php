@@ -1,7 +1,7 @@
 <?php
 session_start();
 include('db/connection.php');
-if(strlen($_SESSION['email'])==0)
+if(strlen($_SESSION['ad_email'])==0)
 	{
 header('location:index.php');
 }

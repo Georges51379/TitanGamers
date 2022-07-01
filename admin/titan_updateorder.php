@@ -1,20 +1,19 @@
 <?php
 session_start();
 include_once 'db/connection.php';
-if(strlen($_SESSION['email'])==0)
+if(strlen($_SESSION['ad_email'])==0)
   {
 header('location:index.php');
 }
 else{
-$oid=intval($_GET['oid']);
+$ot=$_GET['ot'];
 if(isset($_POST['submit2'])){
 $status=$_POST['status'];
 $remark=$_POST['remark'];//space char
 
-$query=mysqli_query($con,"INSERT INTO ordertrackhistory(orderToken,status,remark) values('$oid','$status','$remark')");
-$sql=mysqli_query($con,"update orders set orderStatus='$status' where id='$oid'");
+$query=mysqli_query($con,"INSERT INTO ordertrackhistory(orderToken,status,remark) values('$ot','$status','$remark')");
+$sql=mysqli_query($con,"UPDATE orders SET orderStatus='$status' WHERE orderToken='$ot'");
 echo "<script>alert('Order updated sucessfully...');</script>";
-//}
 }
  ?>
 <script language="javascript" type="text/javascript">
@@ -45,11 +44,11 @@ window.print();
 
     <tr height="30">
       <td  class="fontkink1"><b>order Id:</b></td>
-      <td  class="fontkink"><?php echo $oid;?></td>
+      <td  class="fontkink"><?php echo $ot;?></td>
     </tr>
 
     <?php
-$ret = mysqli_query($con,"SELECT * FROM ordertrackhistory WHERE orderId='$oid'");
+$ret = mysqli_query($con,"SELECT * FROM ordertrackhistory WHERE orderToken='$ot'");
      while($row=mysqli_fetch_array($ret))
       {
      ?>
@@ -74,7 +73,7 @@ $ret = mysqli_query($con,"SELECT * FROM ordertrackhistory WHERE orderId='$oid'")
    <?php } ?>
    <?php
 $st='Delivered';
-   $rt = mysqli_query($con,"SELECT * FROM orders WHERE id='$oid'");
+   $rt = mysqli_query($con,"SELECT * FROM orders WHERE orderToken='$ot'");
      while($num=mysqli_fetch_array($rt))
      {
      $currrentSt=$num['orderStatus'];
@@ -93,7 +92,8 @@ $st='Delivered';
         <select name="status" class="fontkink" required="required" >
           <option value="">Select Status</option>
                  <option value="in Process">In Process</option>
-                  <option value="Delivered">Delivered</option>
+                 <option value="On the Way To You">On the Way To You</option>
+                <option value="Delivered">Delivered</option>
         </select>
         </span></td>
     </tr>

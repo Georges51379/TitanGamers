@@ -64,7 +64,7 @@ include('db/connection.php');
 
       $ret = mysqli_query($con,"SELECT orders.orderToken, orders.userEmail, orders.productName, orders.quantity, orders.totalPrice, orders.orderStatus,
                           orders.paymentMethod FROM orders JOIN users ON orders.userEmail = users.email
-                    WHERE orders.orderToken= '".$_POST['orderToken']."' AND orders.userEmail='".$_SESSION['email']."'");
+                    WHERE orders.orderToken= '$orderToken' AND orders.userEmail='".$_SESSION['email']."'");
       $num=mysqli_num_rows($ret);
       if($num>0)
       {

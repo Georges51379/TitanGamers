@@ -1,7 +1,7 @@
 <?php
 session_start();
 include('db/connection.php');
-if(strlen($_SESSION['email'])==0)
+if(strlen($_SESSION['ad_email'])==0)
 	{
 header('location:index.php');
 }
@@ -75,7 +75,8 @@ popUpWin = open(URLStr,'popUpWin', 'toolbar=no,location=no,directories=no,status
 $status='Delivered';
 $query=mysqli_query($con,"SELECT users.email AS userEmail,users.phone AS phone,users.shippingAddress AS shippingaddress,users.shippingCity AS shippingcity,
 	users.shippingState AS shippingstate,users.shippingPinCode AS shippingpincode,products.productName AS productname,products.shippingCharge AS shippingcharge,orders.quantity AS quantity,
-	orders.orderDate AS orderdate,products.productPrice AS productprice,orders.id AS id  FROM orders JOIN users ON  orders.userEmail=users.email JOIN products ON products.productName=orders.productName
+	orders.orderDate AS orderdate,products.productPrice AS productprice,orders.orderToken AS orderToken FROM orders JOIN users ON  orders.userEmail=users.email
+	JOIN products ON products.productName=orders.productName
  WHERE orders.orderStatus!='$status' OR orders.orderStatus IS NULL");
 $cnt=1;
 while($row=mysqli_fetch_array($query))
@@ -90,7 +91,7 @@ while($row=mysqli_fetch_array($query))
 											<td><?php echo htmlentities($row['quantity']);?></td>
 											<td>$<?php echo htmlentities($row['quantity']*$row['productprice']+$row['shippingcharge']);?></td>
 											<td><?php echo htmlentities($row['orderdate']);?></td>
-											<td><a href="titan_updateorder.php?oid=<?php echo htmlentities($row['id']);?>" title="Update order" target="_blank"><i class="fa fa-plus"></i></a>
+											<td><a href="titan_updateorder.php?ot=<?php echo htmlentities($row['orderToken']);?>" title="Update order" target="_blank"><i class="fa fa-plus"></i></a>
 											</td>
 											</tr>
 										<?php $cnt=$cnt+1; } ?>
