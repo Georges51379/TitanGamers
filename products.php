@@ -721,9 +721,9 @@ while($row=mysqli_fetch_array($sql)){
 
 
 <?php
-$sql=mysqli_query($con,"SELECT products.id,products.productName, products.productPrice, products.productPriceBeforeDiscount, products.productImage1, products.productAvailability,
+$sql=mysqli_query($con,"SELECT products.productName, products.productPrice, products.productPriceBeforeDiscount, products.productImage1, products.productAvailability,
 	products.productViews, products.productStatus ,producttype.productName, producttype.productType, producttype.productTypeStatus FROM products
-	JOIN producttype on products.productName = producttype.productName WHERE productType='mid end gaming'");
+	JOIN producttype on products.productName = producttype.productName WHERE productType='mid end gaming' AND productTypeStatus='Active'");
 while($row=mysqli_fetch_array($sql)){
 	?>
 <section class="products_section">
@@ -794,7 +794,7 @@ while($row=mysqli_fetch_array($sql)){
 <?php
 $sql=mysqli_query($con,"SELECT products.productName, products.productPrice, products.productPriceBeforeDiscount, products.productImage1, products.productAvailability,
 	products.productViews, products.productStatus ,producttype.productName, producttype.productType, producttype.productTypeStatus FROM products
-	JOIN producttype on products.productName = producttype.productName WHERE productType='high end gaming' AND productTypeStatus='Active' ");
+	JOIN producttype on products.productName = producttype.productName WHERE productType='high end gaming' AND productTypeStatus='Active'");
 while($row=mysqli_fetch_array($sql)){
 	?>
 <section class="products_section">

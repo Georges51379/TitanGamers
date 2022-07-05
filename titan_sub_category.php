@@ -79,8 +79,13 @@ header('location:titan_wishlist.php');
 <!--PRODUCTS MAINNAVBAR.INC.PHP--->
 		<?php include 'includes/products_mainnavbar.inc.php'; ?>
 
+		<?php
+		$catQuery = mysqli_query($con, "SELECT categoryToken FROM subcategory WHERE subcategoryToken = '".$_GET['subCatName']."'");
+		$rws = mysqli_fetch_array($catQuery);
+		 ?>
+
     <div class="subcategory_wrapper">
-      <h4 class="subcategory_title"><i class="fa fa-arrow-left"></i></h4>
+      <h4 class="subcategory_title"><a class="arrow-back-link" href="category.php?c=<?php echo htmlentities($rws['categoryToken']);?>" ><i class="fa fa-arrow-left"></i></a></h4>
     </div><br>
 
 <section class="products_section">
