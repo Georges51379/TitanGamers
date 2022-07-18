@@ -12,6 +12,14 @@
 .titancart_wrapper{
   margin-top: 10%;
 }
+.cart-info{
+  text-align: center;
+  font-family: sans-serif;
+  font-weight: 900;
+  text-transform: capitalize;
+  margin: 1%;
+  animation: colorAnimation infinite 10s;
+}
 .billship_section_title{
   font-style: oblique;
   font-family: sans-serif;
@@ -152,6 +160,26 @@
   }
 }
 
+@keyframes colorAnimation{
+  0%{
+    color: red ;
+  }
+  20%{
+    color:blue ;
+  }
+  40%{
+    color: yellow ;
+  }
+  60%{
+    color: cyan ;
+  }
+  80%{
+    color: gold ;
+  }
+  100%{
+    color: green ;
+  }
+}
 
 
 

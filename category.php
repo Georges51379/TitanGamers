@@ -18,11 +18,22 @@ if(isset($_GET['cpt']) && $_GET['action']=="cart" ){
 
 	$_SESSION['carToken'] = bin2hex(random_bytes(20));
 
+	$checkCart = mysqli_query($con, "SELECT userEmail, status FROM cart WHERE userEmail='".$_SESSION['email']."' AND status='Active'");
+	if($checkrws = mysqli_num_rows($checkCart) > 0){
+
+
+
+		header('location:titan_cart.php');
+				echo "<script>alert('Product CANNOT BE ADDED INTO YOUR CART');</script>";
+
+	}
+else{
 	mysqli_query($con, "INSERT INTO cart(cartToken, userEmail, productToken, status, quantity, price, shippingCharge)
 										VALUES('".$_SESSION['carToken']."', '".$_SESSION['email']."','".$_SESSION['cproducttoken']."', 'Active', 1, '$productPrice', '$shippingCharge')");
 
 	echo "<script>alert('Product added into your CART');</script>";
 	header('location:titan_cart.php');
+}
 }
 // COde for Wishlist
 if(isset($_GET['wpt']) && $_GET['action']=="wishlist" ){

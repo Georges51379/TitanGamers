@@ -2,13 +2,8 @@
 session_start();
 error_reporting(0);
 include('db/connection.php');
-//UPDATE QUANTITY FOR CART
-if(isset($_POST['submit'])){
-	$quantity = $_POST['quantity'];
 
-	$updateQuantity = mysqli_query($con, "UPDATE cart SET quantity = '$quantity' WHERE productToken = '".$_SESSION['cproducttoken']."'");
-	echo "<script>alert('Cart has been SUCCESSFULLY UPDATED');</script>";
-}
+
 //REMOVE A PRODUCT FROM CART
 $ptdel = $_GET['del'];
 
@@ -17,7 +12,24 @@ if(isset($_GET['del']))
 $query=mysqli_query($con,"UPDATE cart SET status = 'Inactive' WHERE productToken='$ptdel'");
 }
 
+$checkCart = mysqli_query($con, "SELECT userEmail, status FROM cart WHERE userEmail='".$_SESSION['email']."' AND status='Active'");
+$checkrws = mysqli_num_rows($checkCart);
 
+if($checkrws < 1){
+			echo "<script>alert('Product HAS BEEN ADDED INTO YOUR CART');</script>";
+}
+else if($checkrws > 1){
+	echo "<script>alert('Product CANNOT BE ADDED INTO YOUR CART');</script>";
+}
+else{
+
+//UPDATE QUANTITY FOR CART
+if(isset($_POST['submit'])){
+	$quantity = $_POST['quantity'];
+
+	$updateQuantity = mysqli_query($con, "UPDATE cart SET quantity = '$quantity' WHERE productToken = '".$_SESSION['cproducttoken']."'");
+	echo "<script>alert('Cart has been SUCCESSFULLY UPDATED');</script>";
+}
 
 
 // code for insert product in order table
@@ -55,6 +67,7 @@ header('location:titan_payment_method.php');
 echo "<script>alert('Shipping Address has been updated');</script>";
 		}
 	}
+}//end ELSE
 ?>
 <head>
 <!--TITLE SECTION-->
@@ -77,6 +90,12 @@ echo "<script>alert('Shipping Address has been updated');</script>";
 		<?php include 'includes/products_search.inc.php'; ?>
 <!--PRODUCTS MAINNAVBAR.INC.PHP--->
 		<?php include 'includes/products_mainnavbar.inc.php'; ?>
+
+		<div class="cart-info-wrapper">
+			<h1 class="cart-info">only 1 item can be added to the cart.<br> if you want to add multiple items, please check out the active product.<br> This way,
+				you can arrange your orders and set when each product you want it to be delivered.
+			</h1>
+		</div>	
 
 	<div class="titanwishlist_wrapper">
 		<form class="cartForm" method="post">
