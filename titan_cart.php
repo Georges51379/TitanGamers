@@ -92,10 +92,10 @@ echo "<script>alert('Shipping Address has been updated');</script>";
 		<?php include 'includes/products_mainnavbar.inc.php'; ?>
 
 		<div class="cart-info-wrapper">
-			<h1 class="cart-info">only 1 item can be added to the cart.<br> if you want to add multiple items, please check out the active product.<br> This way,
+			<h4 class="cart-info">only 1 item can be added to the cart.<br> if you want to add multiple items, please check out the active product.<br> This way,
 				you can arrange your orders and set when each product you want it to be delivered.
-			</h1>
-		</div>	
+			</h4>
+		</div>
 
 	<div class="titanwishlist_wrapper">
 		<form class="cartForm" method="post">

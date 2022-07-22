@@ -8,7 +8,7 @@ if(!preg_match ("/^[0-9]*$/", $phone) ){
    echo "<script>$('.signup_btn').prop('disabled',true);</script>";
 }
 else if(strlen ($phone) != 8){
-  echo "<span style='color:red'> 8 numbers only! .</span>";
+  echo "<span style='color:red'> 8 digits only! .</span>";
    echo "<script>$('.signup_btn').prop('disabled',true);</script>";
 }
 else {
@@ -20,7 +20,7 @@ echo "<span style='color:red'> Contact Number already exists .</span>";
  echo "<script>$('.signup_btn').prop('disabled',true);</script>";
 } else{
 
-	echo "<span style='color:green'> Contact available for Registration .</span>";
+	echo "<span style='color:green'> Contact Number available for Registration .</span>";
  echo "<script>$('.signup_btn').prop('disabled',false);</script>";
 }
 }

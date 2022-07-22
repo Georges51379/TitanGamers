@@ -42,14 +42,14 @@ $currentTime = date( 'd-m-Y h:i:s A', time () );
   			}
 
 //CONTACT NUMBER CHECK
-		function contactNumber(){
+		function phone(){
 			$("#loaderIcon").show();
 				jQuery.ajax({
 				  url: "check/titan_check_contactnumb_availability.php",
-          data:'contactno='+$("#contactno").val(),
+          data:'phone='+$("#phone").val(),
         	type: "POST",
         	 success:function(data){
-        		$("#contactnumber_availability").html(data);
+        		$("#phone_availability").html(data);
         			$("#loaderIcon").hide();
         				},
         				error:function (){}
@@ -74,7 +74,7 @@ $currentTime = date( 'd-m-Y h:i:s A', time () );
         <h4 class="titanaccount_section_title">personal info</h4>
         <div class="titanaccount_div_form">
           <?php
-          $query=mysqli_query($con,"select * from users where email='".$_SESSION['email']."'");
+          $query=mysqli_query($con,"SELECT * FROM users WHERE email='".$_SESSION['email']."'");
           while($row=mysqli_fetch_array($query))
           {
           ?>
@@ -93,9 +93,9 @@ $currentTime = date( 'd-m-Y h:i:s A', time () );
 
             <div class="titanaccount_div">
               <label class="titanaccount_label" for="Contact No.">Contact Number <span class="red_astrix">*</span></label><br>
-              <input type="text" class="titanaccount_input" id="contactno" onBlur="contactNumber()" name="contactno" required="required" value="<?php echo $row['contactno'];?>"  maxlength="10">
+              <input type="text" class="titanaccount_input" id="phone" onBlur="phone()" name="phone" required="required" value="<?php echo $row['phone'];?>"  maxlength="10">
 <br>
-              <span id="contactnumber_availability" style="font-size:12px;"></span>
+              <span id="phone_availability" style="font-size:12px;"></span>
             </div>
             <button type="submit" name="updateaccount" class="signup_btn">Update</button>
           </form>

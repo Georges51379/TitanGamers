@@ -95,8 +95,12 @@ else{
   					<td class="titanorderhistory_td"><?php echo $row['odate']; ?>  </td>
 
   					<td class="titanorderhistory_td popup_trackwindow">
-   <a href="javascript:void(0);" class="titanorderhistory_btn" onClick="popUpWindow('titan_track_order.php?ot=<?php echo htmlentities($row['orderToken']);?>');" title="Track order">
-  					Track</td>
+                <a href="javascript:void(0);" class="titanorderhistory_btn" onClick="popUpWindow('titan_track_order.php?ot=<?php echo htmlentities($row['orderToken']);?>');" title="Track order">
+  					      Track &emsp;
+                <a href="javascript:void(0);" class="titanorderhistory_btn" onClick="popUpWindow('titan_delivery_order.php?ot=<?php echo htmlentities($row['orderToken']);?>');" title="To be Delivered">
+    					    To be delivered
+            </td>
+
   				</tr>
   <?php $cnt=$cnt+1;} ?>
   			</tbody><!-- /tbody -->
@@ -104,7 +108,6 @@ else{
   		</form>
     </div>
 <?php } ?>
-
 
 <!--TITAN ACOUNT SIDEBAR .INC.PHP SECTION--->
 <?php include 'includes/titan_account_sidebar.inc.php'; ?>
