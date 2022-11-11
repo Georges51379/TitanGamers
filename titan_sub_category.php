@@ -67,17 +67,13 @@ header('location:titan_wishlist.php');
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <!--jQUERY CDN SECTION-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+		<link href="css/navbars.css" rel="stylesheet">
 		<link href="css/products.css" rel="stylesheet">
 </head>
 
 <body>
-<!--PRODUCTS TOPBAR.INC.PHP SECTION-->
-		<?php include 'includes/products_topbar.inc.php'; ?>
-<!--PRODUCTS LOGOSEARCH.INC.PHP SECTION-->
-		<?php include 'includes/products_search.inc.php'; ?>
-<!--PRODUCTS MAINNAVBAR.INC.PHP--->
-		<?php include 'includes/products_mainnavbar.inc.php'; ?>
+	<!--PRODUCTS navbar.INC.PHP--->
+				<?php include 'navbar/productsnavbar.inc.php'; ?>
 
 		<?php
 		$catQuery = mysqli_query($con, "SELECT categoryToken FROM subcategory WHERE subcategoryToken = '".$_GET['subCatName']."'");
@@ -169,7 +165,7 @@ while ($row=mysqli_fetch_array($ret))
 
 
 <!--ARROW_TO_TOP.INC.PHP SECTION-->
-    <?php include 'includes/arrow_to_top.inc.php'; ?>
-<!--FOOTER.INC.PHP SECTION-->
-    <?php include 'includes/footer.inc.php'; ?>
+<?php include 'includes/arrow_to_top.inc.php'; ?>
+<?php include 'includes/footer.inc.php'; ?>
+<script src="js/navbars.js"></script>
 </body>

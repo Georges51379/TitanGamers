@@ -1,28 +1,23 @@
+<?php
+session_start();
+include('db/connection.php');
+
+$titleQuery = mysqli_query($con, "SELECT title FROM title WHERE titleStatus = 'active' ");
+$rw = mysqli_fetch_array($titleQuery);
+ ?>
 <html>
   <head>
-<!--TITLE SECTION-->
-    <title>Titan Gamers</title>
-<!--ICON SECTION-->
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link href="img/icons/logo.png" rel="shortcut icon">
-<!--FONT AWESOME CDN SECTION-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<!--jQUERY CDN SECTION-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title><?php echo htmlentities($rw['title']);?></title>
+    <?php include 'header/head.inc.php'; ?>
   </head>
 
   <body>
-    <?php// include 'includes/splashscreen.inc.php'; ?>
-
-<!--TOPBAR.PHP SECTION-->
-    <?php include 'navbar/topbar.php'; ?>
+      <?php include 'navbar/homenavbar.inc.php'; ?>
 <!--MAIN_BANNERS.INC.PHP SECTION-->
-    <?php include 'includes/main_banner.inc.php'; ?>
+      <?php include 'includes/main_banner.inc.php'; ?>
 <!--FREE DELIVERY .INC.PHP SECTION-->
-    <?php include 'includes/freedeliver.inc.php'; ?>
+      <?php include 'includes/freedeliver.inc.php'; ?>
     <br>
     A Stop on the Salt Route
   1000 B.C.
@@ -82,11 +77,10 @@
   His arms—the arms she had so admired earlier—reached out and closed around her in a surprisingly gentle embrace. His body was as warm and naked as her own, but much bigger and much harder. She wondered if Fascinus was with them in the darkness, for she seemed to feel the beating of wings between their legs as she was entered by the thing that gave origin to life.
   Copyright © 2007 by Steven Saylor. All rights reserved.
 
-<!--ARROW_TO_TOP.INC.PHP SECTION-->
-      <?php include 'includes/arrow_to_top.inc.php';?>
-<!--FOOTER.INC.PHP SECTION-->
-      <?php include 'includes/footer.inc.php'; ?>
-  </body>
+  <?php include 'includes/footer.inc.php'; ?>
+  <?php include 'includes/arrow_to_top.inc.php'; ?>
+  <script src="js/navbars.js"></script>
 
+</body>
 
 </html>

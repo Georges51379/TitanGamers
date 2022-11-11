@@ -1,30 +1,3 @@
-<style>
-.account_sidebar_wrapper{
-  left:0;
-  top: 30%;
-  position: fixed;
-  width: auto;
-  box-sizing: border-box;
-  background-color: #2C3531;
-}
-.sidebar_li{
-  list-style: none;
-}
-.sidebar_links{
-  text-decoration: none;
-  text-transform: capitalize;
-  color: #116466;
-  width: auto;
-  box-sizing: border-box;
-  font-size: 30px;
-}
-.sidebar_links:hover{
-  color: #116466;
-  background-color: #D1E8E2;
-}
-
-</style>
-
 <div class="account_sidebar_wrapper">
   <div class="sidebar_body">
     <ul class="sidebar_list">

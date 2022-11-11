@@ -11,29 +11,21 @@ else{
 
 		mysqli_query($con,"delete from orders  where userId='".$_SESSION['id']."' and paymentMethod is null and id='".$_GET['id']."' ");
 	}
-?>
+  $titleQuery = mysqli_query($con, "SELECT title FROM title WHERE titleStatus = 'active' AND selected = 'Yes' ");
+       $rw = mysqli_fetch_array($titleQuery);
+       $name = $rw['title'];
+ ?>
 
-<head>
-<!--TITLE SECTION-->
-    <title>Titan Gamers | Pending Order History</title>
-<!--ICON SECTION-->
-    <link href="img/icons/logo.png" rel="shortcut icon">
-<!--FONT AWESOME CDN SECTION-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--jQUERY CDN SECTION-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-    <link href="css/titan_pending_orders.css" rel="stylesheet">
-
+ <head>
+ <!--TITLE SECTION-->
+ <title><?php echo $name; ?> | Pending Order History</title>
+     <?php include 'header/head.inc.php'; ?>
 </head>
 
 <body>
-<!--PRODUCTS TOPBAR.INC.PHP SECTION-->
-		<?php include 'includes/products_topbar.inc.php'; ?>
-<!--PRODUCTS LOGOSEARCH.INC.PHP SECTION-->
-		<?php include 'includes/products_search.inc.php'; ?>
-<!--PRODUCTS MAINNAVBAR.INC.PHP--->
-		<?php include 'includes/products_mainnavbar.inc.php'; ?>
+  <!--PRODUCTS navbar.INC.PHP--->
+    			<?php include 'navbar/productsnavbar.inc.php'; ?>
+  <?php include 'navbar/titan_account_fixedsidebar.inc.php'; ?>
 
 
     <div class="titanpendingorders_wrapper">
@@ -112,12 +104,13 @@ else{
     </table><!-- /table -->
   </form>
     </div>
-    <?php } ?>
 
-<?php include 'includes/titan_account_sidebar.inc.php'; ?>
+  <?php } ?>
 
-<!--ARROW_TO_TOP.INC.PHP SECTION-->
-    <?php include 'includes/arrow_to_top.inc.php'; ?>
-<!--FOOTER.INC.PHP SECTION-->
-    <?php include 'includes/footer.inc.php'; ?>
-</body>
+  <!--TITAN ACOUNT SIDEBAR .INC.PHP SECTION--->
+  <?php include 'includes/titan_account_sidebar.inc.php'; ?>
+  <!--ARROW_TO_TOP.INC.PHP SECTION-->
+      <?php include 'includes/arrow_to_top.inc.php'; ?>
+  <!--FOOTER.INC.PHP SECTION-->
+      <?php include 'includes/footer.inc.php'; ?>
+  </body>

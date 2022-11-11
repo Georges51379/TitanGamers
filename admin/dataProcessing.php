@@ -42,24 +42,12 @@ $errors = array();
       if(password_verify($password, $fetched_pwd)){
           $_SESSION['ad_email'] = $email;
           $status = $rw['status'];
-          if($status == 'verified'){
-            $_SESSION['ad_email'] = $email;
-            $_SESSION['last_login_timestamp'] = time();
-            $_SESSION['password'] = $password;
-            $uip=$_SERVER['REMOTE_ADDR'];
-            $stat=1;
-            $userLogQuery=mysqli_query($con,"INSERT INTO adminlog(adminEmail,admin,status) VALUES('".$_SESSION['ad_email']."','$uip','$stat')");
-              header('location: dashboard.php');
-            }else{
+          header('location: dashboard.php');
+        }else{
                 $info = "It looks like you haven't verified your email - $email";
                 $_SESSION['info'] = $info;
                 header('location: user-otp.php');
             }
-        }else{
-            $uip=$_SERVER['REMOTE_ADDR'];
-            $stat=0;
-            $errors['email'] = "Incorrect email or password!";
-        }
         }else{
         $errors['email'] = "It looks like you're not a member! Click on the bottom link to signup.";
         }

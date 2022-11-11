@@ -50,42 +50,16 @@ header('location:titan_wishlist.php');
 	 			$rw = mysqli_fetch_array($titleQuery);
 				$name = $rw['title']; ?>
   <head>
-<!--TITLE SECTION-->
-    <title><?php echo $name; ?> | Products</title>
-<!--ICON SECTION-->
-    <link href="img/icons/logo.png" rel="shortcut icon">
-<!--FONT AWESOME CDN SECTION-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--jQUERY CDN SECTION-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!--PRODUCTS.CSS SECTION-->
-		<link href="css/products.css" rel="stylesheet">
+		<!--TITLE SECTION-->
+		  <title><?php echo $name; ?> | Products</title>
+		<?php include 'header/head.inc.php'; ?>
 
-		<script>
-		function checkCart(){
-			$.ajax({
-				url: "check/checkCart.php",
-				data: "cartToken="+$("$_GET['cpt']"),
-				type: "POST",
-				success:function(data){
-					alert(data);
-				}
-				error:function(){
-					alert(data);
-				};
-			});
-		}
-		</script>
-</head>
+	</head>
 
   <body>
 		<?php// include 'includes/splashscreen.inc.php'; ?>
-<!--PRODUCTS TOPBAR.INC.PHP SECTION-->
-			<?php include 'includes/products_topbar.inc.php'; ?>
-<!--PRODUCTS LOGOSEARCH.INC.PHP SECTION-->
-			<?php include 'includes/products_search.inc.php'; ?>
-<!--PRODUCTS MAINNAVBAR.INC.PHP--->
-			<?php include 'includes/products_mainnavbar.inc.php'; ?>
+<!--PRODUCTS navbar.INC.PHP--->
+			<?php include 'navbar/productsnavbar.inc.php'; ?>
 <!--SHOPPING CART AND REQUEST PRODUCT-->
 			<?php include 'includes/rightbar.inc.php'; ?>
 <!--BANNERS.INC.PHP SECTION--->
@@ -933,9 +907,9 @@ while($row=mysqli_fetch_array($sql)){
 </section>
 
 <!--ARROW_TO_TOP.INC.PHP SECTION-->
-      <?php include 'includes/arrow_to_top.inc.php';?>
+			<?php include 'includes/arrow_to_top.inc.php';?>
 <!--FOOTER.INC.PHP SECTION-->
       <?php include 'includes/footer.inc.php'; ?>
-
+			<script src="js/navbars.js"></script>
   </body>
 </html>

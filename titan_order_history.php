@@ -7,18 +7,15 @@ if(strlen($_SESSION['email'])==0)
 header('location:login-user.php');
 }
 else{
+  $titleQuery = mysqli_query($con, "SELECT title FROM title WHERE titleStatus = 'active' AND selected = 'Yes' ");
+       $rw = mysqli_fetch_array($titleQuery);
+       $name = $rw['title'];
 ?>
 <head>  <!--to be fixed after checkout-->
 <!--TITLE SECTION-->
-    <title>Titan Gamers | Order History</title>
-<!--ICON SECTION-->
-    <link href="img/icons/logo.png" rel="shortcut icon">
-<!--FONT AWESOME CDN SECTION-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--jQUERY CDN SECTION-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title><?php echo $name; ?> | Order History</title>
 
-    <link href="css/titan_order_history.css" rel="stylesheet">
+      <?php include 'header/head.inc.php'; ?>
 
     <script language="javascript" type="text/javascript">
   var popUpWin=0;
@@ -36,12 +33,8 @@ else{
 </head>
 
 <body>
-<!--PRODUCTS TOPBAR.INC.PHP SECTION-->
-		<?php include 'includes/products_topbar.inc.php'; ?>
-<!--PRODUCTS LOGOSEARCH.INC.PHP SECTION-->
-		<?php include 'includes/products_search.inc.php'; ?>
-<!--PRODUCTS MAINNAVBAR.INC.PHP--->
-		<?php include 'includes/products_mainnavbar.inc.php'; ?>
+  <?php include 'navbar/productsnavbar.inc.php'; ?>
+<?php include 'navbar/titan_account_fixedsidebar.inc.php'; ?>
 
 
 <div class="titanorderhistory_wrapper">

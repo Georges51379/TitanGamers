@@ -1,0 +1,32 @@
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  margin: 0;
+  font-family: 'Oxygen', sans-serif;
+  position: relative;
+}
+section {
+  padding: 90px 15px;
+}
+p{
+  font-size: 18px;
+  margin: 5px 0 10px;
+}
+.bold {
+  font-weight: 700;
+}
+h2 {
+  font-size: 36px;
+  margin: 5px 0 10px;
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
+.center {
+  text-align: center;
+}

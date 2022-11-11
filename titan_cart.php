@@ -80,16 +80,13 @@ echo "<script>alert('Shipping Address has been updated');</script>";
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 		<link href="css/titan_wishlist.css" rel="stylesheet">
+				<link href="css/navbars.css" rel="stylesheet">
 
 </head>
 
 <body>
-<!--PRODUCTS TOPBAR.INC.PHP SECTION-->
-		<?php include 'includes/products_topbar.inc.php'; ?>
-<!--PRODUCTS LOGOSEARCH.INC.PHP SECTION-->
-		<?php include 'includes/products_search.inc.php'; ?>
-<!--PRODUCTS MAINNAVBAR.INC.PHP--->
-		<?php include 'includes/products_mainnavbar.inc.php'; ?>
+	<!--PRODUCTS navbar.INC.PHP--->
+				<?php include 'navbar/productsnavbar.inc.php'; ?>
 
 		<div class="cart-info-wrapper">
 			<h4 class="cart-info">only 1 item can be added to the cart.<br> if you want to add multiple items, please check out the active product.<br> This way,
@@ -125,10 +122,10 @@ echo "<script>alert('Shipping Address has been updated');</script>";
 				</tfoot>
 				<tbody class="titanwishlist_tbody">
 	<?php
-	$ret=mysqli_query($con,"SELECT products.productName AS pname,products.productImage1 AS pimage,products.productToken AS productToken,
+	$ret= mysqli_query($con,"SELECT products.productName AS pname,products.productImage1 AS pimage,products.productToken AS productToken,
 	products.productPrice AS pprice,products.shippingCharge AS shippingCharge, cart.quantity AS quantity, cart.productToken AS cartProdToken,
 	cart.cartToken AS cartToken FROM products JOIN cart ON products.productToken = cart.productToken  WHERE status = 'Active' AND
-	 cart.userEmail='".$_SESSION['email']."'");
+	 cart.userEmail='".$_SESSION['email']."' ");
 	 $couponQuery = mysqli_query($con,"SELECT * FROM coupon WHERE status ='Active' ");
 	 $rw = mysqli_fetch_array($couponQuery);
 
@@ -273,11 +270,9 @@ $num=mysqli_num_rows($rt);
 </div>
 
 
-
-
-
 <!--ARROW_TO_TOP.INC.PHP SECTION-->
     <?php include 'includes/arrow_to_top.inc.php'; ?>
 <!--FOOTER.INC.PHP SECTION-->
     <?php include 'includes/footer.inc.php'; ?>
+		<script src="js/navbars.js"></script>
 </body>

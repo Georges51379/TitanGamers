@@ -8,28 +8,21 @@ header('location:login-user.php');
 }
 else {
 
-?>
-<head>
-<!--TITLE SECTION-->
-    <title>Titan Gamers | Billing / Shipping Addresses</title>
-<!--ICON SECTION-->
-    <link href="img/icons/logo.png" rel="shortcut icon">
-<!--FONT AWESOME CDN SECTION-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--jQUERY CDN SECTION-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  $titleQuery = mysqli_query($con, "SELECT title FROM title WHERE titleStatus = 'active' AND selected = 'Yes' ");
+       $rw = mysqli_fetch_array($titleQuery);
+       $name = $rw['title'];
+ ?>
 
-    <link href="css/billship.css" rel="stylesheet">
-
+ <head>
+ <!--TITLE SECTION-->
+ <title><?php echo $name; ?> | Titan Shipping Information</title>
+     <?php include 'header/head.inc.php'; ?>
 </head>
 
 <body>
-<!--PRODUCTS TOPBAR.INC.PHP SECTION-->
-		<?php include 'includes/products_topbar.inc.php'; ?>
-<!--PRODUCTS LOGOSEARCH.INC.PHP SECTION-->
-		<?php include 'includes/products_search.inc.php'; ?>
-<!--PRODUCTS MAINNAVBAR.INC.PHP--->
-		<?php include 'includes/products_mainnavbar.inc.php'; ?>
+  <!--PRODUCTS navbar.INC.PHP--->
+    			<?php include 'navbar/productsnavbar.inc.php'; ?>
+  <?php include 'navbar/titan_account_fixedsidebar.inc.php'; ?>
 
         <div class="billship_wrapper">
           <h4 class="billship_subtitle">shipping information</h4>
@@ -66,10 +59,10 @@ else {
         </div>
         <?php } ?>
 
-<!--TITAN ACCOUNT SIDEBAR SECTION-->
-<?php include 'includes/titan_account_fixedsidebar.inc.php'; ?>
-
-<!--ARROW_TO_TOP.INC.PHP SECTION-->
-    <?php include 'includes/arrow_to_top.inc.php'; ?>
-<!--FOOTER.INC.PHP SECTION-->
-    <?php include 'includes/footer.inc.php'; ?>
+        <!--ARROW_TO_TOP.INC.PHP SECTION-->
+            <?php include 'includes/arrow_to_top.inc.php'; ?>
+        <!--FOOTER.INC.PHP SECTION-->
+            <?php include 'includes/footer.inc.php'; ?>
+            <script src="js/navbars.js"></script>
+  </body>
+</html>

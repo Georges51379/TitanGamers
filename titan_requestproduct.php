@@ -20,15 +20,12 @@ header('location:login-user.php');
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <link href="css/requestproduct.css" rel="stylesheet">
+    		<link href="css/navbars.css" rel="stylesheet">
 
 </head>
 <body>
-<!--PRODUCTS TOPBAR.INC.PHP SECTION-->
-		<?php include 'includes/products_topbar.inc.php'; ?>
-<!--PRODUCTS LOGOSEARCH.INC.PHP SECTION-->
-		<?php include 'includes/products_search.inc.php'; ?>
-<!--PRODUCTS MAINNAVBAR.INC.PHP--->
-		<?php include 'includes/products_mainnavbar.inc.php'; ?>
+<!--PRODUCTS navbar.INC.PHP--->
+  			<?php include 'navbar/productsnavbar.inc.php'; ?>
 
     <!--SHOPPING AND REQUEST PRODUCT SECTION-->
     <div class="requestproduct_wrapper">
@@ -95,4 +92,5 @@ header('location:login-user.php');
     <?php include 'includes/arrow_to_top.inc.php'; ?>
 <!--FOOTER.INC.PHP SECTION-->
     <?php include 'includes/footer.inc.php'; ?>
+    <script src="js/navbars.js"></script>
 </body>
