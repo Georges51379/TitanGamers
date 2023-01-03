@@ -1,3 +1,7 @@
+<?php $titleQuery = mysqli_query($con, "SELECT title FROM title WHERE titleStatus = 'active' AND selected = 'Yes' ");
+      $rw = mysqli_fetch_array($titleQuery);
+      $name = $rw['title'];
+?>
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,25 +17,13 @@
   <link href="css/index.css" rel="stylesheet">
   <link href="css/titan_account.css" rel="stylesheet">
   <link href="css/titan_order_history.css" rel="stylesheet">
-    <link href="css/billship.css" rel="stylesheet">
-    <link href="css/titan_pending_orders.css" rel="stylesheet">
+  <link href="css/billship.css" rel="stylesheet">
+  <link href="css/titan_pending_orders.css" rel="stylesheet">
+  <link href="css/titan_wishlist.css" rel="stylesheet">
+  <link href="css/cart.css" rel="stylesheet">
+<!--PRODUCTS.CSS SECTION-->
+	<link href="css/productsdetails.css" rel="stylesheet">
+<!--PAYMENT.CSS SECTION-->
+   <link href="css/payment.css" rel="stylesheet">
 
-
-
-  <script>
-  //FUNCTION TO CHECK THE QUANTITY INSIDE THE CART.
-  function checkCart(){
-    $.ajax({
-      url: "check/checkCart.php",
-      data: "cartToken="+$("$_GET['cpt']"),
-      type: "POST",
-      success:function(data){
-        alert(data);
-      }
-      error:function(){
-        alert(data);
-      };
-    });
-  }
-  </script>
 </head>

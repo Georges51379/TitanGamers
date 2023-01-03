@@ -3,35 +3,60 @@ session_start();
 error_reporting(0);
 include('db/connection.php');
 $find="%{$_POST['product']}%";
-if(isset($_GET['action']) && $_GET['action']=="add"){
-	$id=intval($_GET['id']);
-	if(isset($_SESSION['cart'][$id])){
-		$_SESSION['cart'][$id]['quantity']++;
+
+//CODE FOR ADD TO CART
+if(isset($_GET['cpt']) && $_GET['action']=="cart" ){
+
+	$_SESSION['cproducttoken'] = $_GET['cpt'];
+
+	$getInfoToCart = mysqli_query($con, "SELECT * FROM products WHERE productToken = '".$_SESSION['cproducttoken']."'");
+	$rws = mysqli_fetch_array($getInfoToCart);
+
+	$price = $rws['productPrice'];
+	$shippingCharge = $rws['shippingCharge'];
+
+	$_SESSION['carToken'] = bin2hex(random_bytes(20));
+	$cartCode = rand(9999999999, 1111111111);
+
+	$checkCartCode = mysqli_query($con, "SELECT cartCode FROM cart WHERE productToken = '".$_SESSION['cproducttoken']."' AND userEmail ='".$_SESSION['email']."'");
+	$cartCoderws = mysqli_fetch_array($checkCartCode);
+
+	$cartCodeFromDB = $cartCoderws['cartCode'];
+
+	if($cartCodeFromDB === $cartCode){ //CHECK IF CART CODE ALREADY EXISTS
+		$generatedCartCode = rand(9999999999, 1111111111);
+		mysqli_query($con, "INSERT INTO cart(cartCode,cartToken, userEmail, productToken, cartStatus,isCartEmpty ,quantity, price, shippingCharge)
+										VALUES('$generatedCartCode','".$_SESSION['carToken']."', '".$_SESSION['email']."','".$_SESSION['cproducttoken']."', 'Active','No',1,'$price','$shippingCharge')");
+
+	echo "<script>alert('Product added into your CART');</script>";
+	header('location:titan_cart.php');
 	}else{
-		$sql_p="SELECT * FROM products WHERE id={$id}";
-		$query_p=mysqli_query($con,$sql_p);
-		if(mysqli_num_rows($query_p)!=0){
-			$row_p=mysqli_fetch_array($query_p);
-			$_SESSION['cart'][$row_p['id']]=array("quantity" => 1, "price" => $row_p['productPrice']);
-						echo "<script>alert('Product has been added to your cart')</script>";
-		echo "<script type='text/javascript'> document.location ='titan_cart.php'; </script>";
-		}else{
-			$message="Product ID is invalid";
-		}
+
+	mysqli_query($con, "INSERT INTO cart(cartCode,cartToken, userEmail, productToken, cartStatus,isCartEmpty ,quantity, price, shippingCharge)
+										VALUES('$cartCode','".$_SESSION['carToken']."', '".$_SESSION['email']."','".$_SESSION['cproducttoken']."', 'Active','No',1,'$price','$shippingCharge')");
+
+	echo "<script>alert('Product added into your CART');</script>";
+	header('location:titan_cart.php');
 	}
 }
 // COde for Wishlist
-if(isset($_GET['pid']) && $_GET['action']=="wishlist" ){
-	if(strlen($_SESSION['login'])==0)
+if(isset($_GET['wpt']) && $_GET['action']=="wishlist" ){
+
+		$_SESSION['wproducttoken'] = $_GET['wpt'];
+
+	if(strlen($_SESSION['email'])==0)
     {
-header('location:titan_login.php');
+header('location:login-user.php');
 }
 else
 {
-mysqli_query($con,"insert into wishlist(userId,productId) values('".$_SESSION['id']."','".$_GET['pid']."')");
+$wishToken = bin2hex(random_bytes(20));;
+
+mysqli_query($con,"INSERT INTO wishlist(wishToken, userEmail,productToken, tokenStatus)
+										VALUES('$wishToken', '".$_SESSION['email']."','".$_SESSION['wproducttoken']."', 'Active')");
+
 echo "<script>alert('Product added into your wishlist');</script>";
 header('location:titan_wishlist.php');
-
 }
 }
 ?>
@@ -39,23 +64,13 @@ header('location:titan_wishlist.php');
 <head>
 <!--TITLE SECTION-->
     <title>Titan Gamers | Category</title>
-<!--ICON SECTION-->
-    <link href="img/icons/logo.png" rel="shortcut icon">
-<!--FONT AWESOME CDN SECTION-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--jQUERY CDN SECTION-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<?php include 'header/head.inc.php'; ?>
 
-		<link href="css/products.css" rel="stylesheet">
 </head>
 
 <body>
-<!--PRODUCTS TOPBAR.INC.PHP SECTION-->
-		<?php include 'includes/products_topbar.inc.php'; ?>
-<!--PRODUCTS LOGOSEARCH.INC.PHP SECTION-->
-		<?php include 'includes/products_search.inc.php'; ?>
-<!--PRODUCTS MAINNAVBAR.INC.PHP--->
-		<?php include 'includes/products_mainnavbar.inc.php'; ?>
+	<!--PRODUCTS navbar.INC.PHP--->
+			<?php include 'navbar/productsnavbar.inc.php'; ?>
 
 
 <section class="products_section searchContainer">
@@ -126,8 +141,10 @@ while ($row=mysqli_fetch_array($ret))
 
 </section><!--END products_section -->
 
+
 <!--ARROW_TO_TOP.INC.PHP SECTION-->
     <?php include 'includes/arrow_to_top.inc.php'; ?>
 <!--FOOTER.INC.PHP SECTION-->
     <?php include 'includes/footer.inc.php'; ?>
+		<script src="js/navbars.js"></script>
 </body>

@@ -10,46 +10,59 @@ if(isset($_GET['cpt']) && $_GET['action']=="cart" ){
 
 	$_SESSION['cproducttoken'] = $_GET['cpt'];
 
+	if(strlen($_SESSION['email'])==0)
+{
+header('location:login-user.php');
+}
+else
+{
+
 	$getInfoToCart = mysqli_query($con, "SELECT * FROM products WHERE productToken = '".$_SESSION['cproducttoken']."'");
 	$rws = mysqli_fetch_array($getInfoToCart);
 
-	$productPrice = $rws['productPrice'];
+	$price = $rws['productPrice'];
 	$shippingCharge = $rws['shippingCharge'];
 
 	$_SESSION['carToken'] = bin2hex(random_bytes(20));
+	$cartCode = rand(9999999999, 1111111111);
 
-	$checkCart = mysqli_query($con, "SELECT userEmail, status FROM cart WHERE userEmail='".$_SESSION['email']."' AND status='Active'");
-	if($checkrws = mysqli_num_rows($checkCart) > 0){
+	$checkCartCode = mysqli_query($con, "SELECT cartCode FROM cart WHERE productToken = '".$_SESSION['cproducttoken']."' AND userEmail ='".$_SESSION['email']."'");
+	$cartCoderws = mysqli_fetch_array($checkCartCode);
 
+	$cartCodeFromDB = $cartCoderws['cartCode'];
 
-
-		header('location:titan_cart.php');
-				echo "<script>alert('Product CANNOT BE ADDED INTO YOUR CART');</script>";
-
-	}
-else{
-	mysqli_query($con, "INSERT INTO cart(cartToken, userEmail, productToken, status, quantity, price, shippingCharge)
-										VALUES('".$_SESSION['carToken']."', '".$_SESSION['email']."','".$_SESSION['cproducttoken']."', 'Active', 1, '$productPrice', '$shippingCharge')");
+	if($cartCodeFromDB === $cartCode){ //CHECK IF CART CODE ALREADY EXISTS
+		$generatedCartCode = rand(9999999999, 1111111111);
+		mysqli_query($con, "INSERT INTO cart(cartCode,cartToken, userEmail, productToken, cartStatus,isCartEmpty ,quantity, price, shippingCharge)
+										VALUES('$generatedCartCode','".$_SESSION['carToken']."', '".$_SESSION['email']."','".$_SESSION['cproducttoken']."', 'Active','No',1,'$price','$shippingCharge')");
 
 	echo "<script>alert('Product added into your CART');</script>";
 	header('location:titan_cart.php');
+	}else{
+
+	mysqli_query($con, "INSERT INTO cart(cartCode,cartToken, userEmail, productToken, cartStatus,isCartEmpty ,quantity, price, shippingCharge)
+										VALUES('$cartCode','".$_SESSION['carToken']."', '".$_SESSION['email']."','".$_SESSION['cproducttoken']."', 'Active','No',1,'$price','$shippingCharge')");
+
+	echo "<script>alert('Product added into your CART');</script>";
+	header('location:titan_cart.php');
+	}
 }
 }
 // COde for Wishlist
 if(isset($_GET['wpt']) && $_GET['action']=="wishlist" ){
 
-		$_SESSION['wproducttoken'] = $_GET['wpt'];
+	$_SESSION['wproducttoken'] = $_GET['wpt'];
 
-	if(strlen($_SESSION['email'])==0)
-    {
+if(strlen($_SESSION['email'])==0)
+{
 header('location:login-user.php');
 }
 else
 {
 $wishToken = bin2hex(random_bytes(20));;
 
-mysqli_query($con,"INSERT INTO wishlist(wishToken, userEmail,productToken, status)
-										VALUES('$wishToken', '".$_SESSION['email']."','".$_SESSION['wproducttoken']."', 'Active')");
+mysqli_query($con,"INSERT INTO wishlist(wishToken, userEmail,productToken, tokenStatus)
+									VALUES('$wishToken', '".$_SESSION['email']."','".$_SESSION['wproducttoken']."', 'Active')");
 
 echo "<script>alert('Product added into your wishlist');</script>";
 header('location:titan_wishlist.php');

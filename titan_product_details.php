@@ -1,7 +1,7 @@
 <?php
 session_start();
 error_reporting(0);
-include('db/connection.php');
+require "db/connection.php";
 
 $pname = $_GET['p'];
 
@@ -13,17 +13,34 @@ if(isset($_GET['cpt']) && $_GET['action']=="cart" ){
 	$getInfoToCart = mysqli_query($con, "SELECT * FROM products WHERE productToken = '".$_SESSION['cproducttoken']."'");
 	$rws = mysqli_fetch_array($getInfoToCart);
 
-	$productPrice = $rws['productPrice'];
+	$price = $rws['productPrice'];
 	$shippingCharge = $rws['shippingCharge'];
 
 	$_SESSION['carToken'] = bin2hex(random_bytes(20));
+	$cartCode = rand(9999999999, 1111111111);
 
-	mysqli_query($con, "INSERT INTO cart(cartToken, userEmail, productToken, status, quantity, price, shippingCharge)
-										VALUES('".$_SESSION['carToken']."', '".$_SESSION['email']."','".$_SESSION['cproducttoken']."', 'Active', 1, '$productPrice', '$shippingCharge')");
+	$checkCartCode = mysqli_query($con, "SELECT cartCode FROM cart WHERE productToken = '".$_SESSION['cproducttoken']."' AND userEmail ='".$_SESSION['email']."'");
+	$cartCoderws = mysqli_fetch_array($checkCartCode);
+
+	$cartCodeFromDB = $cartCoderws['cartCode'];
+
+	if($cartCodeFromDB === $cartCode){ //CHECK IF CART CODE ALREADY EXISTS
+		$generatedCartCode = rand(9999999999, 1111111111);
+		mysqli_query($con, "INSERT INTO cart(cartCode,cartToken, userEmail, productToken, cartStatus,isCartEmpty ,quantity, price, shippingCharge)
+										VALUES('$generatedCartCode','".$_SESSION['carToken']."', '".$_SESSION['email']."','".$_SESSION['cproducttoken']."', 'Active','No',1,'$price','$shippingCharge')");
 
 	echo "<script>alert('Product added into your CART');</script>";
 	header('location:titan_cart.php');
+	}else{
+
+	mysqli_query($con, "INSERT INTO cart(cartCode,cartToken, userEmail, productToken, cartStatus,isCartEmpty ,quantity, price, shippingCharge)
+										VALUES('$cartCode','".$_SESSION['carToken']."', '".$_SESSION['email']."','".$_SESSION['cproducttoken']."', 'Active','No',1,'$price','$shippingCharge')");
+
+	echo "<script>alert('Product added into your CART');</script>";
+	header('location:titan_cart.php');
+	}
 }
+
 // COde for Wishlist
 if(isset($_GET['wpt']) && $_GET['action']=="wishlist" ){
 
@@ -37,68 +54,24 @@ else
 {
 $wishToken = bin2hex(random_bytes(20));;
 
-mysqli_query($con,"INSERT INTO wishlist(wishToken, userEmail,productToken, status)
+mysqli_query($con,"INSERT INTO wishlist(wishToken, userEmail,productToken, tokenStatus)
 										VALUES('$wishToken', '".$_SESSION['email']."','".$_SESSION['wproducttoken']."', 'Active')");
 
 echo "<script>alert('Product added into your wishlist');</script>";
 header('location:titan_wishlist.php');
 }
 }
-
-if(strlen($_SESSION['email'])==0 && isset($_POST['submit_review'])){
-	header('location: login-user.php');
-}
-else{
-	$qty=$_POST['quality'];
-	$price=$_POST['price'];
-	$value=$_POST['value'];
-	$name=$_POST['name'];
-	$summary=$_POST['summary'];
-	$review=$_POST['review'];
-	mysqli_query($con,"INSERT INTO productreviews(productName,quality,price,value,name,summary,review) values('$pname','$qty','$price','$value','$name','$summary','$review')");
-}
 ?>
-<script>
-
-function ReviewForm(){
-
-	$("#loaderIcon").show();
-	jQuery.ajax({
-		url:"titan_check_productReview.php",
-		data:'',
-		type:"POST",
-		success:function(data){
-			$("#reviewCheck").html(data);
-			$("#loaderIcon").hide();
-		},
-		error:function(){}
-
-	});
-}
-
-</script>
-
 <head>
 <!--TITLE SECTION-->
     <title>Titan Gamers | Product Details</title>
-<!--ICON SECTION-->
-    <link href="img/icons/logo.png" rel="shortcut icon">
-<!--FONT AWESOME CDN SECTION-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--jQUERY CDN SECTION-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!--PRODUCTS.CSS SECTION-->
-		<link href="css/productsdetails.css" rel="stylesheet">
+		<?php include 'header/head.inc.php'; ?>
 
 </head>
 
 <body>
-<!--PRODUCTS TOPBAR.INC.PHP SECTION-->
-  <?php include 'includes/products_topbar.inc.php'; ?>
-<!--PRODUCTS LOGOSEARCH.INC.PHP SECTION-->
-  <?php include 'includes/products_search.inc.php'; ?>
-<!--PRODUCTS MAINNAVBAR.INC.PHP--->
-  <?php include 'includes/products_mainnavbar.inc.php'; ?>
+	<!--PRODUCTS navbar.INC.PHP--->
+			<?php include 'navbar/productsnavbar.inc.php'; ?>
 
 	<?php
 
@@ -138,18 +111,6 @@ function ReviewForm(){
 
 		<div class="rightsidepro_info">
 				<h1 class="name"><?php echo htmlentities($row['productName']);?></h1>
-
-		<?php $rt=mysqli_query($con,"SELECT * from productreviews WHERE productName='".$_GET['p']."'");
-		$num=mysqli_num_rows($rt);
-		{
-		?>
-
-			<div class="product_ratings">
-					<div class="valuefromdb">
-						<a href="#review" class="lnk"><?php echo htmlentities($num);?> reviews</a>
-					</div>
-			</div><!--PRODUCT RATINGS-->
-			<?php } ?>
 
 			<div class="product_availability">
 					<div class="label">
@@ -213,11 +174,11 @@ function ReviewForm(){
 			<br>
 			<div class="product_action">
 								<?php if($row['productAvailability']=='In Stock'){?>
-							<a href="titan_product_details.php?page=product&action=add&id=<?php echo $row['id']; ?>" class="btn">
+							<a href="titan_product_details.php?page=product&action=cart&cpt=<?php echo $row['productToken']; ?>" class="btn">
 							<i class="fa fa-shopping-cart"></i>
 						</a>
 
-						<a class="btn" href="titan_product_details.php?pid=<?php echo htmlentities($row['id'])?>&&action=wishlist" title="Wishlist">
+						<a class="btn" href="titan_product_details.php?wpt=<?php echo htmlentities($row['productToken'])?>&&action=wishlist" title="Wishlist">
 							<i class="fa fa-heart"></i>
 						</a>
 						<?php } else {?>
@@ -251,7 +212,7 @@ function ReviewForm(){
 					<a class="review_description_links" href="#description">description</a>
 				</li>
 				<li class="review_description_li">
-					<a class="review_description_links" href="#review">review</a>
+					<a class="review_description_links" href="#relatedProducts">related products</a>
 				</li>
 			</ul><!--END PRODUCT _REVIEW-->
 		</div>
@@ -259,127 +220,9 @@ function ReviewForm(){
 		<div class="product_description" id="description">
 			<p class="description"><span class="review_title">description<br></span><?php echo $row['productDescription'];?></p>
 		</div>
-
-<!--PRODUCT REVIEWWW SECTION-->
-	<div id="review" class="product_reviews">
-		<h4 class="review_title">customer reviews</h4>
-
-	<?php $qry=mysqli_query($con,"SELECT * FROM productreviews WHERE productName='".$_GET['p']."'");
-
-		$rvws=mysqli_fetch_array($qry);
-
-	if($rvws==0){
-		echo"<center style='color:red'>";
-			echo'NO REVIEW YET! BE THE FIRST TO REVIEW THIS PRODUCT BELOW!!';
-		echo'</center>';
-	}
-	 else{
-		 while($rvw=mysqli_fetch_array($qry)){
-	?>
-
-		<div class="reviews" style="border: solid 1px #000; padding-left: 2% ">
-			<div class="review">
-				<span class="date"><i class="fa fa-calendar"></i><span><?php echo htmlentities($rvw['reviewDate']);?></span></span><br>
-				<br><div class="review-title"><span class="review_main_titles">title&emsp;</span><span class="summary"><?php echo htmlentities($rvw['summary']);?></span></div>
-				<div class="text"><span class="review_main_titles">review&emsp;</span><span class="main_review">"<?php echo htmlentities($rvw['review']);?>"</span></div>
-				<br><div class="text"><span class="review_main_titles">Quality :</span>  <?php echo htmlentities($rvw['quality']);?> Star(s)</div>
-				<div class="text"><span class="review_main_titles">Price :</span>  <?php echo htmlentities($rvw['price']);?> Star(s)</div>
-				<div class="text"><span class="review_main_titles">value :</span>  <?php echo htmlentities($rvw['value']);?> Star(s)</div>
-				<br><div class="user"><i class="fa fa-pencil-square-o"></i> <span class="name"><?php echo htmlentities($rvw['name']);?></span></div>
-			</div><!--END REVIEWw-->
-		</div><!--END REVIEWS-->
-
-	<?php   } }  ?>
-	</div><!--END PRODUCT REVIEWS-->
 <!--END OF THE PRODUCTS REVIEWW SECTION-->
 
 </div><!--END PRODUCT DESCRIPTION WRAPPER-->
-
-<!---STARTS OF THE REVIEW_TABLE AND FORMS-->
-<center>
-<div class="review_form_wrapper">
-	<form role="form" class="review_form" name="review" method="post">
-		<div class="add_review">
-			<h4 class="review_title">Write your own review</h4>
-		<div class="review_table">
-				<table class="table">
-
-					<thead>
-						<tr>
-							<th class="th">&nbsp;</th>
-							<th>1 star</th>
-							<th>2 stars</th>
-							<th>3 stars</th>
-							<th>4 stars</th>
-							<th>5 stars</th>
-						</tr>
-					</thead>
-
-					<tbody>
-						<tr>
-							<td class="th">Quality</td>
-							<td><input type="radio" name="quality" class="radio" value="1"></td>
-							<td><input type="radio" name="quality" class="radio" value="2"></td>
-							<td><input type="radio" name="quality" class="radio" value="3"></td>
-							<td><input type="radio" name="quality" class="radio" value="4"></td>
-							<td><input type="radio" name="quality" class="radio" value="5"></td>
-						</tr>
-						<tr>
-							<td class="th">Price</td>
-							<td><input type="radio" name="price" class="radio" value="1"></td>
-							<td><input type="radio" name="price" class="radio" value="2"></td>
-							<td><input type="radio" name="price" class="radio" value="3"></td>
-							<td><input type="radio" name="price" class="radio" value="4"></td>
-							<td><input type="radio" name="price" class="radio" value="5"></td>
-						</tr>
-						<tr>
-							<td class="th">Value</td>
-							<td><input type="radio" name="value" class="radio" value="1"></td>
-							<td><input type="radio" name="value" class="radio" value="2"></td>
-							<td><input type="radio" name="value" class="radio" value="3"></td>
-							<td><input type="radio" name="value" class="radio" value="4"></td>
-							<td><input type="radio" name="value" class="radio" value="5"></td>
-						</tr>
-					</tbody>
-				</table><!--REVIEWW TABLE-->
-			</div><!--REVIEWW TABLE-->
-<!--END OF THE REVIEW_TABLE DESCRIPTION--->
-  <?php
-	$query=mysqli_query($con,"SELECT * FROM users WHERE email='".$_SESSION['email']."'");
-	$st=mysqli_fetch_array($query);
-
-	?>
-<!--START OF THE REVIEW_FORM DESCRIPTIONPRODUCTS--->
-	<div class="container_form">
-
-				<div class="titanproductdetails_divform">
-					<label class="label_name" for="exampleInputName">Your Name <span class="astk">*</span></label>
-					<input type="text" class="text_summary disableName" id="exampleInputName" placeholder="" name="name" required="required" value="<?php echo $st['name']; ?>" readonly>
-				</div>
-
-				<div class="titanproductdetails_divform">
-					<label class="label_name" for="exampleInputSummary">Summary <span class="astk">*</span></label>
-					<input type="text" class="text_summary" id="exampleInputSummary" placeholder="" name="summary" required="required">
-				</div><!-- /.form-group -->
-
-				<div class="titanproductdetails_divform">
-					<label class="label_name" for="exampleInputReview">Review <span class="astk">*</span></label>
-					<textarea class="text_summary txtarea" id="exampleInputReview" rows="4" placeholder="" name="review" required="required"></textarea>
-				</div><!-- /.form-group -->
-
-				<div class="action_btn">
-					<button name="submit_review" class="btn review_btn">submit</button>
-				</div><!--ACTION BTN-->
-
-		</form><!--REVIEWW FORM-->
-	</div><!--END REVIEWW FORM CNTAINER -->
-
-	</div><!--END CONTAINER FORM-->
-</center>
-
-<!--END OF PRODUCTS REVIEW_SECTION---->
-
-			</div><!--END ADD REVIEWW-->
 			<?php $cid=$row['category'];
 						$subcid=$row['subcategory']; } ?>
 </div><!--END PRODUCT WRAPPER-->
@@ -388,10 +231,17 @@ function ReviewForm(){
 
 <!--START HOT DEALS-->
 <section class="products_section">
-		<h3 class="related_title">related products</h3>
+		<h3 class="related_title" id="relatedProducts">related products</h3>
 
 <?php
-$query=mysqli_query($con,"SELECT * FROM products WHERE subcategoryName='$sub' AND categoryName='$cat' AND productName != '".$_GET['p']."'");
+$query=mysqli_query($con,"SELECT * FROM products WHERE  categoryName='$cat' AND subcategoryName='$sub'  AND productName != '".$_GET['p']."'");
+$numrws = mysqli_num_rows($query);
+if($numrws === 0){
+		?>
+			<div class="btn_details">No Products Found</div>
+<?php } else{ ?>
+
+<?php
 while($r=mysqli_fetch_array($query))
 {
 
@@ -452,14 +302,15 @@ while($r=mysqli_fetch_array($query))
 				</div><!--END PRODUCT-->
 			</div><!--END PRODUCTS WRAPPER-->
 
-		<?php } ?>
+		<?php }} ?>
 	</section><br><br>
 
 
 <!--END HOT DEALS-->
 
-<!--ARROW TO TOP .INC.PHP SECTION-->
-<?php include 'includes/arrow_to_top.inc.php'; ?>
-<!--FOOTER .INC.PHP SECTION-->
-<?php include 'includes/footer.inc.php'; ?>
+<!--ARROW_TO_TOP.INC.PHP SECTION-->
+    <?php include 'includes/arrow_to_top.inc.php'; ?>
+<!--FOOTER.INC.PHP SECTION-->
+    <?php include 'includes/footer.inc.php'; ?>
+		<script src="js/navbars.js"></script>
 </body>

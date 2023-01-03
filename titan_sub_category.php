@@ -16,64 +16,81 @@ if($subcatn === 'custom desktops')
 {
 	header('location:titan_customDesktops.php');
 }
+
 //CODE FOR ADD TO CART
 if(isset($_GET['cpt']) && $_GET['action']=="cart" ){
 
 	$_SESSION['cproducttoken'] = $_GET['cpt'];
 
+	if(strlen($_SESSION['email'])==0)
+{
+header('location:login-user.php');
+}
+else
+{
+
 	$getInfoToCart = mysqli_query($con, "SELECT * FROM products WHERE productToken = '".$_SESSION['cproducttoken']."'");
 	$rws = mysqli_fetch_array($getInfoToCart);
 
-	$productPrice = $rws['productPrice'];
+	$price = $rws['productPrice'];
 	$shippingCharge = $rws['shippingCharge'];
 
 	$_SESSION['carToken'] = bin2hex(random_bytes(20));
+	$cartCode = rand(9999999999, 1111111111);
 
-	mysqli_query($con, "INSERT INTO cart(cartToken, userEmail, productToken, status, quantity, price, shippingCharge)
-										VALUES('".$_SESSION['carToken']."', '".$_SESSION['email']."','".$_SESSION['cproducttoken']."', 'Active', 1, '$productPrice', '$shippingCharge')");
+	$checkCartCode = mysqli_query($con, "SELECT cartCode FROM cart WHERE productToken = '".$_SESSION['cproducttoken']."' AND userEmail ='".$_SESSION['email']."'");
+	$cartCoderws = mysqli_fetch_array($checkCartCode);
+
+	$cartCodeFromDB = $cartCoderws['cartCode'];
+
+	if($cartCodeFromDB === $cartCode){ //CHECK IF CART CODE ALREADY EXISTS
+		$generatedCartCode = rand(9999999999, 1111111111);
+		mysqli_query($con, "INSERT INTO cart(cartCode,cartToken, userEmail, productToken, cartStatus,isCartEmpty ,quantity, price, shippingCharge)
+										VALUES('$generatedCartCode','".$_SESSION['carToken']."', '".$_SESSION['email']."','".$_SESSION['cproducttoken']."', 'Active','No',1,'$price','$shippingCharge')");
 
 	echo "<script>alert('Product added into your CART');</script>";
 	header('location:titan_cart.php');
+	}else{
+
+	mysqli_query($con, "INSERT INTO cart(cartCode,cartToken, userEmail, productToken, cartStatus,isCartEmpty ,quantity, price, shippingCharge)
+										VALUES('$cartCode','".$_SESSION['carToken']."', '".$_SESSION['email']."','".$_SESSION['cproducttoken']."', 'Active','No',1,'$price','$shippingCharge')");
+
+	echo "<script>alert('Product added into your CART');</script>";
+	header('location:titan_cart.php');
+	}
+}
 }
 // COde for Wishlist
 if(isset($_GET['wpt']) && $_GET['action']=="wishlist" ){
 
-		$_SESSION['wproducttoken'] = $_GET['wpt'];
+	$_SESSION['wproducttoken'] = $_GET['wpt'];
 
-	if(strlen($_SESSION['email'])==0)
-    {
+if(strlen($_SESSION['email'])==0)
+{
 header('location:login-user.php');
 }
 else
 {
 $wishToken = bin2hex(random_bytes(20));;
 
-mysqli_query($con,"INSERT INTO wishlist(wishToken, userEmail,productToken, status)
-										VALUES('$wishToken', '".$_SESSION['email']."','".$_SESSION['wproducttoken']."', 'Active')");
+mysqli_query($con,"INSERT INTO wishlist(wishToken, userEmail,productToken, tokenStatus)
+									VALUES('$wishToken', '".$_SESSION['email']."','".$_SESSION['wproducttoken']."', 'Active')");
 
 echo "<script>alert('Product added into your wishlist');</script>";
 header('location:titan_wishlist.php');
 }
 }
-
 ?>
 
 <head>
 <!--TITLE SECTION-->
     <title>Titan Gamers | Sub Category</title>
-<!--ICON SECTION-->
-    <link href="img/icons/logo.png" rel="shortcut icon">
-<!--FONT AWESOME CDN SECTION-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--jQUERY CDN SECTION-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-		<link href="css/navbars.css" rel="stylesheet">
-		<link href="css/products.css" rel="stylesheet">
+	<?php include 'header/head.inc.php'; ?>
 </head>
 
 <body>
 	<!--PRODUCTS navbar.INC.PHP--->
-				<?php include 'navbar/productsnavbar.inc.php'; ?>
+		<?php include 'navbar/productsnavbar.inc.php'; ?>
 
 		<?php
 		$catQuery = mysqli_query($con, "SELECT categoryToken FROM subcategory WHERE subcategoryToken = '".$_GET['subCatName']."'");
@@ -141,7 +158,7 @@ while ($row=mysqli_fetch_array($ret))
 			<div class="product_action">
 			<?php if($row['productAvailability']=='In Stock'){?>
 
-					<a href="titan_sub_category.php?cpt=<?php echo $row['productToken']; ?>&&action=cart" class="btn">
+					<a onClick="checkCart()" name="cartToken" id="cartToken" href="titan_sub_category.php?cpt=<?php echo $row['productToken']; ?>&&action=cart" class="btn">
 						<i class="fa fa-shopping-cart"></i>
 					</a>
 

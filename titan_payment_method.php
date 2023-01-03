@@ -13,25 +13,15 @@ else{
 
 		mysqli_query($con,"UPDATE orders SET paymentMethod='COD',orderStatus = 'Requested', status = 'active', totalPrice= '".$_SESSION['finalTotal']."' WHERE userEmail='".$_SESSION['email']."' AND orderToken = '".$_SESSION['orderToken']."' ");
 		//unset($_SESSION['cart']);
-    mysqli_query($con,"UPDATE cart SET status = 'Inactive' WHERE cartToken = '".$_SESSION['carToken']."' ");
 		header('location:titan_order_history.php');
-
 	}
 ?>
 
 
 <head>
 <!--TITLE SECTION-->
-    <title>Titan Gamers | Payment Method</title>
-<!--ICON SECTION-->
-    <link href="img/icons/logo.png" rel="shortcut icon">
-<!--FONT AWESOME CDN SECTION-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--jQUERY CDN SECTION-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!--PAYMENT.CSS SECTION-->
-      <link href="css/payment.css" rel="stylesheet">
-
+    <?php include 'header/head.inc.php'; ?>
+    <title><?php echo $name; ?> | Payment Method</title>
 
       <script>
       function checkCoupon(){
@@ -52,12 +42,9 @@ else{
 </head>
 
 <body>
-<!--PRODUCTS TOPBAR.INC.PHP SECTION-->
-		<?php include 'includes/products_topbar.inc.php'; ?>
-<!--PRODUCTS LOGOSEARCH.INC.PHP SECTION-->
-		<?php include 'includes/products_search.inc.php'; ?>
-<!--PRODUCTS MAINNAVBAR.INC.PHP--->
-		<?php include 'includes/products_mainnavbar.inc.php'; ?>
+  <?php// include 'includes/splashscreen.inc.php'; ?>
+<!--PRODUCTS navbar.INC.PHP--->
+    <?php include 'navbar/productsnavbar.inc.php'; ?>
 
 <center>
     <div class="payment_method_wrapper">
@@ -90,7 +77,8 @@ else{
 </center>
 
 <!--ARROW_TO_TOP.INC.PHP SECTION-->
-    <?php include 'includes/arrow_to_top.inc.php'; ?>
+			<?php include 'includes/arrow_to_top.inc.php';?>
 <!--FOOTER.INC.PHP SECTION-->
-    <?php include 'includes/footer.inc.php'; ?>
+      <?php include 'includes/footer.inc.php'; ?>
+			<script src="js/navbars.js"></script>
 </body>
