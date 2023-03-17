@@ -19,7 +19,7 @@
       type: "POST",
       success:function(data){
         $("#emailAvailability").html(data);
-      },
+      },//cmnts
       error:function(){}
     });
   }
