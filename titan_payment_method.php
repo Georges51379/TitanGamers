@@ -16,8 +16,6 @@ else{
 		header('location:titan_order_history.php');
 	}
 ?>
-
-
 <head>
 <!--TITLE SECTION-->
     <?php include 'header/head.inc.php'; ?>

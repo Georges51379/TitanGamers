@@ -3,6 +3,7 @@ session_start();
 error_reporting(0);
 include('db/connection.php');
 $find="%{$_POST['product']}%";
+$finder = $_POST['product'];
 
 //CODE FOR ADD TO CART
 if(isset($_GET['cpt']) && $_GET['action']=="cart" ){
@@ -72,6 +73,10 @@ header('location:titan_wishlist.php');
 	<!--PRODUCTS navbar.INC.PHP--->
 			<?php include 'navbar/productsnavbar.inc.php'; ?>
 
+			<div class="result-wrapper">
+				the search result for
+				<?php echo $finder; ?>
+			</div>
 
 <section class="products_section searchContainer">
   <?php

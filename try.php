@@ -1,134 +1,186 @@
+<?php
+session_start();
+error_reporting(0);
+include('db/connection.php');
+
+$catName=$_GET['c'];
+
+//CODE FOR ADD TO CART
+if(isset($_GET['cpt']) && $_GET['action']=="cart" ){
+
+	$_SESSION['cproducttoken'] = $_GET['cpt'];
+
+	if(strlen($_SESSION['email'])==0)
+{
+header('location:login-user.php');
+}
+else
+{
+
+	$getInfoToCart = mysqli_query($con, "SELECT * FROM products WHERE productToken = '".$_SESSION['cproducttoken']."'");
+	$rws = mysqli_fetch_array($getInfoToCart);
+
+	$price = $rws['productPrice'];
+	$shippingCharge = $rws['shippingCharge'];
+
+	$_SESSION['carToken'] = bin2hex(random_bytes(20));
+	$cartCode = rand(9999999999, 1111111111);
+
+	$checkCartCode = mysqli_query($con, "SELECT cartCode FROM cart WHERE productToken = '".$_SESSION['cproducttoken']."' AND userEmail ='".$_SESSION['email']."'");
+	$cartCoderws = mysqli_fetch_array($checkCartCode);
+
+	$cartCodeFromDB = $cartCoderws['cartCode'];
+
+	if($cartCodeFromDB === $cartCode){ //CHECK IF CART CODE ALREADY EXISTS
+		$generatedCartCode = rand(9999999999, 1111111111);
+		mysqli_query($con, "INSERT INTO cart(cartCode,cartToken, userEmail, productToken, cartStatus,isCartEmpty ,quantity, price, shippingCharge)
+										VALUES('$generatedCartCode','".$_SESSION['carToken']."', '".$_SESSION['email']."','".$_SESSION['cproducttoken']."', 'Active','No',1,'$price','$shippingCharge')");
+
+	echo "<script>alert('Product added into your CART');</script>";
+	header('location:titan_cart.php');
+	}else{
+
+	mysqli_query($con, "INSERT INTO cart(cartCode,cartToken, userEmail, productToken, cartStatus,isCartEmpty ,quantity, price, shippingCharge)
+										VALUES('$cartCode','".$_SESSION['carToken']."', '".$_SESSION['email']."','".$_SESSION['cproducttoken']."', 'Active','No',1,'$price','$shippingCharge')");
+
+	echo "<script>alert('Product added into your CART');</script>";
+	header('location:titan_cart.php');
+	}
+}
+}
+// COde for Wishlist
+if(isset($_GET['wpt']) && $_GET['action']=="wishlist" ){
+
+	$_SESSION['wproducttoken'] = $_GET['wpt'];
+
+if(strlen($_SESSION['email'])==0)
+{
+header('location:login-user.php');
+}
+else
+{
+$wishToken = bin2hex(random_bytes(20));;
+
+mysqli_query($con,"INSERT INTO wishlist(wishToken, userEmail,productToken, tokenStatus)
+									VALUES('$wishToken', '".$_SESSION['email']."','".$_SESSION['wproducttoken']."', 'Active')");
+
+echo "<script>alert('Product added into your wishlist');</script>";
+header('location:titan_wishlist.php');
+}
+}
+
+$titleQuery = mysqli_query($con, "SELECT title FROM title WHERE titleStatus = 'active' AND selected = 'Yes' ");
+		 $rw = mysqli_fetch_array($titleQuery);
+		 $name = $rw['title'];
+?>
 <head>
-<!--TITLE SECTION-->
-    <title>Titan Gamers | Cart</title>
-
-		<style>
-		@import url("https://fonts.googleapis.com/css2?family=Istok+Web:wght@400;700&display=swap");
-
-* {
-  margin: 0;
-  padding: 0;
-  font-family: "Istok Web", sans-serif;
-}
-
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: #212121;
-}
-
-.card {
-  position: relative;
-  width: 320px;
-  height: 480px;
-  background: #191919;
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.card::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  width: 100%;
-  height: 100%;
-  background: #ffce00;
-  transform: skewY(345deg);
-  transition: 0.5s;
-}
-
-.card:hover::before {
-  top: -70%;
-  transform: skewY(390deg);
-}
-
-.card::after {
-  content: "CORSAIR";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  font-weight: 600;
-  font-size: 6em;
-  color: rgba(0, 0, 0, 0.1);
-}
-
-.card .imgBox {
-  position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-top: 20px;
-  z-index: 1;
-}
-.card .contentBox {
-  position: relative;
-  padding: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  z-index: 2;
-}
-
-.card .contentBox h3 {
-  font-size: 18px;
-  color: white;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.card .contentBox .price {
-  font-size: 24px;
-  color: white;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
-
-.card .contentBox .buy {
-  position: relative;
-  top: 100px;
-  opacity: 0;
-  padding: 10px 30px;
-  margin-top: 15px;
-  color: #000000;
-  text-decoration: none;
-  background: #ffce00;
-  border-radius: 30px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: 0.5s;
-}
-
-.card:hover .contentBox .buy {
-  top: 0;
-  opacity: 1;
-}
-
-.mouse {
-  height: 300px;
-  width: auto;
-}
-
-		</style>
-
+	<!--TITLE SECTION-->
+		<title><?php echo $name; ?> | Category</title>
+		<?php include 'header/head.inc.php'; ?>
 </head>
 
 <body>
-	<div class="card">
+	<!--PRODUCTS navbar.INC.PHP--->
+				<?php include 'navbar/productsnavbar.inc.php'; ?>
 
-	  <div class="imgBox">
-	    <img src="https://www.corsair.com/corsairmedia/sys_master/productcontent/CH-9300011-NA-M65_PRO_RGB_BLK_04.png" alt="mouse corsair" class="mouse">
-	  </div>
+    <div class="subcategory_wrapper">
+      <h4 class="subcategory_title">sub category</h4>
+      <nav class="subacategory_nav">
+        <ul class="subcategory_list">
+          <li class="subacategory_li">
+            <?php $sql=mysqli_query($con,"SELECT subcategoryToken, subcategoryName FROM subcategory WHERE subcategoryStatus = 'Active' AND categoryToken='".$_GET['c']."' ");
+while($row=mysqli_fetch_array($sql))
+{
+  ?>
 
-	  <div class="contentBox">
-	    <h3>Mouse Corsair M65</h3>
-	    <h2 class="price">61.<small>98</small> €</h2>
-	    <a href="#" class="buy">Buy Now</a>
-	  </div>
+              <a href="titan_sub_category.php?subCatName=<?php echo $row['subcategoryToken'];?>" class="subcategory_link" style="display:hidden;"><i class="fa fa-product-hunt"></i>
+              <?php echo $row['subcategoryName'];?></a>
+              <?php }?>
+            </li>
+        </ul>
+      </nav>
+    </div>
 
-	</div>
+<section class="products_section">
+		  <?php
+			$sql = mysqli_query($con, "SELECT categoryName FROM category WHERE categoryStatus = 'Active' AND categoryToken= '".$_GET['c']."'");
+			$row = mysqli_fetch_array($sql);
+
+			$categoryname = $row['categoryName'];
+
+$ret=mysqli_query($con,"SELECT * FROM products WHERE productStatus = 'Active' AND categoryName='$categoryname'");
+$num=mysqli_num_rows($ret);
+if($num>0)
+{
+while ($row=mysqli_fetch_array($ret))
+{?>
+
+	<div class="products_wrapper">
+
+		<div class="product">
+			<div class="product_img">
+				<a href="titan_product_details.php?p=<?php echo htmlentities($row['productName']);?>">
+					<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
+				</a>
+			</div>
+
+
+			<div class="product_information">
+				<div class="row">
+					<div class="prod_details">
+						<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?p=<?php echo htmlentities($row['productName']);?>">
+							<?php echo htmlentities($row['productName']);?></a>
+						</h3>
+
+						<div class="product_price">
+							<span class="price">
+
+							<span class="original_price">
+									$<?php echo htmlentities($row['productPrice']);?>
+							</span>
+							<span class="price_before_discount">$<?php echo htmlentities($row['productPriceBeforeDiscount']);?>
+
+							</span>
+
+						</span>
+						</div>
+					</div><!--END DIV PROD_DETAILS-->
+
+				<div class="product_views">
+					<span class="views">
+						<?php echo htmlentities($row['productViews']); ?><i class="fa fa-eye"></i>
+					</span>
+				</div>
+			</div><!---END ROW-->
+
+			<div class="product_action">
+			<?php if($row['productAvailability']=='In Stock'){?>
+
+					<a href="category.php?cpt=<?php echo htmlentities($row['productToken']); ?>&&action=cart" class="btn">
+						<i class="fa fa-shopping-cart"></i>
+					</a>
+
+				<a class="btn" href="category.php?wpt=<?php echo htmlentities($row['productToken']); ?>&&action=wishlist" title="Wishlist">
+				<i class="fa fa-heart"></i>
+				</a>
+			</div>
+
+		<?php } else {?>
+					<div class="btn">Out of Stock</div>
+				<?php } ?>
+			</div><!--PRODUCT INFORMATION--->
+
+		</div><!--END PRODUCT-->
+
+	</div><!--END PRODUCTS WRAPPER-->
+
+<?php } ?>
+<?php } ?>
+</section>
+
+
+<!--ARROW_TO_TOP.INC.PHP SECTION-->
+    <?php include 'includes/arrow_to_top.inc.php'; ?>
+		<?php include 'includes/footer.inc.php'; ?>
+		<script src="js/navbars.js"></script>
 </body>

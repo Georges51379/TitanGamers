@@ -67,6 +67,10 @@ echo "<script>alert('Product added into your wishlist');</script>";
 header('location:titan_wishlist.php');
 }
 }
+
+$titleQuery = mysqli_query($con, "SELECT title FROM title WHERE titleStatus = 'active' AND selected = 'Yes' ");
+ $rw = mysqli_fetch_array($titleQuery);
+$name = $rw['title'];
 ?>
 
 <html>
@@ -87,52 +91,42 @@ header('location:titan_wishlist.php');
 <!--BANNERS.INC.PHP SECTION--->
 			<?php include 'includes/productbanners.inc.php'; ?>
 
-			<section class="products_section">
-				<h3 class="section_title">newest</h3>
+			<h3 class="section_title">newest</h3>
+			<section class="cards">
 
 					  <?php
 			$ret=mysqli_query($con,"SELECT * FROM products WHERE productStatus='Active' ORDER BY postDate DESC LIMIT 3");
 			while ($row=mysqli_fetch_array($ret))
 			{?>
 
-				<div class="products_wrapper">
-					<div class="product">
+				<div class="card">
 						<div class="product_img">
 							<a href="titan_product_details.php?p=<?php echo htmlentities($row['productName']); ?>">
 								<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
 							</a>
 						</div>
 
-						<div class="product_information">
-							<div class="row">
-								<div class="prod_details">
 									<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?p=<?php echo htmlentities($row['productName']); ?>">
 										<?php echo htmlentities($row['productName']);?></a>
 									</h3>
 
-									<div class="product_price">
+									<div class="product-price">
 										<span class="price">
-
 										<span class="original_price">
 												$<?php echo htmlentities($row['productPrice']);?>
 										</span>
 										<span class="price_before_discount">$<?php echo htmlentities($row['productPriceBeforeDiscount']);?>
-
 										</span>
-
 									</span>
 									</div>
-								</div><!--END DIV PROD_DETAILS-->
 
-							<div class="product_views">
+							<div class="product-views">
 								<span class="views">
 									<?php echo htmlentities($row['productViews']); ?>&nbsp;<i class="fa fa-eye"></i>
 								</span>
 							</div>
 
-						</div><!---END ROW-->
-
-						<div class="product_action">
+						<div class="product-action">
 						<?php if($row['productAvailability']=='In Stock'){?>
 
 							<a onclick="checkCart()" class="btn" href="products.php?cpt=<?php echo htmlentities($row['productToken']);?>&&action=cart" title="Cart">
@@ -148,23 +142,20 @@ header('location:titan_wishlist.php');
 					<?php } else {?>
 								<div class="btn">Out of Stock</div>
 							<?php } ?>
-						</div><!--PRODUCT INFORMATION--->
-					</div><!--END PRODUCT-->
 				</div><!--END PRODUCTS WRAPPER-->
 			<?php } ?>
 			</section>
 
 
-			<section class="products_section">
-				<h3 class="section_title">most viewed</h3>
+			<h3 class="section_title">most viewed</h3>
+			<section class="cards">
 
 				<?php
 				$ret=mysqli_query($con,"SELECT * FROM products WHERE productStatus='Active' ORDER BY productViews DESC LIMIT 3");
 				while ($row=mysqli_fetch_array($ret))
 				{
 				?>
-				<div class="products_wrapper">
-					<div class="product">
+				<div class="card">
 						<div class="product_img">
 							<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 								<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
@@ -178,7 +169,7 @@ header('location:titan_wishlist.php');
 										<?php echo htmlentities($row['productName']);?></a>
 									</h3>
 
-									<div class="product_price">
+									<div class="product-price">
 										<span class="price">
 
 										<span class="original_price">
@@ -192,7 +183,7 @@ header('location:titan_wishlist.php');
 									</div>
 								</div><!--END DIV PROD_DETAILS-->
 
-							<div class="product_views">
+							<div class="product-views">
 								<span class="views">
 									<?php echo htmlentities($row['productViews']); ?>&nbsp;<i class="fa fa-eye"></i>
 								</span>
@@ -200,7 +191,7 @@ header('location:titan_wishlist.php');
 
 						</div><!---END ROW-->
 
-						<div class="product_action">
+						<div class="product-action">
 						<?php if($row['productAvailability']=='In Stock'){?>
 
 							<a onclick="checkCart()" class="btn" href="products.php?cpt=<?php echo htmlentities($row['productToken']);?>&&action=cart" title="Cart">
@@ -217,21 +208,19 @@ header('location:titan_wishlist.php');
 								<div class="btn">Out of Stock</div>
 							<?php } ?>
 						</div><!--PRODUCT INFORMATION--->
-					</div><!--END PRODUCT-->
 				</div><!--END PRODUCTS WRAPPER-->
 			<?php } ?>
 			</section>
 
-			<section class="products_section">
-				<h3 class="section_title">featured</h3>
+			<h3 class="section_title">featured</h3>
+			<section class="cards">
 
 				<?php
 				$ret=mysqli_query($con,"SELECT * FROM products WHERE productFeatured=1 AND productStatus='Active' GROUP BY RAND() LIMIT 3");
 				while ($row=mysqli_fetch_array($ret))
 				{
 				?>
-				<div class="products_wrapper">
-					<div class="product">
+				<div class="card">
 						<div class="product_img">
 							<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 								<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
@@ -267,7 +256,7 @@ header('location:titan_wishlist.php');
 
 						</div><!---END ROW-->
 
-						<div class="product_action">
+						<div class="product-action">
 						<?php if($row['productAvailability']=='In Stock'){?>
 
 							<a onclick="checkCart()" class="btn" href="products.php?cpt=<?php echo htmlentities($row['productToken']);?>&&action=cart" title="Cart">
@@ -284,7 +273,6 @@ header('location:titan_wishlist.php');
 								<div class="btn">Out of Stock</div>
 							<?php } ?>
 						</div><!--PRODUCT INFORMATION--->
-					</div><!--END PRODUCT-->
 				</div><!--END PRODUCTS WRAPPER-->
 			<?php } ?>
 			</section>
@@ -295,16 +283,15 @@ header('location:titan_wishlist.php');
 
 
 
-			<section class="products_section">
-				<h3 class="section_title">laptops</h3>
+			<h3 class="section_title">laptops</h3>
+			<section class="cards">
 
 				<?php
 				$ret=mysqli_query($con,"SELECT * FROM products WHERE categoryName='laptops' AND productStatus='Active' GROUP BY productPrice DESC LIMIT 3");
 				while ($row=mysqli_fetch_array($ret))
 				{
 				?>
-				<div class="products_wrapper">
-					<div class="product">
+				<div class="card">
 						<div class="product_img">
 							<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 								<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
@@ -340,7 +327,7 @@ header('location:titan_wishlist.php');
 
 						</div><!---END ROW-->
 
-						<div class="product_action">
+						<div class="product-action">
 						<?php if($row['productAvailability']=='In Stock'){?>
 
 							<a onclick="checkCart()" class="btn" href="products.php?cpt=<?php echo htmlentities($row['productToken']);?>&&action=cart" title="Cart">
@@ -356,15 +343,14 @@ header('location:titan_wishlist.php');
 					<?php } else {?>
 								<div class="btn">Out of Stock</div>
 							<?php } ?>
-						</div><!--PRODUCT INFORMATION--->
 					</div><!--END PRODUCT-->
 				</div><!--END PRODUCTS WRAPPER-->
 			<?php } ?>
 			</section>
 
 
-			<section class="products_section">
-				<h3 class="section_title">pCs</h3>
+			<h3 class="section_title">pCs</h3>
+			<section class="cards">
 
 				<?php
 				$ret=mysqli_query($con,"SELECT * FROM products WHERE categoryName='desktops' AND productStatus='Active' GROUP BY productPrice DESC LIMIT 3");
@@ -372,8 +358,7 @@ header('location:titan_wishlist.php');
 				{
 				?>
 
-				<div class="products_wrapper">
-					<div class="product">
+				<div class="card">
 						<div class="product_img">
 							<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 								<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
@@ -409,7 +394,7 @@ header('location:titan_wishlist.php');
 
 						</div><!---END ROW-->
 
-						<div class="product_action">
+						<div class="product-action">
 						<?php if($row['productAvailability']=='In Stock'){?>
 
 							<a onclick="checkCart()" class="btn" href="products.php?cpt=<?php echo htmlentities($row['productToken']);?>&&action=cart" title="Cart">
@@ -426,13 +411,12 @@ header('location:titan_wishlist.php');
 								<div class="btn">Out of Stock</div>
 							<?php } ?>
 						</div><!--PRODUCT INFORMATION--->
-					</div><!--END PRODUCT-->
 				</div><!--END PRODUCTS WRAPPER-->
 			<?php } ?>
 			</section>
 
-			<section class="products_section">
-				<h3 class="section_title">accessories</h3>
+			<h3 class="section_title">accessories</h3>
+			<section class="cards">
 
 				<?php
 				$ret=mysqli_query($con,"SELECT * FROM products WHERE categoryName='accessories' AND productStatus='Active' GROUP BY productPrice DESC LIMIT 3");
@@ -440,8 +424,7 @@ header('location:titan_wishlist.php');
 				{
 				?>
 
-				<div class="products_wrapper">
-					<div class="product">
+				<div class="card">
 						<div class="product_img">
 							<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 								<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
@@ -477,7 +460,7 @@ header('location:titan_wishlist.php');
 
 						</div><!---END ROW-->
 
-						<div class="product_action">
+						<div class="product-action">
 						<?php if($row['productAvailability']=='In Stock'){?>
 
 							<a onclick="checkCart()" class="btn" href="products.php?cpt=<?php echo htmlentities($row['productToken']);?>&&action=cart" title="Cart">
@@ -494,7 +477,6 @@ header('location:titan_wishlist.php');
 								<div class="btn">Out of Stock</div>
 							<?php } ?>
 						</div><!--PRODUCT INFORMATION--->
-					</div><!--END PRODUCT-->
 				</div><!--END PRODUCTS WRAPPER-->
 			<?php } ?>
 </section>
@@ -509,13 +491,12 @@ $sql=mysqli_query($con,"SELECT products.id,products.productName, products.produc
 	JOIN producttype on products.productName = producttype.productName WHERE productType='business'");
 while($row=mysqli_fetch_array($sql)){
 	?>
-<section class="products_section">
+<section class="cards">
 	<h3 class="section_title"><?php echo htmlentities($row['productType']); ?></h3>
 
 
 
-	<div class="products_wrapper">
-		<div class="product">
+	<div class="card">
 			<div class="product_img">
 				<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 					<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
@@ -551,7 +532,7 @@ while($row=mysqli_fetch_array($sql)){
 
 			</div><!---END ROW-->
 
-			<div class="product_action">
+			<div class="product-action">
 			<?php if($row['productAvailability']=='In Stock'){?>
 
 				<a onclick="checkCart()" class="btn" href="products.php?cpt=<?php echo htmlentities($row['productToken']);?>&&action=cart" title="Cart">
@@ -568,7 +549,6 @@ while($row=mysqli_fetch_array($sql)){
 					<div class="btn">Out of Stock</div>
 				<?php } ?>
 			</div><!--PRODUCT INFORMATION--->
-		</div><!--END PRODUCT-->
 	</div><!--END PRODUCTS WRAPPER-->
 <?php } ?>
 </section>
@@ -580,13 +560,12 @@ $sql=mysqli_query($con,"SELECT products.id,products.productName, products.produc
 	JOIN producttype on products.productName = producttype.productName WHERE productType='convertible'");
 while($row=mysqli_fetch_array($sql)){
 	?>
-<section class="products_section">
+<section class="cards">
 	<h3 class="section_title"><?php echo htmlentities($row['productType']); ?></h3>
 
 
 
-	<div class="products_wrapper">
-		<div class="product">
+	<div class="card">
 			<div class="product_img">
 				<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 					<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
@@ -622,7 +601,7 @@ while($row=mysqli_fetch_array($sql)){
 
 			</div><!---END ROW-->
 
-			<div class="product_action">
+			<div class="product-action">
 			<?php if($row['productAvailability']=='In Stock'){?>
 
 				<a onclick="checkCart()" class="btn" href="products.php?cpt=<?php echo htmlentities($row['productToken']);?>&&action=cart" title="Cart">
@@ -639,7 +618,6 @@ while($row=mysqli_fetch_array($sql)){
 					<div class="btn">Out of Stock</div>
 				<?php } ?>
 			</div><!--PRODUCT INFORMATION--->
-		</div><!--END PRODUCT-->
 	</div><!--END PRODUCTS WRAPPER-->
 <?php } ?>
 </section>
@@ -651,13 +629,12 @@ $sql=mysqli_query($con,"SELECT products.id,products.productName, products.produc
 	JOIN producttype on products.productName = producttype.productName WHERE productType='low end gaming'");
 while($row=mysqli_fetch_array($sql)){
 	?>
-<section class="products_section">
+<section class="cards">
 	<h3 class="section_title"><?php echo htmlentities($row['productType']); ?></h3>
 
 
 
-	<div class="products_wrapper">
-		<div class="product">
+	<div class="card">
 			<div class="product_img">
 				<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 					<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
@@ -693,7 +670,7 @@ while($row=mysqli_fetch_array($sql)){
 
 			</div><!---END ROW-->
 
-			<div class="product_action">
+			<div class="product-action">
 			<?php if($row['productAvailability']=='In Stock'){?>
 
 				<a onclick="checkCart()" class="btn" href="products.php?cpt=<?php echo htmlentities($row['productToken']);?>&&action=cart" title="Cart">
@@ -710,11 +687,9 @@ while($row=mysqli_fetch_array($sql)){
 					<div class="btn">Out of Stock</div>
 				<?php } ?>
 			</div><!--PRODUCT INFORMATION--->
-		</div><!--END PRODUCT-->
 	</div><!--END PRODUCTS WRAPPER-->
 <?php } ?>
 </section>
-
 
 <?php
 $sql=mysqli_query($con,"SELECT products.productName, products.productPrice, products.productPriceBeforeDiscount, products.productImage1, products.productAvailability,
@@ -722,13 +697,10 @@ $sql=mysqli_query($con,"SELECT products.productName, products.productPrice, prod
 	JOIN producttype on products.productName = producttype.productName WHERE productType='mid end gaming' AND productTypeStatus='Active'");
 while($row=mysqli_fetch_array($sql)){
 	?>
-<section class="products_section">
+<section class="cards">
 	<h3 class="section_title"><?php echo htmlentities($row['productType']); ?></h3>
 
-
-
-	<div class="products_wrapper">
-		<div class="product">
+	<div class="card">
 			<div class="product_img">
 				<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 					<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
@@ -764,7 +736,7 @@ while($row=mysqli_fetch_array($sql)){
 
 			</div><!---END ROW-->
 
-			<div class="product_action">
+			<div class="product-action">
 			<?php if($row['productAvailability']=='In Stock'){?>
 
 				<a onclick="checkCart()" class="btn" href="products.php?cpt=<?php echo htmlentities($row['productToken']);?>&&action=cart" title="Cart">
@@ -781,7 +753,6 @@ while($row=mysqli_fetch_array($sql)){
 					<div class="btn">Out of Stock</div>
 				<?php } ?>
 			</div><!--PRODUCT INFORMATION--->
-		</div><!--END PRODUCT-->
 	</div><!--END PRODUCTS WRAPPER-->
 <?php } ?>
 </section>
@@ -793,13 +764,12 @@ $sql=mysqli_query($con,"SELECT products.productName, products.productPrice, prod
 	JOIN producttype on products.productName = producttype.productName WHERE productType='high end gaming' AND productTypeStatus='Active'");
 while($row=mysqli_fetch_array($sql)){
 	?>
-<section class="products_section">
+<section class="cards">
 	<h3 class="section_title"><?php echo htmlentities($row['productType']); ?></h3>
 
 
 
-	<div class="products_wrapper">
-		<div class="product">
+	<div class="card">
 			<div class="product_img">
 				<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 					<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
@@ -835,7 +805,7 @@ while($row=mysqli_fetch_array($sql)){
 
 			</div><!---END ROW-->
 
-			<div class="product_action">
+			<div class="product-action">
 			<?php if($row['productAvailability']=='In Stock'){?>
 
 				<a onclick="checkCart()" class="btn" href="products.php?cpt=<?php echo htmlentities($row['productToken']);?>&&action=cart" title="Cart">
@@ -852,7 +822,6 @@ while($row=mysqli_fetch_array($sql)){
 					<div class="btn">Out of Stock</div>
 				<?php } ?>
 			</div><!--PRODUCT INFORMATION--->
-		</div><!--END PRODUCT-->
 	</div><!--END PRODUCTS WRAPPER-->
 <?php } ?>
 </section>
@@ -865,12 +834,11 @@ $sql=mysqli_query($con,"SELECT products.productName, products.productPrice, prod
 	JOIN producttype on products.productName = producttype.productName WHERE productType='desktop replacement' AND productTypeStatus='Active'");
 while($row=mysqli_fetch_array($sql)){
 	?>
-<section class="products_section">
+<section class="cards">
 	<h3 class="section_title"><?php echo htmlentities($row['productType']); ?></h3>
 
 
-	<div class="products_wrapper">
-		<div class="product">
+	<div class="card">
 			<div class="product_img">
 				<a href="titan_product_details.php?p=<?php echo ($row['productName']);?>">
 					<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
@@ -906,7 +874,7 @@ while($row=mysqli_fetch_array($sql)){
 
 			</div><!---END ROW-->
 
-			<div class="product_action">
+			<div class="product-action">
 			<?php if($row['productAvailability']=='In Stock'){?>
 
 				<a onclick="checkCart()" class="btn" href="products.php?cpt=<?php echo htmlentities($row['productToken']);?>&&action=cart" title="Cart">
@@ -923,7 +891,6 @@ while($row=mysqli_fetch_array($sql)){
 					<div class="btn">Out of Stock</div>
 				<?php } ?>
 			</div><!--PRODUCT INFORMATION--->
-		</div><!--END PRODUCT-->
 	</div><!--END PRODUCTS WRAPPER-->
 	<?php } ?>
 </section>

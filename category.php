@@ -92,7 +92,6 @@ $titleQuery = mysqli_query($con, "SELECT title FROM title WHERE titleStatus = 'a
 while($row=mysqli_fetch_array($sql))
 {
   ?>
-
               <a href="titan_sub_category.php?subCatName=<?php echo $row['subcategoryToken'];?>" class="subcategory_link" style="display:hidden;"><i class="fa fa-product-hunt"></i>
               <?php echo $row['subcategoryName'];?></a>
               <?php }?>
@@ -101,11 +100,10 @@ while($row=mysqli_fetch_array($sql))
       </nav>
     </div>
 
-<section class="products_section">
+<section class="cards">
 		  <?php
 			$sql = mysqli_query($con, "SELECT categoryName FROM category WHERE categoryStatus = 'Active' AND categoryToken= '".$_GET['c']."'");
 			$row = mysqli_fetch_array($sql);
-
 			$categoryname = $row['categoryName'];
 
 $ret=mysqli_query($con,"SELECT * FROM products WHERE productStatus = 'Active' AND categoryName='$categoryname'");
@@ -115,24 +113,23 @@ if($num>0)
 while ($row=mysqli_fetch_array($ret))
 {?>
 
-	<div class="products_wrapper">
+	<div class="card">
 
-		<div class="product">
-			<div class="product_img">
+		<div class="caaard">
+			<div class="product-img">
 				<a href="titan_product_details.php?p=<?php echo htmlentities($row['productName']);?>">
 					<img class="imgprod" src="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" data-echo="admin/productimages/<?php echo htmlentities($row['productName']);?>/<?php echo htmlentities($row['productImage1']);?>" >
 				</a>
 			</div>
 
-
-			<div class="product_information">
+			<div class="product-information">
 				<div class="row">
-					<div class="prod_details">
+					<div class="prod-details">
 						<h3 class="product_name"><a class="productname_link" href="titan_product_details.php?p=<?php echo htmlentities($row['productName']);?>">
 							<?php echo htmlentities($row['productName']);?></a>
 						</h3>
 
-						<div class="product_price">
+						<div class="product-price">
 							<span class="price">
 
 							<span class="original_price">
@@ -146,14 +143,14 @@ while ($row=mysqli_fetch_array($ret))
 						</div>
 					</div><!--END DIV PROD_DETAILS-->
 
-				<div class="product_views">
+				<div class="product-views">
 					<span class="views">
 						<?php echo htmlentities($row['productViews']); ?><i class="fa fa-eye"></i>
 					</span>
 				</div>
 			</div><!---END ROW-->
 
-			<div class="product_action">
+			<div class="product-action">
 			<?php if($row['productAvailability']=='In Stock'){?>
 
 					<a href="category.php?cpt=<?php echo htmlentities($row['productToken']); ?>&&action=cart" class="btn">

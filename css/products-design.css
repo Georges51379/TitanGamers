@@ -1,0 +1,137 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/*PRODUCT PAGE DESIGN*/
+.cards{
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  gap: 1rem;
+  padding: 1%;
+}
+.card{
+  padding: 2%;
+  height: 100%;
+  background-color: #116466;
+  text-align: center;
+  border-radius: 5px;
+}
+.card .imgprod{
+  width: 50%;
+  height: 50%;
+}
+.card .product_name{
+  text-transform: capitalize;
+  padding: 1%;
+}
+.card .product-price{
+  padding: 1%;
+  font-weight: 900;
+}
+.card .product-views{
+  padding: 1%;
+}
+.card .product-action{
+  padding: 1.5%;
+}
+@media (min-width: 600px) {
+  .cards { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 900px) {
+  .cards { grid-template-columns: repeat(3, 1fr); }
+}
+/*START SUBCATEGORY SIDE NAVBAR*/
+.subcategory_wrapper{
+  margin-top: 2%;
+  text-align: center;
+  border-radius: 50%;
+  height: 6%;
+  box-sizing: border-box;
+  background-color: #116466;
+}
+.subcategory_wrapper .subcategory_title{
+  text-transform: uppercase;
+  background-color: black;
+  color: #116466;
+  font-size: 16px;
+  font-family: sans-serif;
+  font-style: oblique;
+  font-weight: bolder;
+}
+.subcategory_title{
+  border-top-right-radius: 5px;
+}
+.subcategory_link{
+  text-transform: capitalize;
+  text-decoration: none;
+  color: black;
+  padding: 0.3%;
+}
+.subcategory_link:hover{
+  color: white;
+}
+.cat_name_wrapper{
+  color: #116466;
+  font-size: 18px;
+  text-transform: capitalize;
+  font-family: sans-serif;
+  font-weight: bolder;
+  font-style: oblique;
+  margin-left: 5%;
+  background-color: #116466;
+  max-width: 10%;
+  color: black;
+  border-top-right-radius: 5px;
+}
+.subcat_title{
+  margin-top: 2%;
+  color: #116466;
+  font-size: 18px;
+  text-transform: capitalize;
+  font-family: sans-serif;
+  font-weight: bolder;
+  font-style: oblique;
+  margin-left: 5%;
+  background-color: #116466;
+  max-width: 10%;
+  color: black;
+  border-top-right-radius: 5px;
+}
+/*END SUBCATEGORY SIDE NAVBAR*/
+.section_title{
+  text-transform: capitalize;
+  color: red;
+  padding: 1%;
+  text-shadow: 0px 0px 0px green;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@keyframes productName{
+  0%{
+    color: red;
+    transform: scale(1.1);
+  }
+  20%{
+    color: green;
+    transform: scale(1.0);
+  }
+  40%{
+    color: red;
+    transform: scale(1.1);
+  }
+  60%{
+    color: green;
+    transform: scale(1.0);
+  }
+  80%{
+    color: red;
+    transform: scale(1.1);
+  }
+  100%{
+    color: green;
+    transform: scale(1.0);
+  }
+}
